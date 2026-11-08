@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 31" width="88" height="31" role="img" aria-labelledby="badge-notepad-title">
+  <title id="badge-notepad-title">Made with Notepad badge</title>
+  <rect width="88" height="31" fill="#000" />
+  <rect x="1" y="1" width="86" height="29" fill="none" stroke="#7dffb0" stroke-width="2" />
+  <text
+    x="44"
+    y="12"
+    text-anchor="middle"
+    font-family="'Courier New', monospace"
+    font-size="8"
+    fill="#c0c0c0"
+  >
+    MADE WITH
+  </text>
+  <text
+    x="44"
+    y="24"
+    text-anchor="middle"
+    font-family="'Courier New', monospace"
+    font-size="11"
+    font-weight="bold"
+    fill="#7dffb0"
+  >
+    NOTEPAD
+  </text>
+</svg>

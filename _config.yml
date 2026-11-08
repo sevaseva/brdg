@@ -1,0 +1,28 @@
+title: Cobb Bridge Club
+description: A friendly little club for people learning to play bridge in Cobb, California.
+lang: en
+timezone: America/Los_Angeles
+markdown: kramdown
+
+# GitHub Pages project site: https://<user>.github.io/brdg/
+# If the GitHub repository has a different name, change this to match it.
+# For a user/organization site (<user>.github.io), set this to "".
+baseurl: '/brdg'
+
+# GitHub Pages builds this site with its native Jekyll pipeline.
+# Keep the site plugin-free and pass internal URLs through relative_url.
+exclude:
+  - AGENTS.md
+  - README.md
+  - .editorconfig
+  - .gitignore
+  - .prettierignore
+  - .prettierrc
+  - .playwright-mcp
+  - .DS_Store
+  - '*.log'
+  - .github
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor

@@ -1,0 +1,237 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 420 300"
+  role="img"
+  aria-labelledby="cards-title cards-desc"
+>
+  <title id="cards-title">A fanned hand of playing cards</title>
+  <desc id="cards-desc">
+    Five playing cards fanned out: the ace of hearts, king of spades, queen of diamonds, jack of
+    clubs, and ten of spades.
+  </desc>
+
+  <defs>
+    <linearGradient id="felt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12806d" />
+      <stop offset="1" stop-color="#083b36" />
+    </linearGradient>
+    <filter id="card-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="4" dy="5" stdDeviation="0" flood-color="#0a0518" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <ellipse cx="210" cy="250" rx="185" ry="34" fill="url(#felt)" opacity="0.22" />
+  <ellipse cx="210" cy="238" rx="170" ry="42" fill="url(#felt)" stroke="#082f2f" stroke-width="4" />
+
+  <g transform="translate(210 145)">
+    <g transform="rotate(-22) translate(-78 0)" filter="url(#card-shadow)">
+      <rect
+        x="-44"
+        y="-62"
+        width="88"
+        height="124"
+        rx="8"
+        fill="#fff6d8"
+        stroke="#2a1240"
+        stroke-width="4"
+      />
+      <text
+        x="-31"
+        y="-34"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="28"
+        font-weight="bold"
+        fill="#d7263d"
+      >
+        A
+      </text>
+      <text
+        x="-30"
+        y="-12"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="22"
+        fill="#d7263d"
+      >
+        ♥
+      </text>
+      <text
+        x="0"
+        y="22"
+        text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="50"
+        fill="#d7263d"
+      >
+        ♥
+      </text>
+    </g>
+
+    <g transform="rotate(-11) translate(-39 0)" filter="url(#card-shadow)">
+      <rect
+        x="-44"
+        y="-62"
+        width="88"
+        height="124"
+        rx="8"
+        fill="#fff6d8"
+        stroke="#2a1240"
+        stroke-width="4"
+      />
+      <text
+        x="-31"
+        y="-34"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="28"
+        font-weight="bold"
+        fill="#1a1030"
+      >
+        K
+      </text>
+      <text
+        x="-30"
+        y="-12"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="22"
+        fill="#1a1030"
+      >
+        ♠
+      </text>
+      <text
+        x="0"
+        y="22"
+        text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="50"
+        fill="#1a1030"
+      >
+        ♠
+      </text>
+    </g>
+
+    <g transform="rotate(0) translate(0 0)" filter="url(#card-shadow)">
+      <rect
+        x="-44"
+        y="-62"
+        width="88"
+        height="124"
+        rx="8"
+        fill="#fff6d8"
+        stroke="#2a1240"
+        stroke-width="4"
+      />
+      <text
+        x="-31"
+        y="-34"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="28"
+        font-weight="bold"
+        fill="#d7263d"
+      >
+        Q
+      </text>
+      <text
+        x="-30"
+        y="-12"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="22"
+        fill="#d7263d"
+      >
+        ♦
+      </text>
+      <text
+        x="0"
+        y="22"
+        text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="50"
+        fill="#d7263d"
+      >
+        ♦
+      </text>
+    </g>
+
+    <g transform="rotate(11) translate(39 0)" filter="url(#card-shadow)">
+      <rect
+        x="-44"
+        y="-62"
+        width="88"
+        height="124"
+        rx="8"
+        fill="#fff6d8"
+        stroke="#2a1240"
+        stroke-width="4"
+      />
+      <text
+        x="-31"
+        y="-34"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="28"
+        font-weight="bold"
+        fill="#1a1030"
+      >
+        J
+      </text>
+      <text
+        x="-30"
+        y="-12"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="22"
+        fill="#1a1030"
+      >
+        ♣
+      </text>
+      <text
+        x="0"
+        y="22"
+        text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="50"
+        fill="#1a1030"
+      >
+        ♣
+      </text>
+    </g>
+
+    <g transform="rotate(22) translate(78 0)" filter="url(#card-shadow)">
+      <rect
+        x="-44"
+        y="-62"
+        width="88"
+        height="124"
+        rx="8"
+        fill="#fff6d8"
+        stroke="#2a1240"
+        stroke-width="4"
+      />
+      <text
+        x="-33"
+        y="-34"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="23"
+        font-weight="bold"
+        fill="#1a1030"
+      >
+        10
+      </text>
+      <text
+        x="-30"
+        y="-12"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="22"
+        fill="#1a1030"
+      >
+        ♠
+      </text>
+      <text
+        x="0"
+        y="22"
+        text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="50"
+        fill="#1a1030"
+      >
+        ♠
+      </text>
+    </g>
+  </g>
+</svg>

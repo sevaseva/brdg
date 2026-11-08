@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="{{ site.lang | default: 'en' }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <meta
+      name="description"
+      content="{{ page.description | default: site.description | escape }}"
+    />
+    <meta name="theme-color" content="#140c2e" />
+    <link rel="icon" href="{{ '/assets/images/favicon.svg' | relative_url }}" type="image/svg+xml" />
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}" />
+  </head>
+  <body>
+    <a class="skip-link" href="{{ page.url | relative_url }}#main">Skip to content</a>
+
+    <div class="topbar">
+      <p class="topbar__message">
+        <span class="blink" aria-hidden="true">★</span>
+        Welcome to the Information Superhighway!
+        <span class="blink" aria-hidden="true">★</span>
+      </p>
+      <button class="midi" type="button" data-midi aria-pressed="false">♫ MIDI: OFF</button>
+      <p class="midi__status" data-midi-status hidden>
+        ♪ Now playing: <code>cobb_bridge_theme.mid</code> (1.4 MB, est. download: 45 min)
+      </p>
+    </div>
+
+    <div class="page">
+      <header class="site-header" id="top">
+        <div class="banner">
+          <img
+            src="{{ '/assets/images/hero.svg' | relative_url }}"
+            alt="A retro sunset over layered mountain ridges and pine trees, with a rustic bridge, a green card table, and a fanned hand of playing cards."
+            width="1200"
+            height="420"
+          />
+          <span class="banner__sticker" aria-hidden="true">EST.<br />1998</span>
+        </div>
+
+        <div class="masthead">
+          <p class="masthead__kicker">Cobb, California · Elevation 2,700 ft · Population: friendly</p>
+          <h1 class="masthead__title">Cobb <span>Bridge</span> Club</h1>
+          <p class="masthead__tagline">Where the air is thin and the trump suit is thinner.</p>
+        </div>
+
+        <nav class="nav" aria-label="Main">
+          <ul>
+            <li><a href="{{ '/' | relative_url }}">Home</a></li>
+            <li><a href="{{ '/' | relative_url }}#what-is-bridge">What Is Bridge?</a></li>
+            <li><a href="{{ '/' | relative_url }}#learn">Learn</a></li>
+            <li><a href="{{ '/' | relative_url }}#meetings">Meetings</a></li>
+            <li><a href="{{ '/' | relative_url }}#news">News</a></li>
+            <li><a href="{{ '/' | relative_url }}#guestbook">Guestbook</a></li>
+            <li><a href="{{ '/' | relative_url }}#links">Links</a></li>
+          </ul>
+        </nav>
+
+        <div class="ticker" aria-label="Club announcements">
+          <div class="ticker__track">
+            <span>
+              ★ NEW! Our website is on the Information Superhighway! ★ Beginners welcome — no
+              partner? no problem! ★ We meet the 2nd &amp; 4th Thursday at 6:30 PM ★ Please do not
+              feed the dummy ★ This site is 100% Y2K compliant ★
+            </span>
+            <span aria-hidden="true">
+              ★ NEW! Our website is on the Information Superhighway! ★ Beginners welcome — no
+              partner? no problem! ★ We meet the 2nd &amp; 4th Thursday at 6:30 PM ★ Please do not
+              feed the dummy ★ This site is 100% Y2K compliant ★
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <main id="main">{{ content }}</main>
+
+      <footer class="site-footer">
+        <div class="badges" aria-label="Retro web badges">
+          <img
+            src="{{ '/assets/images/badge-html32.svg' | relative_url }}"
+            alt="HTML 3.2 badge"
+            width="88"
+            height="31"
+          />
+          <img
+            src="{{ '/assets/images/badge-notepad.svg' | relative_url }}"
+            alt="Made with Notepad badge"
+            width="88"
+            height="31"
+          />
+          <img
+            src="{{ '/assets/images/badge-y2k.svg' | relative_url }}"
+            alt="Y2K Ready badge"
+            width="88"
+            height="31"
+          />
+        </div>
+
+        <p class="webring">
+          <strong>Mountain Villages Webring:</strong>
+          <button type="button" class="link-button" data-webring>← Prev</button>
+          <span aria-hidden="true">|</span>
+          <button type="button" class="link-button" data-webring>Random</button>
+          <span aria-hidden="true">|</span>
+          <button type="button" class="link-button" data-webring>Next →</button>
+        </p>
+        <p class="webring__status" data-webring-status role="status"></p>
+
+        <p class="counter">
+          You are visitor
+          <span class="counter__digits" data-counter>000042</span>
+          to this page. <span class="counter__note">(Counter may be fictional.)</span>
+        </p>
+
+        <p class="fineprint">
+          Best viewed in Netscape Navigator 4.0 at 800×600. If the page looks weird, try squinting.
+        </p>
+        <p class="fineprint">
+          Last updated {{ site.time | date: "%m/%d/%Y" }} · © 1997–{{ site.time | date: "%Y" }} Cobb
+          Bridge Club. All rights reserved, especially the cookies.
+        </p>
+        <p class="fineprint fineprint--tiny">
+          This site is not affiliated with any official bridge organization. It is affiliated with a
+          folding table. Made with ♥, too much coffee, and a copy of <em>HTML for Dummies</em>.
+        </p>
+      </footer>
+    </div>
+
+    <script src="{{ '/assets/js/retro.js' | relative_url }}" defer></script>
+  </body>
+</html>

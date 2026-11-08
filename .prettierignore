@@ -1,0 +1,7 @@
+_site/
+.jekyll-cache/
+.sass-cache/
+_layouts/
+_includes/
+index.html
+404.html

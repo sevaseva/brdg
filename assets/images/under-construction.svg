@@ -1,0 +1,112 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 360 140"
+  role="img"
+  aria-labelledby="construction-title construction-desc"
+>
+  <title id="construction-title">Under construction</title>
+  <desc id="construction-desc">
+    An animated yellow construction sign with blinking lights and a tiny worker. More bridge pages
+    are coming soon.
+  </desc>
+
+  <defs>
+    <pattern id="hazard" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="20" height="20" fill="#ffe14d" />
+      <rect width="10" height="20" fill="#1a1030" />
+    </pattern>
+    <style>
+      @keyframes blink {
+        0%,
+        45% {
+          opacity: 1;
+        }
+        50%,
+        100% {
+          opacity: 0.15;
+        }
+      }
+      @keyframes bob {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-3px);
+        }
+      }
+      .light {
+        animation: blink 1.2s steps(1) infinite;
+      }
+      .worker {
+        animation: bob 2s ease-in-out infinite;
+        transform-box: fill-box;
+        transform-origin: center bottom;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .light,
+        .worker {
+          animation: none;
+        }
+      }
+    </style>
+  </defs>
+
+  <rect x="2" y="2" width="356" height="136" rx="8" fill="#ffe14d" stroke="#1a1030" stroke-width="4" />
+  <rect x="2" y="2" width="356" height="16" rx="6" fill="url(#hazard)" />
+  <rect x="2" y="122" width="356" height="16" rx="6" fill="url(#hazard)" />
+
+  <circle class="light" cx="28" cy="70" r="8" fill="#ff8a3d" stroke="#1a1030" stroke-width="2" />
+  <circle class="light" cx="332" cy="70" r="8" fill="#ff8a3d" stroke="#1a1030" stroke-width="2" />
+
+  <g class="worker">
+    <circle cx="48" cy="82" r="10" fill="#f2c49b" stroke="#1a1030" stroke-width="2" />
+    <path d="M 36 78 Q 48 60 60 78 Z" fill="#ff8a3d" stroke="#1a1030" stroke-width="2" />
+    <rect
+      x="39"
+      y="92"
+      width="18"
+      height="20"
+      rx="3"
+      fill="#35f0e0"
+      stroke="#1a1030"
+      stroke-width="2"
+    />
+    <line x1="57" y1="98" x2="74" y2="88" stroke="#6b3b1f" stroke-width="4" stroke-linecap="round" />
+    <rect x="72" y="82" width="10" height="12" fill="#8a8a8a" stroke="#1a1030" stroke-width="2" />
+  </g>
+
+  <text
+    x="190"
+    y="58"
+    text-anchor="middle"
+    font-family="Impact, 'Arial Black', sans-serif"
+    font-size="31"
+    letter-spacing="1"
+    fill="#1a1030"
+  >
+    UNDER
+  </text>
+  <text
+    x="190"
+    y="88"
+    text-anchor="middle"
+    font-family="Impact, 'Arial Black', sans-serif"
+    font-size="31"
+    letter-spacing="1"
+    fill="#1a1030"
+  >
+    CONSTRUCTION
+  </text>
+  <text
+    x="190"
+    y="108"
+    text-anchor="middle"
+    font-family="'Courier New', monospace"
+    font-size="11"
+    font-weight="bold"
+    fill="#1a1030"
+  >
+    MORE BRIDGE PAGES COMING SOON!
+  </text>
+</svg>

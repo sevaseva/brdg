@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 31" width="88" height="31" role="img" aria-labelledby="badge-html-title">
+  <title id="badge-html-title">HTML 3.2 badge</title>
+  <rect width="88" height="31" fill="#000" />
+  <rect x="1" y="1" width="86" height="29" fill="none" stroke="#c0c0c0" stroke-width="2" />
+  <text
+    x="44"
+    y="13"
+    text-anchor="middle"
+    font-family="'Courier New', monospace"
+    font-size="10"
+    font-weight="bold"
+    fill="#35f0e0"
+  >
+    HTML 3.2
+  </text>
+  <text
+    x="44"
+    y="24"
+    text-anchor="middle"
+    font-family="'Courier New', monospace"
+    font-size="7"
+    fill="#ffe14d"
+  >
+    TOTALLY VALID
+  </text>
+</svg>

@@ -1,0 +1,405 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 1200 420"
+  role="img"
+  aria-labelledby="hero-title hero-desc"
+>
+  <title id="hero-title">Cobb Bridge Club mountain sunset</title>
+  <desc id="hero-desc">
+    A retro sunset over layered mountain ridges and pine trees, with a rustic bridge, a green card
+    table, and a fanned hand of playing cards.
+  </desc>
+
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#120a26" />
+      <stop offset="0.45" stop-color="#4a1b63" />
+      <stop offset="0.75" stop-color="#b62a72" />
+      <stop offset="1" stop-color="#ff8a3d" />
+    </linearGradient>
+
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe14d" />
+      <stop offset="0.6" stop-color="#ffb03a" />
+      <stop offset="1" stop-color="#ff3ea5" />
+    </linearGradient>
+
+    <linearGradient id="mtn-back" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6d2b8a" />
+      <stop offset="1" stop-color="#2a1240" />
+    </linearGradient>
+
+    <linearGradient id="mtn-mid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b62a72" />
+      <stop offset="1" stop-color="#3b1f5e" />
+    </linearGradient>
+
+    <linearGradient id="mtn-front" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f6b5c" />
+      <stop offset="1" stop-color="#0a2f3a" />
+    </linearGradient>
+
+    <radialGradient id="vignette" cx="50%" cy="45%" r="70%">
+      <stop offset="0.55" stop-color="#000" stop-opacity="0" />
+      <stop offset="1" stop-color="#000" stop-opacity="0.65" />
+    </radialGradient>
+
+    <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1" fill="#000" opacity="0.35" />
+    </pattern>
+
+    <clipPath id="sun-clip">
+      <circle cx="880" cy="235" r="120" />
+    </clipPath>
+
+    <g id="star">
+      <path
+        d="M0 -5 L1.5 -1.5 L5 0 L1.5 1.5 L0 5 L-1.5 1.5 L-5 0 L-1.5 -1.5 Z"
+        fill="#fff6d8"
+      />
+    </g>
+
+    <g id="pine">
+      <polygon points="0,-46 14,-14 5,-14 20,18 0,18 -20,18 -5,-14 -14,-14" fill="#081f26" />
+      <rect x="-3" y="18" width="6" height="12" fill="#3b2415" />
+    </g>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1200" height="420" fill="url(#sky)" />
+
+  <!-- Stars -->
+  <use href="#star" x="60" y="55" opacity="0.8" />
+  <use href="#star" x="150" y="95" opacity="0.55" />
+  <use href="#star" x="235" y="45" opacity="0.7" />
+  <use href="#star" x="330" y="120" opacity="0.45" />
+  <use href="#star" x="430" y="60" opacity="0.8" />
+  <use href="#star" x="520" y="105" opacity="0.5" />
+  <use href="#star" x="610" y="40" opacity="0.7" />
+  <use href="#star" x="700" y="90" opacity="0.45" />
+  <use href="#star" x="1035" y="70" opacity="0.7" />
+  <use href="#star" x="1110" y="125" opacity="0.5" />
+  <use href="#star" x="1160" y="45" opacity="0.8" />
+  <circle cx="190" cy="145" r="2" fill="#fff6d8" opacity="0.6" />
+  <circle cx="385" cy="35" r="1.5" fill="#fff6d8" opacity="0.6" />
+  <circle cx="670" cy="140" r="2" fill="#35f0e0" opacity="0.6" />
+  <circle cx="970" cy="35" r="1.5" fill="#fff6d8" opacity="0.6" />
+
+  <!-- Retro sun -->
+  <circle cx="880" cy="235" r="120" fill="url(#sun)" />
+  <g clip-path="url(#sun-clip)" opacity="0.6">
+    <rect x="740" y="250" width="280" height="8" fill="#b62a72" />
+    <rect x="740" y="272" width="280" height="10" fill="#b62a72" />
+    <rect x="740" y="296" width="280" height="12" fill="#b62a72" />
+    <rect x="740" y="322" width="280" height="14" fill="#b62a72" />
+    <rect x="740" y="350" width="280" height="18" fill="#b62a72" />
+  </g>
+
+  <!-- Birds -->
+  <g fill="none" stroke="#fff6d8" stroke-width="3" stroke-linecap="round" opacity="0.7">
+    <path d="M 690 165 q 10 -8 20 0 q 10 -8 20 0" />
+    <path d="M 745 140 q 8 -6 16 0 q 8 -6 16 0" />
+    <path d="M 650 125 q 6 -5 12 0 q 6 -5 12 0" />
+  </g>
+
+  <!-- Mountains: back range -->
+  <polygon
+    points="0,305 90,175 155,245 240,130 330,255 400,195 490,270 580,160 670,250 760,200 850,270 940,210 1030,280 1120,190 1200,260 1200,420 0,420"
+    fill="url(#mtn-back)"
+  />
+  <g fill="#fff6d8" opacity="0.88">
+    <polygon points="77,198 90,175 103,198 97,192 90,203 83,192" />
+    <polygon points="225,158 240,130 255,158 248,152 240,164 232,152" />
+    <polygon points="566,184 580,160 594,184 587,178 580,190 573,178" />
+    <polygon points="1107,213 1120,190 1133,213 1127,207 1120,218 1113,207" />
+  </g>
+
+  <!-- Mountains: middle range -->
+  <polygon
+    points="0,345 100,275 190,325 280,245 370,325 460,285 550,345 640,265 730,335 820,295 910,355 1000,305 1090,355 1180,315 1200,335 1200,420 0,420"
+    fill="url(#mtn-mid)"
+  />
+
+  <!-- Mountains: front ridge -->
+  <polygon
+    points="0,392 120,342 240,382 360,352 480,392 600,362 720,392 840,362 960,392 1080,367 1200,397 1200,420 0,420"
+    fill="url(#mtn-front)"
+  />
+
+  <!-- Creek -->
+  <path
+    d="M 0 404 C 120 386 230 420 350 402 S 560 386 690 404"
+    fill="none"
+    stroke="#35f0e0"
+    stroke-width="14"
+    stroke-linecap="round"
+    opacity="0.28"
+  />
+
+  <!-- Pines -->
+  <use href="#pine" transform="translate(20 410) scale(1.4)" />
+  <use href="#pine" transform="translate(55 420) scale(1.1)" />
+  <use href="#pine" transform="translate(390 415) scale(1.5)" />
+  <use href="#pine" transform="translate(440 405) scale(1.2)" />
+  <use href="#pine" transform="translate(500 410) scale(1.5)" />
+  <use href="#pine" transform="translate(560 420) scale(1.1)" />
+  <use href="#pine" transform="translate(620 400) scale(1.3)" />
+  <use href="#pine" transform="translate(700 415) scale(1.8)" />
+  <use href="#pine" transform="translate(760 405) scale(1.3)" />
+  <use href="#pine" transform="translate(815 420) scale(1.6)" />
+
+  <!-- Rustic bridge -->
+  <g>
+    <path
+      d="M 55 404 Q 210 352 365 404"
+      fill="none"
+      stroke="#3b2415"
+      stroke-width="18"
+      stroke-linecap="round"
+    />
+    <path
+      d="M 75 372 Q 210 326 345 372"
+      fill="none"
+      stroke="#6b3b1f"
+      stroke-width="9"
+      stroke-linecap="round"
+    />
+    <g stroke="#6b3b1f" stroke-width="6" stroke-linecap="round">
+      <line x1="110" y1="385" x2="110" y2="410" />
+      <line x1="160" y1="373" x2="160" y2="401" />
+      <line x1="210" y1="366" x2="210" y2="394" />
+      <line x1="260" y1="373" x2="260" y2="401" />
+      <line x1="310" y1="385" x2="310" y2="410" />
+    </g>
+    <g stroke="#8a4f2a" stroke-width="2" opacity="0.8">
+      <line x1="80" y1="398" x2="95" y2="390" />
+      <line x1="130" y1="384" x2="145" y2="377" />
+      <line x1="180" y1="372" x2="195" y2="368" />
+      <line x1="230" y1="370" x2="245" y2="374" />
+      <line x1="280" y1="380" x2="295" y2="386" />
+      <line x1="330" y1="396" x2="345" y2="401" />
+    </g>
+  </g>
+
+  <!-- Wooden Cobb sign -->
+  <g transform="translate(78 300) rotate(-3)">
+    <rect x="-5" y="0" width="10" height="100" fill="#6b3b1f" stroke="#3b2415" stroke-width="3" />
+    <rect
+      x="-60"
+      y="-30"
+      width="120"
+      height="40"
+      rx="5"
+      fill="#8a4f2a"
+      stroke="#3b2415"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-2"
+      text-anchor="middle"
+      font-family="'Trebuchet MS', Verdana, sans-serif"
+      font-size="24"
+      font-weight="bold"
+      letter-spacing="2"
+      fill="#fff6d8"
+    >
+      COBB
+    </text>
+  </g>
+
+  <!-- Card table and a fanned hand -->
+  <g transform="translate(850 320)">
+    <ellipse cx="170" cy="95" rx="175" ry="55" fill="#061f1c" opacity="0.6" />
+    <ellipse
+      cx="170"
+      cy="85"
+      rx="170"
+      ry="52"
+      fill="#0f6b5c"
+      stroke="#082f2f"
+      stroke-width="6"
+    />
+    <ellipse cx="170" cy="80" rx="150" ry="40" fill="#12806d" />
+
+    <g transform="translate(170 35)">
+      <g transform="rotate(-24) translate(-58 0)">
+        <rect x="-27" y="-40" width="60" height="88" rx="6" fill="#000" opacity="0.22" />
+        <rect
+          x="-30"
+          y="-44"
+          width="60"
+          height="88"
+          rx="6"
+          fill="#fff6d8"
+          stroke="#2a1240"
+          stroke-width="3"
+        />
+        <text
+          x="-20"
+          y="-18"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="22"
+          font-weight="bold"
+          fill="#d7263d"
+        >
+          A
+        </text>
+        <text
+          x="0"
+          y="24"
+          text-anchor="middle"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="34"
+          fill="#d7263d"
+        >
+          ♥
+        </text>
+      </g>
+
+      <g transform="rotate(-12) translate(-29 0)">
+        <rect x="-27" y="-40" width="60" height="88" rx="6" fill="#000" opacity="0.22" />
+        <rect
+          x="-30"
+          y="-44"
+          width="60"
+          height="88"
+          rx="6"
+          fill="#fff6d8"
+          stroke="#2a1240"
+          stroke-width="3"
+        />
+        <text
+          x="-20"
+          y="-18"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="22"
+          font-weight="bold"
+          fill="#1a1030"
+        >
+          K
+        </text>
+        <text
+          x="0"
+          y="24"
+          text-anchor="middle"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="34"
+          fill="#1a1030"
+        >
+          ♠
+        </text>
+      </g>
+
+      <g transform="rotate(0) translate(0 0)">
+        <rect x="-27" y="-40" width="60" height="88" rx="6" fill="#000" opacity="0.22" />
+        <rect
+          x="-30"
+          y="-44"
+          width="60"
+          height="88"
+          rx="6"
+          fill="#fff6d8"
+          stroke="#2a1240"
+          stroke-width="3"
+        />
+        <text
+          x="-20"
+          y="-18"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="22"
+          font-weight="bold"
+          fill="#d7263d"
+        >
+          Q
+        </text>
+        <text
+          x="0"
+          y="24"
+          text-anchor="middle"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="34"
+          fill="#d7263d"
+        >
+          ♦
+        </text>
+      </g>
+
+      <g transform="rotate(12) translate(29 0)">
+        <rect x="-27" y="-40" width="60" height="88" rx="6" fill="#000" opacity="0.22" />
+        <rect
+          x="-30"
+          y="-44"
+          width="60"
+          height="88"
+          rx="6"
+          fill="#fff6d8"
+          stroke="#2a1240"
+          stroke-width="3"
+        />
+        <text
+          x="-20"
+          y="-18"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="22"
+          font-weight="bold"
+          fill="#1a1030"
+        >
+          J
+        </text>
+        <text
+          x="0"
+          y="24"
+          text-anchor="middle"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="34"
+          fill="#1a1030"
+        >
+          ♣
+        </text>
+      </g>
+
+      <g transform="rotate(24) translate(58 0)">
+        <rect x="-27" y="-40" width="60" height="88" rx="6" fill="#000" opacity="0.22" />
+        <rect
+          x="-30"
+          y="-44"
+          width="60"
+          height="88"
+          rx="6"
+          fill="#fff6d8"
+          stroke="#2a1240"
+          stroke-width="3"
+        />
+        <text
+          x="-22"
+          y="-18"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="18"
+          font-weight="bold"
+          fill="#1a1030"
+        >
+          10
+        </text>
+        <text
+          x="0"
+          y="24"
+          text-anchor="middle"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="34"
+          fill="#1a1030"
+        >
+          ♠
+        </text>
+      </g>
+    </g>
+
+    <circle cx="65" cy="105" r="10" fill="#d7263d" stroke="#2a1240" stroke-width="2" />
+    <circle cx="88" cy="113" r="10" fill="#ffe14d" stroke="#2a1240" stroke-width="2" />
+    <circle cx="76" cy="93" r="10" fill="#35f0e0" stroke="#2a1240" stroke-width="2" />
+  </g>
+
+  <!-- Retro finish -->
+  <rect width="1200" height="420" fill="url(#scanlines)" opacity="0.28" />
+  <rect width="1200" height="420" fill="url(#vignette)" opacity="0.4" />
+</svg>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="favicon-title">
+  <title id="favicon-title">Cobb Bridge Club</title>
+  <rect width="64" height="64" rx="10" fill="#140c2e" />
+  <circle cx="46" cy="20" r="10" fill="#ffe14d" />
+  <path d="M 0 47 L 16 29 L 28 44 L 38 33 L 64 52 L 64 64 L 0 64 Z" fill="#0f6b5c" />
+  <path d="M 0 54 L 22 42 L 38 54 L 52 46 L 64 55 L 64 64 L 0 64 Z" fill="#083b36" />
+  <g transform="rotate(-8 22 34)">
+    <rect x="10" y="18" width="22" height="31" rx="3" fill="#fff6d8" stroke="#1a1030" stroke-width="2" />
+    <text
+      x="21"
+      y="41"
+      text-anchor="middle"
+      font-family="Georgia, 'Times New Roman', serif"
+      font-size="19"
+      fill="#d7263d"
+    >
+      ♥
+    </text>
+  </g>
+</svg>
