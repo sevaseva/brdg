@@ -21,17 +21,19 @@ original SVG artwork.
 
 ## Repository layout
 
-| Path                    | Purpose                                                                                                        |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `_config.yml`           | Jekyll configuration; excludes repo-only files from the published site.                                        |
-| `_layouts/default.html` | Shared page shell: banner, masthead, navigation, ticker, footer.                                               |
-| `index.html`            | The homepage content.                                                                                          |
-| `404.html`              | GitHub Pages 404 page.                                                                                         |
-| `assets/css/style.css`  | All styling (plain CSS, no Sass).                                                                              |
-| `assets/js/retro.js`    | Small vanilla-JS enhancements: visitor counter, webring joke, click sparkles, optional chiptune "MIDI" toggle. |
-| `assets/images/*.svg`   | Original artwork: hero scene, card fan, construction sign, badges, favicon.                                    |
-| `AGENTS.md`             | This guide.                                                                                                    |
-| `README.md`             | Short public-facing description.                                                                               |
+| Path                        | Purpose                                                                                                                            |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `_config.yml`               | Jekyll configuration; excludes repo-only files from the published site.                                                            |
+| `_layouts/default.html`     | Shared page shell: banner, masthead, navigation, ticker, footer.                                                                   |
+| `index.html`                | The homepage content.                                                                                                              |
+| `404.html`                  | GitHub Pages 404 page.                                                                                                             |
+| `intro.html`                | Intro page with lazy-loaded YouTube embeds.                                                                                        |
+| `assets/css/style.css`      | All styling (plain CSS, no Sass).                                                                                                  |
+| `assets/js/retro.js`        | Small vanilla-JS enhancements: visitor counter, webring joke, click sparkles, and an autoplaying, toggleable chiptune "MIDI" tune. |
+| `assets/images/*.svg`       | Original artwork: hero scene, card fan, construction sign, badges, favicon.                                                        |
+| `assets/images/robson.webp` | Robson Level 1 course thumbnail used on the intro page.                                                                            |
+| `AGENTS.md`                 | This guide.                                                                                                                        |
+| `README.md`                 | Short public-facing description.                                                                                                   |
 
 ## Local development
 
@@ -61,13 +63,13 @@ Build first, then validate the generated HTML and check formatting:
 
 ```bash
 jekyll build
-tidy -qe _site/index.html _site/404.html
+tidy -qe _site/index.html _site/404.html _site/intro/index.html
 prettier --check "assets/**/*.{css,js}" "*.md" "_config.yml"
 ```
 
 `tidy` may report HTML5-related warnings; treat actual errors as failures and review warnings.
-`prettier` is configured in `.prettierrc` and ignores HTML containing Liquid tags, plus the
-Liquid-heavy layouts and includes; `tidy` covers the generated HTML.
+`prettier` is configured in `.prettierrc` and ignores the Liquid-heavy pages, layouts, and includes
+listed in `.prettierignore`; `tidy` covers the generated HTML.
 
 ## Content and style rules
 
@@ -77,7 +79,8 @@ Liquid-heavy layouts and includes; `tidy` covers the generated HTML.
   mislead. If a placeholder is ever needed, use an `.example` domain.
 - All images must be original files committed to the repo. Do not hotlink images or add copyrighted
   artwork.
-- No analytics, trackers, external fonts, CDNs, or third-party embeds.
+- No analytics, trackers, external fonts, CDNs, or third-party embeds. The one exception is
+  `intro.html`, which embeds three lazy-loaded YouTube videos.
 - Keep the site accessible: meaningful `alt` text, semantic headings, visible focus styles,
   reduced-motion support, and readable contrast.
 - Keep dependencies to zero beyond Jekyll. Prefer plain CSS and vanilla JavaScript.

@@ -558,6 +558,15 @@ main {
   text-align: center;
 }
 
+.robson-figure {
+  max-width: 564px;
+  margin: 0 auto 1.5rem;
+}
+
+.robson-figure a {
+  display: block;
+}
+
 .glossary {
   margin: 0;
 }
@@ -734,6 +743,70 @@ main {
   font-family: var(--font-ui);
   font-size: 0.65rem;
   letter-spacing: 0.12em;
+}
+
+/* --------------------------------------------------------------------------
+   Video intro
+   -------------------------------------------------------------------------- */
+
+.video-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.video {
+  margin: 0;
+}
+
+.video__frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border: 3px solid var(--ink);
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.25);
+}
+
+.video__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video figcaption {
+  margin-top: 0.5rem;
+  color: #4a3b5e;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+}
+
+.watch-notes {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: #fff3a8;
+  border: 3px solid #d9c25c;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.18);
+}
+
+.watch-notes h3 {
+  margin: 0 0 0.5rem;
+  color: #7a4b00;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+}
+
+.watch-notes ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.92rem;
+}
+
+.watch-notes li + li {
+  margin-top: 0.65rem;
 }
 
 /* --------------------------------------------------------------------------
