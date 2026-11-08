@@ -17,7 +17,7 @@ original SVG artwork.
   from the domain root; `relative_url` keeps links and assets working even on deep 404 URLs.
 - Do **not** add a `.nojekyll` file. It would disable the Jekyll build.
 - To deploy, push the default branch and configure the repository under **Settings → Pages → Build
-  and deployment → Source: Deploy from a branch → `main` / `/ (root)`**.
+  and deployment → Source: Deploy from a branch → `master` / `/ (root)`**.
 
 ## Repository layout
 

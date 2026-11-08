@@ -14,6 +14,6 @@ Open <http://localhost:4000/>.
 ## Deploy
 
 Push to the default branch, then set **Settings → Pages → Build and deployment → Source: Deploy from
-a branch → `main` / `/ (root)`**.
+a branch → `master` / `/ (root)`**.
 
 See [AGENTS.md](AGENTS.md) for contributor and agent notes.

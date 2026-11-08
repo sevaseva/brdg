@@ -63,11 +63,14 @@
   }
 
   // -------------------------------------------------------------------------
-  // A tiny, entirely original "MIDI" tune. No autoplay; click to start/stop.
+  // A tiny, entirely original "MIDI" tune. It tries to start on its own and
+  // falls back to the first interaction, since browsers often block audio
+  // until the page has been touched.
   // -------------------------------------------------------------------------
 
   const midiButton = document.querySelector('[data-midi]');
   const midiStatus = document.querySelector('[data-midi-status]');
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
   const melody = [
     523.25, 659.25, 783.99, 1046.5, 783.99, 659.25, 587.33, 698.46, 880, 1174.66, 880, 698.46,
   ];
@@ -76,6 +79,20 @@
   let audioContext;
   let midiTimer;
   let midiStep = 0;
+  let midiPlaying = false;
+  let midiWanted = true;
+  let unlockHandler;
+
+  function setMidiUi(playing) {
+    if (midiButton) {
+      midiButton.textContent = playing ? '♫ MIDI: ON' : '♫ MIDI: OFF';
+      midiButton.setAttribute('aria-pressed', String(playing));
+    }
+
+    if (midiStatus) {
+      midiStatus.hidden = !playing;
+    }
+  }
 
   function playNote(frequency, startTime) {
     if (!audioContext) {
@@ -97,7 +114,7 @@
   }
 
   function scheduleMidi() {
-    if (!audioContext) {
+    if (!audioContext || !midiWanted) {
       return;
     }
 
@@ -106,35 +123,85 @@
     midiTimer = window.setTimeout(scheduleMidi, noteLength * 1000 * 1.15);
   }
 
+  function disarmUnlock() {
+    if (!unlockHandler) {
+      return;
+    }
+
+    document.removeEventListener('pointerdown', unlockHandler);
+    document.removeEventListener('keydown', unlockHandler);
+    document.removeEventListener('touchstart', unlockHandler);
+    unlockHandler = undefined;
+  }
+
+  function startMidi() {
+    if (!AudioContextClass || !midiWanted) {
+      return;
+    }
+
+    if (!audioContext) {
+      audioContext = new AudioContextClass();
+      midiStep = 0;
+    }
+
+    const begin = () => {
+      if (!audioContext || !midiWanted || midiPlaying) {
+        return;
+      }
+
+      disarmUnlock();
+      midiPlaying = true;
+      setMidiUi(true);
+      scheduleMidi();
+    };
+
+    if (audioContext.state === 'running') {
+      begin();
+      return;
+    }
+
+    audioContext
+      .resume()
+      .then(begin)
+      .catch(() => {});
+  }
+
   function stopMidi() {
     window.clearTimeout(midiTimer);
     midiTimer = undefined;
+    midiPlaying = false;
 
     if (audioContext) {
       audioContext.close().catch(() => {});
       audioContext = undefined;
     }
 
-    if (midiButton) {
-      midiButton.textContent = '♫ MIDI: OFF';
-      midiButton.setAttribute('aria-pressed', 'false');
+    setMidiUi(false);
+  }
+
+  function armUnlock() {
+    if (!AudioContextClass || unlockHandler) {
+      return;
     }
 
-    if (midiStatus) {
-      midiStatus.hidden = true;
-    }
+    unlockHandler = (event) => {
+      if (midiButton && event.target instanceof Node && midiButton.contains(event.target)) {
+        return;
+      }
+
+      if (midiWanted) {
+        startMidi();
+      }
+    };
+
+    document.addEventListener('pointerdown', unlockHandler);
+    document.addEventListener('keydown', unlockHandler);
+    document.addEventListener('touchstart', unlockHandler);
   }
 
   if (midiButton) {
     midiButton.addEventListener('click', () => {
-      if (audioContext) {
-        stopMidi();
-        return;
-      }
-
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-
-      if (!AudioContext) {
+      if (!AudioContextClass) {
         if (midiStatus) {
           midiStatus.hidden = false;
           midiStatus.textContent = 'Your browser cannot play MIDI. Try Netscape Navigator 4.0.';
@@ -142,17 +209,18 @@
         return;
       }
 
-      audioContext = new AudioContext();
-      midiStep = 0;
-      midiButton.textContent = '♫ MIDI: ON';
-      midiButton.setAttribute('aria-pressed', 'true');
-
-      if (midiStatus) {
-        midiStatus.hidden = false;
+      if (midiPlaying) {
+        midiWanted = false;
+        stopMidi();
+        return;
       }
 
-      scheduleMidi();
+      midiWanted = true;
+      startMidi();
     });
+
+    armUnlock();
+    startMidi();
   }
 
   window.addEventListener('pagehide', stopMidi);
