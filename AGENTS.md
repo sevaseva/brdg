@@ -13,10 +13,8 @@ original SVG artwork.
   writing) and only its whitelisted plugins. This site intentionally uses **no Jekyll plugins**, so
   the local Jekyll 4.x build and the GitHub Pages build stay compatible.
 - Use Jekyll's **`relative_url` filter** for internal links and assets (for example
-  `{{ '/assets/css/style.css' | relative_url }}`). `baseurl` is set to `/brdg` for a project site,
-  which keeps links and assets working even on deep 404 URLs.
-- If the GitHub repository has a different name, update `baseurl` in `_config.yml` to match it. For
-  a user/organization site (`<user>.github.io`), set `baseurl: ""`.
+  `{{ '/assets/css/style.css' | relative_url }}`). `baseurl` is empty because the site is served
+  from the domain root; `relative_url` keeps links and assets working even on deep 404 URLs.
 - Do **not** add a `.nojekyll` file. It would disable the Jekyll build.
 - To deploy, push the default branch and configure the repository under **Settings → Pages → Build
   and deployment → Source: Deploy from a branch → `main` / `/ (root)`**.
@@ -25,7 +23,7 @@ original SVG artwork.
 
 | Path                    | Purpose                                                                                                        |
 | ----------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `_config.yml`           | Jekyll configuration, including `baseurl`; excludes repo-only files from the published site.                   |
+| `_config.yml`           | Jekyll configuration; excludes repo-only files from the published site.                                        |
 | `_layouts/default.html` | Shared page shell: banner, masthead, navigation, ticker, footer.                                               |
 | `index.html`            | The homepage content.                                                                                          |
 | `404.html`              | GitHub Pages 404 page.                                                                                         |
@@ -49,14 +47,7 @@ Serve the site with live reload:
 jekyll serve --livereload
 ```
 
-Then open <http://localhost:4000/brdg/> (the configured `baseurl`). To preview at the site root
-instead, override it:
-
-```bash
-jekyll serve --livereload --baseurl ""
-```
-
-Then open <http://localhost:4000>. To build only:
+Then open <http://localhost:4000/>. To build only:
 
 ```bash
 jekyll build

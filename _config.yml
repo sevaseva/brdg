@@ -4,10 +4,9 @@ lang: en
 timezone: America/Los_Angeles
 markdown: kramdown
 
-# GitHub Pages project site: https://<user>.github.io/brdg/
-# If the GitHub repository has a different name, change this to match it.
-# For a user/organization site (<user>.github.io), set this to "".
-baseurl: '/brdg'
+# The site is served from the domain root. Internal links and assets are
+# passed through Jekyll's relative_url filter, so they stay root-relative.
+baseurl: ''
 
 # GitHub Pages builds this site with its native Jekyll pipeline.
 # Keep the site plugin-free and pass internal URLs through relative_url.
