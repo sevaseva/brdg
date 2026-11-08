@@ -65,7 +65,8 @@
   // -------------------------------------------------------------------------
   // A tiny, entirely original "MIDI" tune. It tries to start on its own and
   // falls back to the first interaction, since browsers often block audio
-  // until the page has been touched.
+  // until the page has been touched. An automatic run plays one loop and
+  // stops; starting it from the button loops until it is turned off.
   // -------------------------------------------------------------------------
 
   const midiButton = document.querySelector('[data-midi]');
@@ -81,6 +82,7 @@
   let midiStep = 0;
   let midiPlaying = false;
   let midiWanted = true;
+  let midiAuto = false;
   let unlockHandler;
 
   function setMidiUi(playing) {
@@ -120,7 +122,21 @@
 
     playNote(melody[midiStep % melody.length], audioContext.currentTime);
     midiStep += 1;
-    midiTimer = window.setTimeout(scheduleMidi, noteLength * 1000 * 1.15);
+
+    const finishedAutoRun = midiAuto && midiStep >= melody.length;
+
+    midiTimer = window.setTimeout(
+      () => {
+        if (finishedAutoRun) {
+          midiWanted = false;
+          stopMidi();
+          return;
+        }
+
+        scheduleMidi();
+      },
+      noteLength * 1000 * 1.15,
+    );
   }
 
   function disarmUnlock() {
@@ -134,7 +150,7 @@
     unlockHandler = undefined;
   }
 
-  function startMidi() {
+  function startMidi(auto = false) {
     if (!AudioContextClass || !midiWanted) {
       return;
     }
@@ -142,6 +158,10 @@
     if (!audioContext) {
       audioContext = new AudioContextClass();
       midiStep = 0;
+    }
+
+    if (!midiPlaying) {
+      midiAuto = auto;
     }
 
     const begin = () => {
@@ -190,7 +210,7 @@
       }
 
       if (midiWanted) {
-        startMidi();
+        startMidi(true);
       }
     };
 
@@ -220,7 +240,7 @@
     });
 
     armUnlock();
-    startMidi();
+    startMidi(true);
   }
 
   window.addEventListener('pagehide', stopMidi);
