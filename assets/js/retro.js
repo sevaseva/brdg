@@ -75,6 +75,7 @@
   const melody = [
     523.25, 659.25, 783.99, 1046.5, 783.99, 659.25, 587.33, 698.46, 880, 1174.66, 880, 698.46,
   ];
+  const autoNoteLimit = melody.length;
   const noteLength = 0.16;
 
   let audioContext;
@@ -82,7 +83,7 @@
   let midiStep = 0;
   let midiPlaying = false;
   let midiWanted = true;
-  let midiAuto = false;
+  let midiMode = 'auto';
   let unlockHandler;
 
   function setMidiUi(playing) {
@@ -123,7 +124,7 @@
     playNote(melody[midiStep % melody.length], audioContext.currentTime);
     midiStep += 1;
 
-    const finishedAutoRun = midiAuto && midiStep >= melody.length;
+    const finishedAutoRun = midiMode === 'auto' && midiStep >= autoNoteLimit;
 
     midiTimer = window.setTimeout(
       () => {
@@ -150,18 +151,17 @@
     unlockHandler = undefined;
   }
 
-  function startMidi(auto = false) {
+  function startMidi(mode = 'auto') {
     if (!AudioContextClass || !midiWanted) {
       return;
     }
 
     if (!audioContext) {
       audioContext = new AudioContextClass();
-      midiStep = 0;
     }
 
     if (!midiPlaying) {
-      midiAuto = auto;
+      midiMode = mode;
     }
 
     const begin = () => {
@@ -171,6 +171,7 @@
 
       disarmUnlock();
       midiPlaying = true;
+      midiStep = 0;
       setMidiUi(true);
       scheduleMidi();
     };
@@ -210,7 +211,7 @@
       }
 
       if (midiWanted) {
-        startMidi(true);
+        startMidi('auto');
       }
     };
 
@@ -236,11 +237,11 @@
       }
 
       midiWanted = true;
-      startMidi();
+      startMidi('loop');
     });
 
     armUnlock();
-    startMidi(true);
+    startMidi('auto');
   }
 
   window.addEventListener('pagehide', stopMidi);
