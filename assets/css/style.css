@@ -856,12 +856,16 @@ main {
 }
 
 .night-hikes__status {
-  margin: 0 0 1rem;
-  color: var(--yellow);
-  font-family: var(--font-ui);
-  font-size: 0.92rem;
-  font-weight: bold;
-  letter-spacing: 0.02em;
+  margin: 0 -1rem 1rem;
+  padding: 0.65rem 1rem;
+  background: #0b0618;
+  border-bottom: 1px solid rgba(255, 246, 216, 0.18);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.45;
+  text-wrap: balance;
 }
 
 .night-hike-list {
@@ -1004,14 +1008,6 @@ main {
   margin: 0.1rem 0 0;
   font-size: 0.92rem;
   font-weight: bold;
-}
-
-.night-hikes__meta {
-  margin: 1rem 0 0;
-  padding-top: 0.65rem;
-  border-top: 1px dashed rgba(255, 246, 216, 0.35);
-  color: #c8e6c0;
-  font-size: 0.76rem;
 }
 
 .night-hikes__more {
@@ -1521,10 +1517,16 @@ main {
   }
 
   .night-hikes__status,
-  .night-hikes__meta,
   .night-hikes__more,
   .night-hikes__empty {
     color: #000;
+  }
+
+  .night-hikes__status {
+    margin-inline: 0;
+    padding-inline: 0;
+    background: none;
+    border-bottom: 1px solid #000;
   }
 
   .night-hike {
