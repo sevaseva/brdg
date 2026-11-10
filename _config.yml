@@ -9,10 +9,11 @@ markdown: kramdown
 baseurl: ''
 
 # GitHub Pages builds this site with its native Jekyll pipeline.
-# Keep the site plugin-free and pass internal URLs through relative_url.
+# The site is currently plugin-free and we pass internal URLs through relative_url.
+# But if and when we transition to custom Actions wodkflow jekyll build,
+# then we can use plugins and everything else that allows us to do while we keep deploying to GitHub Pages.
 exclude:
   - AGENTS.md
-  - README.md
   - .editorconfig
   - .gitignore
   - .prettierignore
