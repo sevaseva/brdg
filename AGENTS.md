@@ -13,8 +13,16 @@ original SVG artwork.
   GitHub Pages.
 - This switch was made because the night-hike chart is generated at build time, which the native
   GitHub Pages build cannot do. The workflow uses GitHub's official Pages actions
-  (`configure-pages`, `jekyll-build-pages`, `upload-pages-artifact`, `deploy-pages`) and still uses
-  **no Jekyll plugins**, so the local Jekyll 4.x build stays compatible.
+  (`configure-pages`, `upload-pages-artifact`, `deploy-pages`) and still uses **no Jekyll plugins**.
+- The build installs a **pinned Jekyll** (`gem install jekyll -v 4.4.1`) on Ruby 3.4 instead of
+  using `actions/jekyll-build-pages`. That action wraps the `github-pages` gem, which is still on
+  Jekyll 3.10.0 and Ruby 3.3, forces `safe: true`, and injects the Pages default theme and plugins.
+  A one-off comparison built this site with both and produced identical output, but the two Jekyll
+  majors drift on Sass modules (`@use`), any plugin, and markdown pages without front matter. Pages
+  only serves static artifacts here, so matching the local version is the safer default.
+- Keep the workflow's Jekyll version in step with the local `jekyll -v`. When upgrading Jekyll
+  locally, bump the `gem install jekyll -v` line in the same commit; a mismatch reintroduces the
+  silent local-vs-CI drift the pin is meant to prevent.
 - The repository also contains a committed copy of `assets/data/night-hikes.json` so a plain local
   `jekyll serve` has data even before the generator is run. The CI build overwrites that file with a
   fresh 90-day chart before Jekyll runs; the committed copy is a preview fallback, not the source of

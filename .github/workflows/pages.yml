@@ -41,11 +41,18 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          source: ./
-          destination: ./_site
+          ruby-version: '3.4'
+
+      # Pin the same Jekyll as the local toolchain. See AGENTS.md for why this
+      # is not actions/jekyll-build-pages.
+      - name: Install Jekyll
+        run: gem install jekyll -v 4.4.1 --no-document
+
+      - name: Build with Jekyll
+        run: jekyll build --trace
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

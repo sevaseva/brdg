@@ -10,8 +10,8 @@ baseurl: ''
 
 # The site is built by the custom GitHub Actions workflow in
 # .github/workflows/pages.yml, which regenerates the night-hike almanac before
-# Jekyll runs. The workflow installs no Jekyll plugins, so a plain local
-# `jekyll build` matches the deployed output.
+# Jekyll runs. The workflow pins the same Jekyll version used locally and
+# installs no plugins, so a plain local `jekyll build` matches the deployment.
 exclude:
   - AGENTS.md
   - .editorconfig
