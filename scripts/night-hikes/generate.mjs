@@ -92,6 +92,10 @@ function readConfig(configPath) {
     throw new Error('Config forecastDays must be a positive integer.');
   }
 
+  if (!Number.isInteger(config.eventCount) || config.eventCount < 1) {
+    throw new Error('Config eventCount must be a positive integer.');
+  }
+
   if (!Number.isInteger(config.fullMoonWindowDays) || config.fullMoonWindowDays < 0) {
     throw new Error('Config fullMoonWindowDays must be a non-negative integer.');
   }
@@ -349,14 +353,8 @@ function main() {
       elevationMeters: config.location.elevationMeters,
       timezone,
     },
-    config: {
-      forecastDays: days,
-      eveningEnd: config.eveningEnd,
-      fullMoonWindowDays: windowDays,
-      visibleAboveHorizon: {
-        minAltitudeDegrees: minAltitude,
-        sampleMinutes: config.visibleAboveHorizon.sampleMinutes,
-      },
+    display: {
+      eventCount: config.eventCount,
     },
     range: {
       start: startDate,

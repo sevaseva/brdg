@@ -8,6 +8,7 @@
     "timezone": "America/Los_Angeles"
   },
   "forecastDays": 90,
+  "eventCount": 7,
   "eveningEnd": "22:00",
   "fullMoonWindowDays": 4,
   "visibleAboveHorizon": {

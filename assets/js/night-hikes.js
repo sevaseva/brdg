@@ -10,6 +10,27 @@
 
   const source = root.getAttribute('data-src');
   const defaultTimeZone = 'America/Los_Angeles';
+  const defaultEventCount = 7;
+
+  const numberWords = [
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+    'ten',
+    'eleven',
+    'twelve',
+  ];
+
+  function countWord(value) {
+    return numberWords[value] || String(value);
+  }
 
   function localDateString(date, timeZone) {
     const parts = new Intl.DateTimeFormat('en-US', {
@@ -269,6 +290,24 @@
     const now = Date.now();
     const range = data.range || {};
     const events = Array.isArray(data.events) ? data.events : [];
+    const display = data.display || {};
+    const eventCount =
+      Number.isInteger(display.eventCount) && display.eventCount > 0
+        ? display.eventCount
+        : defaultEventCount;
+
+    const intro = document.querySelector('[data-night-hike-intro]');
+    const introNoun = document.querySelector('[data-night-hike-intro-noun]');
+
+    if (intro) {
+      intro.textContent =
+        eventCount === 1 ? 'is the next' : `are the next ${countWord(eventCount)}`;
+    }
+
+    if (introNoun) {
+      introNoun.textContent =
+        eventCount === 1 ? 'good night hiking event' : 'good night hiking events';
+    }
 
     root.setAttribute('aria-busy', 'false');
     root.replaceChildren();
@@ -310,7 +349,7 @@
       .filter((event) => Date.parse(event.windowEnd) > now)
       .sort((left, right) => left.date.localeCompare(right.date));
 
-    const shown = upcoming.slice(0, 3);
+    const shown = upcoming.slice(0, eventCount);
 
     const status = document.createElement('p');
     status.className = 'night-hikes__status';
@@ -318,8 +357,10 @@
     if (shown.length === 0) {
       status.textContent =
         'The remaining nights in this almanac have already happened. A fresh one is on the way.';
+    } else if (eventCount === 1) {
+      status.textContent = 'Here is the next good night for a walk in the woods.';
     } else {
-      status.textContent = 'Here are the next three good nights for a walk in the woods.';
+      status.textContent = `Here are the next ${countWord(eventCount)} good nights for a walk in the woods.`;
     }
 
     root.append(status);
@@ -335,7 +376,7 @@
       root.append(list);
     }
 
-    if (shown.length > 0 && upcoming.length < 3) {
+    if (shown.length > 0 && upcoming.length < eventCount) {
       const note = document.createElement('p');
       note.className = 'night-hikes__more small';
       note.textContent = `Only ${upcoming.length} qualifying night${upcoming.length === 1 ? '' : 's'} left in the almanac.`;
