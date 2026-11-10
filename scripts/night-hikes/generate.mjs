@@ -121,6 +121,14 @@ function iso(timestamp) {
   return new Date(timestamp).toISOString();
 }
 
+// Almanacs round to the nearest minute; Intl drops seconds. Shift forward
+// half a minute so the log agrees with the page.
+const HALF_MINUTE_MS = 30 * 1000;
+
+function rounded(date) {
+  return new Date(date.getTime() + HALF_MINUTE_MS);
+}
+
 function formatLocalDateTime(date, timeZone) {
   return new Intl.DateTimeFormat('en-US', {
     timeZone,
@@ -130,7 +138,7 @@ function formatLocalDateTime(date, timeZone) {
     hour: 'numeric',
     minute: '2-digit',
     timeZoneName: 'short',
-  }).format(date);
+  }).format(rounded(date));
 }
 
 function formatLocalTime(date, timeZone) {
@@ -138,7 +146,7 @@ function formatLocalTime(date, timeZone) {
     timeZone,
     hour: 'numeric',
     minute: '2-digit',
-  }).format(date);
+  }).format(rounded(date));
 }
 
 function nearestFullMoon(date, fullMoons, timeZone) {

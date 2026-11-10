@@ -53,6 +53,14 @@
     }).format(date);
   }
 
+  // Almanacs round to the nearest minute; Intl drops seconds. Nudge forward
+  // half a minute before formatting so a 16:53:30 sunset reads as 4:54 PM.
+  const HALF_MINUTE_MS = 30 * 1000;
+
+  function roundToMinute(date) {
+    return new Date(date.getTime() + HALF_MINUTE_MS);
+  }
+
   function formatTime(iso, timeZone) {
     if (!iso) {
       return null;
@@ -62,7 +70,7 @@
       timeZone,
       hour: 'numeric',
       minute: '2-digit',
-    }).format(new Date(iso));
+    }).format(roundToMinute(new Date(iso)));
   }
 
   function formatDateTime(iso, timeZone) {
@@ -74,7 +82,7 @@
       hour: 'numeric',
       minute: '2-digit',
       timeZoneName: 'short',
-    }).format(new Date(iso));
+    }).format(roundToMinute(new Date(iso)));
   }
 
   function pluralDays(value) {
