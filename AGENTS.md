@@ -9,8 +9,8 @@ original SVG artwork.
 
 - The site is deployed by a **custom GitHub Actions Jekyll workflow**
   (`.github/workflows/pages.yml`). The workflow installs the small Node build-tooling dependency,
-  regenerates the 90-day night-hike almanac, builds the site with Jekyll, and deploys the result to
-  GitHub Pages.
+  regenerates the 90-day night-hike almanac (monthly, and on every push), builds the site with
+  Jekyll, and deploys the result to GitHub Pages.
 - This switch was made because the night-hike chart is generated at build time, which the native
   GitHub Pages build cannot do. The workflow uses GitHub's official Pages actions
   (`configure-pages`, `upload-pages-artifact`, `deploy-pages`) and still uses **no Jekyll plugins**.
@@ -69,7 +69,8 @@ report missing tools instead:
 sudo pacman -S jekyll tidy prettier
 ```
 
-The night-hike generator needs Node 20 or newer and the small build-tooling dependency:
+The night-hike generator needs Node 26 or newer, which is also the version the GitHub Actions
+workflow pins, plus the small build-tooling dependency:
 
 ```bash
 npm ci

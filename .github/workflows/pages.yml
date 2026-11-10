@@ -5,9 +5,10 @@ on:
     branches:
       - master
   schedule:
-    # Refresh the 90-day night-hike chart even when nobody pushes. 08:17 UTC
-    # is just after midnight in Cobb for most of the year.
-    - cron: '17 8 * * *'
+    # Refresh the 90-day chart once a month so it never runs dry. 08:17 UTC is
+    # just after midnight in Cobb for most of the year, and even a late or
+    # skipped run leaves about two months of chart behind it.
+    - cron: '17 8 1 * *'
   workflow_dispatch:
 
 permissions:
@@ -29,7 +30,9 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          # Same major version as the local toolchain. Node only runs the
+          # night-hike generator; Jekyll itself is Ruby.
+          node-version: '26'
           cache: npm
 
       - name: Install build tooling
