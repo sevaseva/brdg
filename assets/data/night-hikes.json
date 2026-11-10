@@ -1,0 +1,663 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-10T09:56:17.989Z",
+  "generator": "scripts/night-hikes/generate.mjs",
+  "location": {
+    "name": "Cobb, California",
+    "latitude": 38.8222,
+    "longitude": -122.7231,
+    "elevationMeters": 802,
+    "timezone": "America/Los_Angeles"
+  },
+  "config": {
+    "forecastDays": 90,
+    "eveningEnd": "22:00",
+    "fullMoonWindowDays": 4,
+    "visibleAboveHorizon": {
+      "minAltitudeDegrees": -0.25,
+      "sampleMinutes": 1
+    }
+  },
+  "range": {
+    "start": "2026-11-10",
+    "end": "2027-02-07"
+  },
+  "events": [
+    {
+      "date": "2026-11-20",
+      "sunset": "2026-11-21T00:53:30.483Z",
+      "windowEnd": "2026-11-21T06:00:00.000Z",
+      "moonrise": "2026-11-20T22:18:00.124Z",
+      "moonset": "2026-11-20T10:29:00.841Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-11-21T00:53:30.483Z",
+      "moonVisibleUntil": "2026-11-21T06:00:00.000Z",
+      "moonAltitudeAtSunset": 28.9,
+      "moonAltitudeAtWindowEnd": 56,
+      "moonAltitudeMax": 59.2,
+      "moonIllumination": 0.843,
+      "fullMoon": {
+        "instant": "2026-11-24T14:54:04.191Z",
+        "localDate": "2026-11-24",
+        "daysFromFullMoon": -4
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2026-11-21",
+      "sunset": "2026-11-22T00:52:56.310Z",
+      "windowEnd": "2026-11-22T06:00:00.000Z",
+      "moonrise": "2026-11-21T22:44:52.939Z",
+      "moonset": "2026-11-21T11:37:06.640Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-11-22T00:52:56.310Z",
+      "moonVisibleUntil": "2026-11-22T06:00:00.000Z",
+      "moonAltitudeAtSunset": 23.4,
+      "moonAltitudeAtWindowEnd": 65.2,
+      "moonAltitudeMax": 65.5,
+      "moonIllumination": 0.915,
+      "fullMoon": {
+        "instant": "2026-11-24T14:54:04.191Z",
+        "localDate": "2026-11-24",
+        "daysFromFullMoon": -3
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "sunset": "2026-11-23T00:52:24.127Z",
+      "windowEnd": "2026-11-23T06:00:00.000Z",
+      "moonrise": "2026-11-22T23:16:37.509Z",
+      "moonset": "2026-11-22T12:49:23.275Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-11-23T00:52:24.127Z",
+      "moonVisibleUntil": "2026-11-23T06:00:00.000Z",
+      "moonAltitudeAtSunset": 16.6,
+      "moonAltitudeAtWindowEnd": 69.5,
+      "moonAltitudeMax": 69.5,
+      "moonIllumination": 0.967,
+      "fullMoon": {
+        "instant": "2026-11-24T14:54:04.191Z",
+        "localDate": "2026-11-24",
+        "daysFromFullMoon": -2
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2026-11-23",
+      "sunset": "2026-11-24T00:51:53.958Z",
+      "windowEnd": "2026-11-24T06:00:00.000Z",
+      "moonrise": "2026-11-23T23:55:51.332Z",
+      "moonset": "2026-11-23T14:05:42.755Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-11-24T00:51:53.958Z",
+      "moonVisibleUntil": "2026-11-24T06:00:00.000Z",
+      "moonAltitudeAtSunset": 8.8,
+      "moonAltitudeAtWindowEnd": 65.5,
+      "moonAltitudeMax": 65.5,
+      "moonIllumination": 0.995,
+      "fullMoon": {
+        "instant": "2026-11-24T14:54:04.191Z",
+        "localDate": "2026-11-24",
+        "daysFromFullMoon": -1
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2026-11-24",
+      "sunset": "2026-11-25T00:51:25.828Z",
+      "windowEnd": "2026-11-25T06:00:00.000Z",
+      "moonrise": "2026-11-25T00:45:22.855Z",
+      "moonset": "2026-11-24T15:23:43.410Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-11-25T00:51:25.828Z",
+      "moonVisibleUntil": "2026-11-25T06:00:00.000Z",
+      "moonAltitudeAtSunset": 0.6,
+      "moonAltitudeAtWindowEnd": 55.6,
+      "moonAltitudeMax": 55.6,
+      "moonIllumination": 0.994,
+      "fullMoon": {
+        "instant": "2026-11-24T14:54:04.191Z",
+        "localDate": "2026-11-24",
+        "daysFromFullMoon": 0
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2026-11-25",
+      "sunset": "2026-11-26T00:50:59.762Z",
+      "windowEnd": "2026-11-26T06:00:00.000Z",
+      "moonrise": "2026-11-26T01:46:46.598Z",
+      "moonset": "2026-11-25T16:38:22.273Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-11-26T01:46:59.762Z",
+      "moonVisibleUntil": "2026-11-26T06:00:00.000Z",
+      "moonAltitudeAtSunset": -8.1,
+      "moonAltitudeAtWindowEnd": 43.3,
+      "moonAltitudeMax": 43.3,
+      "moonIllumination": 0.964,
+      "fullMoon": {
+        "instant": "2026-11-24T14:54:04.191Z",
+        "localDate": "2026-11-24",
+        "daysFromFullMoon": 1
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": true,
+      "reasons": [
+        "big-moon",
+        "moonrise"
+      ]
+    },
+    {
+      "date": "2026-11-26",
+      "sunset": "2026-11-27T00:50:35.781Z",
+      "windowEnd": "2026-11-27T06:00:00.000Z",
+      "moonrise": "2026-11-27T02:58:20.712Z",
+      "moonset": "2026-11-26T17:43:56.547Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-11-27T02:58:35.781Z",
+      "moonVisibleUntil": "2026-11-27T06:00:00.000Z",
+      "moonAltitudeAtSunset": -16.7,
+      "moonAltitudeAtWindowEnd": 30.3,
+      "moonAltitudeMax": 30.3,
+      "moonIllumination": 0.907,
+      "fullMoon": {
+        "instant": "2026-11-24T14:54:04.191Z",
+        "localDate": "2026-11-24",
+        "daysFromFullMoon": 2
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": true,
+      "reasons": [
+        "big-moon",
+        "moonrise"
+      ]
+    },
+    {
+      "date": "2026-11-27",
+      "sunset": "2026-11-28T00:50:13.907Z",
+      "windowEnd": "2026-11-28T06:00:00.000Z",
+      "moonrise": "2026-11-28T04:15:02.855Z",
+      "moonset": "2026-11-27T18:37:30.850Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-11-28T04:15:13.907Z",
+      "moonVisibleUntil": "2026-11-28T06:00:00.000Z",
+      "moonAltitudeAtSunset": -24.8,
+      "moonAltitudeAtWindowEnd": 17.2,
+      "moonAltitudeMax": 17.2,
+      "moonIllumination": 0.827,
+      "fullMoon": {
+        "instant": "2026-11-24T14:54:04.191Z",
+        "localDate": "2026-11-24",
+        "daysFromFullMoon": 3
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": true,
+      "reasons": [
+        "big-moon",
+        "moonrise"
+      ]
+    },
+    {
+      "date": "2026-11-28",
+      "sunset": "2026-11-29T00:49:54.160Z",
+      "windowEnd": "2026-11-29T06:00:00.000Z",
+      "moonrise": "2026-11-29T05:31:31.565Z",
+      "moonset": "2026-11-28T19:19:55.492Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-11-29T05:31:54.160Z",
+      "moonVisibleUntil": "2026-11-29T06:00:00.000Z",
+      "moonAltitudeAtSunset": -31.7,
+      "moonAltitudeAtWindowEnd": 4.3,
+      "moonAltitudeMax": 4.3,
+      "moonIllumination": 0.73,
+      "fullMoon": {
+        "instant": "2026-11-24T14:54:04.191Z",
+        "localDate": "2026-11-24",
+        "daysFromFullMoon": 4
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": true,
+      "reasons": [
+        "big-moon",
+        "moonrise"
+      ]
+    },
+    {
+      "date": "2026-12-19",
+      "sunset": "2026-12-20T00:51:20.165Z",
+      "windowEnd": "2026-12-20T06:00:00.000Z",
+      "moonrise": "2026-12-19T21:10:40.693Z",
+      "moonset": "2026-12-19T10:25:27.432Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-12-20T00:51:20.165Z",
+      "moonVisibleUntil": "2026-12-20T06:00:00.000Z",
+      "moonAltitudeAtSunset": 40.8,
+      "moonAltitudeAtWindowEnd": 59.7,
+      "moonAltitudeMax": 68.5,
+      "moonIllumination": 0.792,
+      "fullMoon": {
+        "instant": "2026-12-24T01:28:45.040Z",
+        "localDate": "2026-12-23",
+        "daysFromFullMoon": -4
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2026-12-20",
+      "sunset": "2026-12-21T00:51:47.338Z",
+      "windowEnd": "2026-12-21T06:00:00.000Z",
+      "moonrise": "2026-12-20T21:44:56.801Z",
+      "moonset": "2026-12-20T11:37:39.295Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-12-21T00:51:47.338Z",
+      "moonVisibleUntil": "2026-12-21T06:00:00.000Z",
+      "moonAltitudeAtSunset": 33.4,
+      "moonAltitudeAtWindowEnd": 70.9,
+      "moonAltitudeMax": 73.4,
+      "moonIllumination": 0.877,
+      "fullMoon": {
+        "instant": "2026-12-24T01:28:45.040Z",
+        "localDate": "2026-12-23",
+        "daysFromFullMoon": -3
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2026-12-21",
+      "sunset": "2026-12-22T00:52:16.451Z",
+      "windowEnd": "2026-12-22T06:00:00.000Z",
+      "moonrise": "2026-12-21T22:28:12.621Z",
+      "moonset": "2026-12-21T12:53:34.652Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-12-22T00:52:16.451Z",
+      "moonVisibleUntil": "2026-12-22T06:00:00.000Z",
+      "moonAltitudeAtSunset": 24.2,
+      "moonAltitudeAtWindowEnd": 76.6,
+      "moonAltitudeMax": 76.6,
+      "moonIllumination": 0.943,
+      "fullMoon": {
+        "instant": "2026-12-24T01:28:45.040Z",
+        "localDate": "2026-12-23",
+        "daysFromFullMoon": -2
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2026-12-22",
+      "sunset": "2026-12-23T00:52:47.476Z",
+      "windowEnd": "2026-12-23T06:00:00.000Z",
+      "moonrise": "2026-12-22T23:23:17.777Z",
+      "moonset": "2026-12-22T14:10:00.224Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-12-23T00:52:47.476Z",
+      "moonVisibleUntil": "2026-12-23T06:00:00.000Z",
+      "moonAltitudeAtSunset": 13.8,
+      "moonAltitudeAtWindowEnd": 69.9,
+      "moonAltitudeMax": 69.9,
+      "moonIllumination": 0.985,
+      "fullMoon": {
+        "instant": "2026-12-24T01:28:45.040Z",
+        "localDate": "2026-12-23",
+        "daysFromFullMoon": -1
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2026-12-23",
+      "sunset": "2026-12-24T00:53:20.380Z",
+      "windowEnd": "2026-12-24T06:00:00.000Z",
+      "moonrise": "2026-12-24T00:30:56.639Z",
+      "moonset": "2026-12-23T15:21:17.925Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-12-24T00:53:20.380Z",
+      "moonVisibleUntil": "2026-12-24T06:00:00.000Z",
+      "moonAltitudeAtSunset": 2.9,
+      "moonAltitudeAtWindowEnd": 57.5,
+      "moonAltitudeMax": 57.5,
+      "moonIllumination": 0.999,
+      "fullMoon": {
+        "instant": "2026-12-24T01:28:45.040Z",
+        "localDate": "2026-12-23",
+        "daysFromFullMoon": 0
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2026-12-24",
+      "sunset": "2026-12-25T00:53:55.132Z",
+      "windowEnd": "2026-12-25T06:00:00.000Z",
+      "moonrise": "2026-12-25T01:47:50.068Z",
+      "moonset": "2026-12-24T16:22:17.539Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-12-25T01:47:55.132Z",
+      "moonVisibleUntil": "2026-12-25T06:00:00.000Z",
+      "moonAltitudeAtSunset": -8.1,
+      "moonAltitudeAtWindowEnd": 43.8,
+      "moonAltitudeMax": 43.8,
+      "moonIllumination": 0.981,
+      "fullMoon": {
+        "instant": "2026-12-24T01:28:45.040Z",
+        "localDate": "2026-12-23",
+        "daysFromFullMoon": 1
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": true,
+      "reasons": [
+        "big-moon",
+        "moonrise"
+      ]
+    },
+    {
+      "date": "2026-12-25",
+      "sunset": "2026-12-26T00:54:31.697Z",
+      "windowEnd": "2026-12-26T06:00:00.000Z",
+      "moonrise": "2026-12-26T03:07:51.385Z",
+      "moonset": "2026-12-25T17:11:23.928Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-12-26T03:07:31.697Z",
+      "moonVisibleUntil": "2026-12-26T06:00:00.000Z",
+      "moonAltitudeAtSunset": -19.4,
+      "moonAltitudeAtWindowEnd": 30,
+      "moonAltitudeMax": 30,
+      "moonIllumination": 0.935,
+      "fullMoon": {
+        "instant": "2026-12-24T01:28:45.040Z",
+        "localDate": "2026-12-23",
+        "daysFromFullMoon": 2
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": true,
+      "reasons": [
+        "big-moon",
+        "moonrise"
+      ]
+    },
+    {
+      "date": "2026-12-26",
+      "sunset": "2026-12-27T00:55:10.041Z",
+      "windowEnd": "2026-12-27T06:00:00.000Z",
+      "moonrise": "2026-12-27T04:25:54.137Z",
+      "moonset": "2026-12-26T17:50:22.085Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-12-27T04:26:10.041Z",
+      "moonVisibleUntil": "2026-12-27T06:00:00.000Z",
+      "moonAltitudeAtSunset": -30.1,
+      "moonAltitudeAtWindowEnd": 16.3,
+      "moonAltitudeMax": 16.3,
+      "moonIllumination": 0.864,
+      "fullMoon": {
+        "instant": "2026-12-24T01:28:45.040Z",
+        "localDate": "2026-12-23",
+        "daysFromFullMoon": 3
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": true,
+      "reasons": [
+        "big-moon",
+        "moonrise"
+      ]
+    },
+    {
+      "date": "2026-12-27",
+      "sunset": "2026-12-28T00:55:50.125Z",
+      "windowEnd": "2026-12-28T06:00:00.000Z",
+      "moonrise": "2026-12-28T05:39:47.296Z",
+      "moonset": "2026-12-27T18:22:06.299Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2026-12-28T05:39:50.125Z",
+      "moonVisibleUntil": "2026-12-28T06:00:00.000Z",
+      "moonAltitudeAtSunset": -39.7,
+      "moonAltitudeAtWindowEnd": 3.1,
+      "moonAltitudeMax": 3.1,
+      "moonIllumination": 0.775,
+      "fullMoon": {
+        "instant": "2026-12-24T01:28:45.040Z",
+        "localDate": "2026-12-23",
+        "daysFromFullMoon": 4
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": true,
+      "reasons": [
+        "big-moon",
+        "moonrise"
+      ]
+    },
+    {
+      "date": "2027-01-18",
+      "sunset": "2027-01-19T01:16:13.307Z",
+      "windowEnd": "2027-01-19T06:00:00.000Z",
+      "moonrise": "2027-01-18T21:04:39.180Z",
+      "moonset": "2027-01-18T11:44:22.948Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2027-01-19T01:16:13.307Z",
+      "moonVisibleUntil": "2027-01-19T06:00:00.000Z",
+      "moonAltitudeAtSunset": 43.7,
+      "moonAltitudeAtWindowEnd": 72.7,
+      "moonAltitudeMax": 78.1,
+      "moonIllumination": 0.839,
+      "fullMoon": {
+        "instant": "2027-01-22T12:17:50.281Z",
+        "localDate": "2027-01-22",
+        "daysFromFullMoon": -4
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2027-01-19",
+      "sunset": "2027-01-20T01:17:19.409Z",
+      "windowEnd": "2027-01-20T06:00:00.000Z",
+      "moonrise": "2027-01-19T22:04:15.914Z",
+      "moonset": "2027-01-19T12:56:34.843Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2027-01-20T01:17:19.409Z",
+      "moonVisibleUntil": "2027-01-20T06:00:00.000Z",
+      "moonAltitudeAtSunset": 32.1,
+      "moonAltitudeAtWindowEnd": 78.6,
+      "moonAltitudeMax": 78.6,
+      "moonIllumination": 0.917,
+      "fullMoon": {
+        "instant": "2027-01-22T12:17:50.281Z",
+        "localDate": "2027-01-22",
+        "daysFromFullMoon": -3
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2027-01-20",
+      "sunset": "2027-01-21T01:18:26.011Z",
+      "windowEnd": "2027-01-21T06:00:00.000Z",
+      "moonrise": "2027-01-20T23:15:45.291Z",
+      "moonset": "2027-01-20T14:01:58.093Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2027-01-21T01:18:26.011Z",
+      "moonVisibleUntil": "2027-01-21T06:00:00.000Z",
+      "moonAltitudeAtSunset": 19.6,
+      "moonAltitudeAtWindowEnd": 70.6,
+      "moonAltitudeMax": 70.6,
+      "moonIllumination": 0.971,
+      "fullMoon": {
+        "instant": "2027-01-22T12:17:50.281Z",
+        "localDate": "2027-01-22",
+        "daysFromFullMoon": -2
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2027-01-21",
+      "sunset": "2027-01-22T01:19:33.070Z",
+      "windowEnd": "2027-01-22T06:00:00.000Z",
+      "moonrise": "2027-01-22T00:34:49.179Z",
+      "moonset": "2027-01-21T14:56:56.991Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2027-01-22T01:19:33.070Z",
+      "moonVisibleUntil": "2027-01-22T06:00:00.000Z",
+      "moonAltitudeAtSunset": 6.7,
+      "moonAltitudeAtWindowEnd": 57.6,
+      "moonAltitudeMax": 57.6,
+      "moonIllumination": 0.998,
+      "fullMoon": {
+        "instant": "2027-01-22T12:17:50.281Z",
+        "localDate": "2027-01-22",
+        "daysFromFullMoon": -1
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": false,
+      "reasons": [
+        "big-moon"
+      ]
+    },
+    {
+      "date": "2027-01-22",
+      "sunset": "2027-01-23T01:20:40.545Z",
+      "windowEnd": "2027-01-23T06:00:00.000Z",
+      "moonrise": "2027-01-23T01:55:34.270Z",
+      "moonset": "2027-01-22T15:41:19.515Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2027-01-23T01:55:40.545Z",
+      "moonVisibleUntil": "2027-01-23T06:00:00.000Z",
+      "moonAltitudeAtSunset": -6,
+      "moonAltitudeAtWindowEnd": 43.7,
+      "moonAltitudeMax": 43.7,
+      "moonIllumination": 0.994,
+      "fullMoon": {
+        "instant": "2027-01-22T12:17:50.281Z",
+        "localDate": "2027-01-22",
+        "daysFromFullMoon": 0
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": true,
+      "reasons": [
+        "big-moon",
+        "moonrise"
+      ]
+    },
+    {
+      "date": "2027-01-23",
+      "sunset": "2027-01-24T01:21:48.396Z",
+      "windowEnd": "2027-01-24T06:00:00.000Z",
+      "moonrise": "2027-01-24T03:13:51.665Z",
+      "moonset": "2027-01-23T16:17:13.819Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2027-01-24T03:13:48.396Z",
+      "moonVisibleUntil": "2027-01-24T06:00:00.000Z",
+      "moonAltitudeAtSunset": -18.9,
+      "moonAltitudeAtWindowEnd": 29.8,
+      "moonAltitudeMax": 29.8,
+      "moonIllumination": 0.961,
+      "fullMoon": {
+        "instant": "2027-01-22T12:17:50.281Z",
+        "localDate": "2027-01-22",
+        "daysFromFullMoon": 1
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": true,
+      "reasons": [
+        "big-moon",
+        "moonrise"
+      ]
+    },
+    {
+      "date": "2027-01-24",
+      "sunset": "2027-01-25T01:22:56.586Z",
+      "windowEnd": "2027-01-25T06:00:00.000Z",
+      "moonrise": "2027-01-25T04:28:14.668Z",
+      "moonset": "2027-01-24T16:47:20.535Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2027-01-25T04:27:56.586Z",
+      "moonVisibleUntil": "2027-01-25T06:00:00.000Z",
+      "moonAltitudeAtSunset": -31.5,
+      "moonAltitudeAtWindowEnd": 16.3,
+      "moonAltitudeMax": 16.3,
+      "moonIllumination": 0.902,
+      "fullMoon": {
+        "instant": "2027-01-22T12:17:50.281Z",
+        "localDate": "2027-01-22",
+        "daysFromFullMoon": 2
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": true,
+      "reasons": [
+        "big-moon",
+        "moonrise"
+      ]
+    },
+    {
+      "date": "2027-01-25",
+      "sunset": "2027-01-26T01:24:05.077Z",
+      "windowEnd": "2027-01-26T06:00:00.000Z",
+      "moonrise": "2027-01-26T05:39:03.760Z",
+      "moonset": "2027-01-25T17:14:00.613Z",
+      "moonVisible": true,
+      "moonVisibleFrom": "2027-01-26T05:39:05.077Z",
+      "moonVisibleUntil": "2027-01-26T06:00:00.000Z",
+      "moonAltitudeAtSunset": -43.3,
+      "moonAltitudeAtWindowEnd": 3.3,
+      "moonAltitudeMax": 3.3,
+      "moonIllumination": 0.824,
+      "fullMoon": {
+        "instant": "2027-01-22T12:17:50.281Z",
+        "localDate": "2027-01-22",
+        "daysFromFullMoon": 3
+      },
+      "isBigMoon": true,
+      "moonriseInWindow": true,
+      "reasons": [
+        "big-moon",
+        "moonrise"
+      ]
+    }
+  ]
+}

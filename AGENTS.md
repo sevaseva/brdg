@@ -7,41 +7,49 @@ original SVG artwork.
 
 ## Deployment model
 
-- The site is currently deployed by **GitHub Pages' zero-config, native/classic Jekyll build**: the
-  default branch is built automatically, with no GitHub Actions workflow involved.
-- That is a convenient default, **not a hard constraint**. If a new feature needs something the
-  native build cannot provide (extra Jekyll plugins, a newer Jekyll version, Sass or other build
-  tooling, generated assets, post-build checks), feel free to switch to a **custom GitHub Actions
-  Jekyll build workflow** and update this guide and `_config.yml` accordingly.
-- While the native build is in use, GitHub Pages builds the default branch with its managed Jekyll
-  version (3.10.x at the time of writing) and only its whitelisted plugins. The site intentionally
-  uses **no Jekyll plugins**, so the local Jekyll 4.x build and the GitHub Pages build stay
-  compatible. Any move away from that should come with the custom workflow described above.
+- The site is deployed by a **custom GitHub Actions Jekyll workflow**
+  (`.github/workflows/pages.yml`). The workflow installs the small Node build-tooling dependency,
+  regenerates the 90-day night-hike almanac, builds the site with Jekyll, and deploys the result to
+  GitHub Pages.
+- This switch was made because the night-hike chart is generated at build time, which the native
+  GitHub Pages build cannot do. The workflow uses GitHub's official Pages actions
+  (`configure-pages`, `jekyll-build-pages`, `upload-pages-artifact`, `deploy-pages`) and still uses
+  **no Jekyll plugins**, so the local Jekyll 4.x build stays compatible.
+- The repository also contains a committed copy of `assets/data/night-hikes.json` so a plain local
+  `jekyll serve` has data even before the generator is run. The CI build overwrites that file with a
+  fresh 90-day chart before Jekyll runs; the committed copy is a preview fallback, not the source of
+  truth.
 - Use Jekyll's **`relative_url` filter** for internal links and assets (for example
   `{{ '/assets/css/style.css' | relative_url }}`). `baseurl` is empty because the site is served
   from the domain root; `relative_url` keeps links and assets working even on deep 404 URLs. Keep
   this rule under any deployment model.
 - Do **not** add a `.nojekyll` file. It would disable the Jekyll build.
-- Deploying with the current setup is a **human/operator task**, not an agent one. A person must
-  push the default branch and configure the repository under **Settings → Pages → Build and
-  deployment → Source: Deploy from a branch → `master` / `/ (root)`** (or switch the source to
-  **GitHub Actions** if a custom workflow is introduced). Agents cannot change repository settings:
-  just report what is needed and leave the click-through to the human.
+- Deploying is a **human/operator task**, not an agent one. A person must push the default branch
+  and configure the repository under **Settings → Pages → Build and deployment → Source: GitHub
+  Actions**. Agents cannot change repository settings: just report what is needed and leave the
+  click-through to the human.
 
 ## Repository layout
 
-| Path                        | Purpose                                                                                                                            |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `_config.yml`               | Jekyll configuration; excludes repo-only files from the published site.                                                            |
-| `_layouts/default.html`     | Shared page shell: banner, masthead, navigation, ticker, footer.                                                                   |
-| `index.html`                | The homepage content.                                                                                                              |
-| `404.html`                  | GitHub Pages 404 page.                                                                                                             |
-| `intro.html`                | Intro page with lazy-loaded YouTube embeds.                                                                                        |
-| `assets/css/style.css`      | All styling (plain CSS, no Sass).                                                                                                  |
-| `assets/js/retro.js`        | Small vanilla-JS enhancements: visitor counter, webring joke, click sparkles, and an autoplaying, toggleable chiptune "MIDI" tune. |
-| `assets/images/*.svg`       | Original artwork: hero scene, card fan, construction sign, badges, favicon.                                                        |
-| `assets/images/robson.webp` | Robson Level 1 course thumbnail used on the intro page.                                                                            |
-| `AGENTS.md`                 | This guide.                                                                                                                        |
+| Path                              | Purpose                                                                                                                            |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `_config.yml`                     | Jekyll configuration; excludes repo-only files from the published site.                                                            |
+| `_layouts/default.html`           | Shared page shell: banner, masthead, navigation, ticker, footer.                                                                   |
+| `index.html`                      | The homepage content.                                                                                                              |
+| `404.html`                        | GitHub Pages 404 page.                                                                                                             |
+| `intro.html`                      | Intro page with lazy-loaded YouTube embeds.                                                                                        |
+| `night-hikes.html`                | Moonlight hiking almanac page; client-side renderer points at the generated JSON.                                                  |
+| `assets/css/style.css`            | All styling (plain CSS, no Sass).                                                                                                  |
+| `assets/js/retro.js`              | Small vanilla-JS enhancements: visitor counter, webring joke, click sparkles, and an autoplaying, toggleable chiptune "MIDI" tune. |
+| `assets/js/night-hikes.js`        | Reads the pre-generated almanac, chooses the next three nights in Cobb local time, and renders them.                               |
+| `assets/data/night-hikes.json`    | Committed 90-day almanac preview; regenerated by the GitHub Actions build (and by hand when needed).                               |
+| `scripts/night-hikes/`            | Zero-runtime-dependency generator and timezone/astronomy helpers.                                                                  |
+| `scripts/night-hikes.config.json` | Tunable location, forecast length, evening cutoff, full-moon window, and horizon definition.                                       |
+| `assets/images/*.svg`             | Original artwork: hero scene, card fan, construction sign, badges, favicon, moon-hike scene.                                       |
+| `assets/images/robson.webp`       | Robson Level 1 course thumbnail used on the intro page.                                                                            |
+| `.github/workflows/pages.yml`     | Regenerates the almanac, builds Jekyll, and deploys to GitHub Pages.                                                               |
+| `package.json`                    | Build-tooling dependency (`astronomy-engine`) and the generator script.                                                            |
+| `AGENTS.md`                       | This guide.                                                                                                                        |
 
 ## Local development
 
@@ -53,15 +61,29 @@ report missing tools instead:
 sudo pacman -S jekyll tidy prettier
 ```
 
+The night-hike generator needs Node 20 or newer and the small build-tooling dependency:
+
+```bash
+npm ci
+npm run generate:night-hikes
+```
+
+`npm ci` is a one-time install (and again after `package-lock.json` changes). The generator writes
+`assets/data/night-hikes.json` for the 90 days starting today in Cobb local time. The committed JSON
+is enough for a normal `jekyll serve`; rerun the generator when you change
+`scripts/night-hikes.config.json` or want fresher dates.
+
 Agents can then serve the site with live reload:
 
 ```bash
 jekyll serve --livereload
 ```
 
-Note: During a development session/collaboration of a human and an agent, there is no need to stop that server every time when the agent finished work for one human's prompt. Instad the agent should keep that local dev server running and use it in the next steps in the development session.
+Note: During a development session/collaboration of a human and an agent, there is no need to stop
+that server every time when the agent finished work for one human's prompt. Instad the agent should
+keep that local dev server running and use it in the next steps in the development session.
 
-Then open <http://localhost:4000/>.
+Then open <http://localhost:4000/>. The almanac lives at <http://localhost:4000/night-hikes/>.
 
 To build only:
 
@@ -69,21 +91,25 @@ To build only:
 jekyll build
 ```
 
-The generated site goes to `_site/`, which is gitignored. There is no Gemfile or bundler step.
+The generated site goes to `_site/`, which is gitignored. There is no Gemfile or bundler step; npm
+is only for the build-time night-hike generator, not for the browser.
 
 ## Checks
 
-Build first, then validate the generated HTML and check formatting:
+Refresh the generated data, build, then validate the generated HTML and check formatting:
 
 ```bash
+npm run generate:night-hikes
 jekyll build
-tidy -qe _site/index.html _site/404.html _site/intro/index.html
-prettier --check "assets/**/*.{css,js}" "*.md" "_config.yml"
+tidy -qe _site/index.html _site/404.html _site/intro/index.html _site/night-hikes/index.html
+prettier --check "assets/**/*.{css,js}" "scripts/**/*.mjs" "scripts/**/*.json" "package.json" "*.md" "_config.yml"
 ```
 
 `tidy` may report HTML5-related warnings; treat actual errors as failures and review warnings.
 `prettier` is configured in `.prettierrc` and ignores the Liquid-heavy pages, layouts, and includes
-listed in `.prettierignore`; `tidy` covers the generated HTML.
+listed in `.prettierignore`; `tidy` covers the generated HTML. The generated
+`assets/data/night-hikes.json` is deliberately not on the prettier list because it is
+machine-written and large.
 
 ## Content and style rules
 
@@ -93,7 +119,13 @@ listed in `.prettierignore`; `tidy` covers the generated HTML.
   mislead.
 - All images must be original files committed to the repo. Do not hotlink images or add copyrighted
   artwork.
-- There are currently no analytics, no trackers, no external fonts, no CDNs, and no third-party embeds (exception: /intro with embedded youtube videos). Those can be added/used but do check explicitly check with the human/operator before introducing them.
+- There are currently no analytics, no trackers, no external fonts, no CDNs, and no third-party
+  embeds (exception: /intro with embedded youtube videos). Those can be added/used but do check
+  explicitly check with the human/operator before introducing them.
+- The night-hike almanac uses the MIT-licensed `astronomy-engine` package **at build time only**. It
+  is bundled by Node into the committed JSON; no third-party JavaScript is sent to the browser.
+- Keep the almanac's trail notes sensible: the moon is a mood, not a trail map, and the page should
+  never imply that a calculated night is safe without a headlamp, a plan, and access checks.
 - Keep the site accessible: meaningful `alt` text, semantic headings, visible focus styles,
   reduced-motion support, and readable contrast.
 - Preserve the retro aesthetic, but do not sacrifice readability on mobile.

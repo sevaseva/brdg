@@ -54,6 +54,7 @@
             <li><a href="{{ '/' | relative_url }}#what-is-bridge">What Is Bridge?</a></li>
             <li><a href="{{ '/' | relative_url }}#learn">Learn</a></li>
             <li><a href="{{ '/intro/' | relative_url }}">Intro</a></li>
+            <li><a href="{{ '/night-hikes/' | relative_url }}">Night Hikes</a></li>
             <li><a href="{{ '/' | relative_url }}#meetings">Meetings</a></li>
             <li><a href="{{ '/' | relative_url }}#news">News</a></li>
             <li><a href="{{ '/' | relative_url }}#guestbook">Guestbook</a></li>
@@ -66,12 +67,12 @@
             <span>
               ★ NEW! Our website is on the Information Superhighway! ★ Beginners welcome — no
               partner? no problem! ★ We meet when the mountain permits ★ Please do not
-              feed the dummy ★ This site is 100% Y2K compliant ★
+              feed the dummy ★ This site is 100% Y2K compliant ★ NEW! The Moonlight Hiking Almanac is online ★
             </span>
             <span aria-hidden="true">
               ★ NEW! Our website is on the Information Superhighway! ★ Beginners welcome — no
               partner? no problem! ★ We meet when the mountain permits ★ Please do not
-              feed the dummy ★ This site is 100% Y2K compliant ★
+              feed the dummy ★ This site is 100% Y2K compliant ★ NEW! The Moonlight Hiking Almanac is online ★
             </span>
           </div>
         </div>
@@ -131,6 +132,9 @@
       </footer>
     </div>
 
+    {% for script in page.scripts %}
+    <script src="{{ script | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+    {% endfor %}
     <script
       src="{{ '/assets/js/retro.js' | relative_url }}?v={{ site.time | date: '%s' }}"
       defer

@@ -810,6 +810,256 @@ main {
 }
 
 /* --------------------------------------------------------------------------
+   Night hiking almanac
+   -------------------------------------------------------------------------- */
+
+.night-hikes__rules {
+  margin: 0 0 1rem;
+  padding-left: 1.2rem;
+}
+
+.night-hikes__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(270px, 0.8fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.night-hikes__rules li + li {
+  margin-top: 0.5rem;
+}
+
+.night-hikes__figure {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.night-hikes {
+  position: relative;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background:
+    radial-gradient(circle at 18% 24%, rgba(255, 246, 216, 0.8) 0 1px, transparent 2px),
+    radial-gradient(circle at 72% 68%, rgba(53, 240, 224, 0.55) 0 1px, transparent 2px),
+    radial-gradient(circle at 42% 86%, rgba(255, 62, 165, 0.5) 0 1px, transparent 2px),
+    linear-gradient(180deg, #0b0618, #241242);
+  background-size:
+    90px 90px,
+    130px 130px,
+    110px 110px,
+    100% 100%;
+  border: 3px solid var(--ink);
+  box-shadow:
+    inset 0 0 0 2px rgba(53, 240, 224, 0.35),
+    5px 5px 0 var(--shadow);
+  color: var(--cream);
+}
+
+.night-hikes__status {
+  margin: 0 0 1rem;
+  color: var(--yellow);
+  font-family: var(--font-ui);
+  font-size: 0.92rem;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+}
+
+.night-hike-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.night-hike {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.9rem;
+  padding: 1rem;
+  background: var(--paper);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 #c9b8a0;
+}
+
+.night-hike:nth-child(2) {
+  transform: rotate(-0.35deg);
+}
+
+.night-hike__rank {
+  display: grid;
+  place-items: center;
+  align-self: start;
+  width: 3rem;
+  height: 3rem;
+  margin: 0;
+  background: radial-gradient(circle at 34% 30%, #fff6d8, var(--yellow) 62%, #d9a800);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.night-hike__kicker {
+  margin: 0 0 0.25rem !important;
+  color: #5b1b6b;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.night-hike h3 {
+  margin: 0.15rem 0 0.5rem;
+  color: #2a1048;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.6vw, 1.45rem);
+  letter-spacing: 0.03em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.night-hike__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0 0 0.75rem !important;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.12rem 0.45rem;
+  border: 2px solid var(--ink);
+  box-shadow: 1px 1px 0 var(--ink);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.66rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.badge--moon {
+  background: var(--yellow);
+}
+
+.badge--rise {
+  background: var(--cyan);
+}
+
+.badge--tonight {
+  background: var(--magenta);
+  color: #fff;
+}
+
+.night-hike__summary {
+  margin: 0 0 0.6rem !important;
+}
+
+.night-hike__facts {
+  margin: 0 0 0.85rem;
+  padding: 0;
+  font-size: 0.9rem;
+  list-style: none;
+}
+
+.night-hike__facts li {
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.night-hike__facts li + li {
+  margin-top: 0.35rem;
+}
+
+.night-hike__facts li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  color: var(--magenta);
+  font-weight: bold;
+}
+
+.night-hike__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem 0.75rem;
+  margin: 0;
+  padding: 0.7rem 0 0;
+  border-top: 2px dotted #b9a98a;
+}
+
+.night-hike__stats dt {
+  color: #5c4a72;
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.night-hike__stats dd {
+  margin: 0.1rem 0 0;
+  font-size: 0.92rem;
+  font-weight: bold;
+}
+
+.night-hikes__meta {
+  margin: 1rem 0 0;
+  padding-top: 0.65rem;
+  border-top: 1px dashed rgba(255, 246, 216, 0.35);
+  color: #c8e6c0;
+  font-size: 0.76rem;
+}
+
+.night-hikes__more {
+  margin: 0.9rem 0 0;
+  color: #c8e6c0;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.night-hikes__empty {
+  margin: 0;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px dashed var(--cyan);
+  color: var(--cream);
+  font-size: 0.95rem;
+}
+
+.almanac-error {
+  margin: 1rem 0 0;
+  padding: 1rem 1.1rem;
+  background: #fff3a8;
+  border: 3px solid #d9c25c;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+  color: #3b2415;
+}
+
+.almanac-error h3 {
+  margin: 0 0 0.4rem;
+  color: #7a4b00;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+}
+
+.almanac-error p {
+  margin: 0 0 0.5rem;
+}
+
+.almanac-error p:last-child {
+  margin-bottom: 0;
+}
+
+.night-hikes__notes {
+  margin-top: 0;
+}
+
+/* --------------------------------------------------------------------------
    News + sidebar
    -------------------------------------------------------------------------- */
 
@@ -1157,6 +1407,7 @@ main {
   .welcome,
   .split,
   .split--wide,
+  .night-hikes__intro,
   .news-layout {
     grid-template-columns: 1fr;
   }
@@ -1211,6 +1462,20 @@ main {
     grid-template-columns: 1fr;
   }
 
+  .night-hike {
+    grid-template-columns: 1fr;
+  }
+
+  .night-hike__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .night-hike__rank {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.95rem;
+  }
+
   .player-card:nth-child(even),
   .player-card:nth-child(odd) {
     transform: none;
@@ -1245,6 +1510,24 @@ main {
   }
 
   .panel {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  .night-hikes {
+    background: #fff;
+    color: #000;
+    box-shadow: none;
+  }
+
+  .night-hikes__status,
+  .night-hikes__meta,
+  .night-hikes__more,
+  .night-hikes__empty {
+    color: #000;
+  }
+
+  .night-hike {
     box-shadow: none;
     break-inside: avoid;
   }

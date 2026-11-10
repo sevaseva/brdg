@@ -1,0 +1,154 @@
+---
+layout: default
+title: Night Hikes | Cobb Bridge Club
+description:
+  The next three good night hiking events in Cobb, California, according to the club's extremely
+  unofficial lunar almanac.
+permalink: /night-hikes/
+scripts:
+  - /assets/js/night-hikes.js
+---
+
+<section class="panel" id="almanac" aria-labelledby="almanac-title">
+  <div class="panel__title">
+    <h2 id="almanac-title">★ The Moonlight Hiking Almanac</h2>
+    <span class="panel__buttons" aria-hidden="true"
+      ><span>_</span><span>□</span><span>×</span></span
+    >
+  </div>
+  <div class="panel__body">
+    <div class="night-hikes__intro">
+      <div>
+        <p class="lead">
+          The mountain is open all night. The trail, however, is much friendlier with a moon.
+        </p>
+        <p>
+          Below are the next three <strong>good night hiking events</strong> in Cobb, according to
+          the club's volunteer lunar almanac. A night makes the list if either:
+        </p>
+        <ul class="night-hikes__rules">
+          <li>
+            <strong>A big moon</strong> is above the horizon at some point between sunset and the
+            club's evening cutoff. “Big” means within the club's full-moon window, which is
+            currently four days on either side of full.
+          </li>
+          <li>
+            <strong>Moonrise</strong> happens between sunset and the evening cutoff. The moon may
+            be small; the timing is what counts.
+          </li>
+        </ul>
+        <p class="small">
+          All times are Cobb local time (Pacific). The chart is regenerated daily and covers the
+          next 90 days. After the evening cutoff, tonight's window is considered closed, so the
+          list starts with the next open night.
+        </p>
+      </div>
+
+      <figure class="figure night-hikes__figure">
+        <img
+          src="{{ '/assets/images/moon-hike.svg' | relative_url }}"
+          alt="A full moon over dark pine ridges, with a winding trail, a small wooden bridge, and a tiny hiker."
+          width="520"
+          height="340"
+        />
+        <figcaption>Fig. 1: The official club moon. Not to scale, but definitely to mood.</figcaption>
+      </figure>
+    </div>
+
+    <div
+      class="night-hikes"
+      data-night-hikes
+      data-src="{{ '/assets/data/night-hikes.json' | relative_url }}?v={{ site.time | date: '%s' }}"
+      aria-busy="true"
+    >
+      <p class="night-hikes__status" role="status">Consulting the lunar almanac…</p>
+    </div>
+
+    <noscript>
+      <p class="almanac-error">
+        The lunar almanac needs JavaScript to read the pre-generated chart. The moon itself works
+        without it, but the club's webmaster does not recommend hiking by HTML alone.
+      </p>
+    </noscript>
+  </div>
+</section>
+
+<section class="panel panel--alt" id="fine-print" aria-labelledby="fine-print-title">
+  <div class="panel__title">
+    <h2 id="fine-print-title">How the Club Counts a Good Night</h2>
+    <span class="panel__buttons" aria-hidden="true"
+      ><span>_</span><span>□</span><span>×</span></span
+    >
+  </div>
+  <div class="panel__body split split--wide">
+    <div>
+      <p class="lead">
+        This is a very scientific almanac, according to the two club members who own a telescope
+        and the one who owns a clipboard.
+      </p>
+      <dl class="glossary">
+        <dt>Sunset</dt>
+        <dd>
+          The moment the top of the sun drops below the horizon. The chart uses the standard
+          definition, including the usual atmospheric refraction.
+        </dd>
+
+        <dt>Big moon</dt>
+        <dd>
+          Any night whose Cobb local date falls inside the configured full-moon window. The default
+          is four days before through four days after the full moon, because that is when the moon
+          is still doing its best work.
+        </dd>
+
+        <dt>Above the horizon</dt>
+        <dd>
+          The moon's apparent center is at or above the configured altitude. The default is −0.25°,
+          which is roughly when the upper limb clears the horizon. Raise the number if you want the
+          moon safely clear of trees, ridges, or the neighbor's ambitious flagpole.
+        </dd>
+
+        <dt>Moonrise</dt>
+        <dd>
+          The moment the top of the moon appears above the horizon. If moonrise lands between sunset
+          and the evening cutoff, the night qualifies even if the moon is not especially big.
+        </dd>
+
+        <dt>Evening cutoff</dt>
+        <dd>
+          The end of the useful moonlit window. It is currently 10:00 PM Cobb local time, which is
+          also the club's traditional time to remember that the trail back is uphill.
+        </dd>
+      </dl>
+
+      <p class="small">
+        The chart is calculated for the village of Cobb (38.8222° N, 122.7231° W, about 802 m above
+        sea level). The astronomy comes from Astronomy Engine and is usually within a minute or two
+        of the U.S. Naval Observatory. Ridges, trees, weather, and the odd bear can still change
+        your actual view.
+      </p>
+    </div>
+
+    <aside class="watch-notes night-hikes__notes">
+      <h3>Trail Notes</h3>
+      <ul>
+        <li><strong>Bring a headlamp anyway.</strong> The moon is a mood, not a trail map.</li>
+        <li><strong>Tell someone where you are going.</strong> This is the one piece of advice the club takes seriously.</li>
+        <li><strong>Check closures and private land.</strong> A bright moon does not grant access.</li>
+        <li><strong>Turn around while you still have energy.</strong> The downhill part is a lie told by the map.</li>
+        <li><strong>No moon is not a failure.</strong> It is a good excuse for cocoa.</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section class="signoff">
+  <p class="signoff__big">See you under the moon!</p>
+  <p>Walk quietly, bring a friend, and leave the trail as you found it. The moon has enough dust.</p>
+  <p class="signoff__suits" aria-hidden="true">
+    <span class="suit--black">♠</span> <span class="suit--red">♥</span>
+    <span class="suit--red">♦</span> <span class="suit--black">♣</span>
+  </p>
+  <p>
+    <a class="button" href="{{ '/' | relative_url }}">← Back to the club</a>
+  </p>
+</section>

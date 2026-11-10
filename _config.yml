@@ -8,10 +8,10 @@ markdown: kramdown
 # passed through Jekyll's relative_url filter, so they stay root-relative.
 baseurl: ''
 
-# GitHub Pages builds this site with its native Jekyll pipeline.
-# The site is currently plugin-free and we pass internal URLs through relative_url.
-# But if and when we transition to custom Actions wodkflow jekyll build,
-# then we can use plugins and everything else that allows us to do while we keep deploying to GitHub Pages.
+# The site is built by the custom GitHub Actions workflow in
+# .github/workflows/pages.yml, which regenerates the night-hike almanac before
+# Jekyll runs. The workflow installs no Jekyll plugins, so a plain local
+# `jekyll build` matches the deployed output.
 exclude:
   - AGENTS.md
   - .editorconfig
@@ -24,5 +24,8 @@ exclude:
   - .github
   - Gemfile
   - Gemfile.lock
+  - package.json
+  - package-lock.json
+  - scripts
   - node_modules
   - vendor

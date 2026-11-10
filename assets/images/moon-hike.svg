@@ -1,0 +1,156 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 520 340"
+  width="520"
+  height="340"
+  role="img"
+  aria-labelledby="moon-hike-title moon-hike-desc"
+>
+  <title id="moon-hike-title">A moonlit trail over Cobb Mountain</title>
+  <desc id="moon-hike-desc">
+    A bright full moon, pine-covered ridges, a winding trail, a small bridge, and a hiker with a
+    headlamp in a retro night-time scene.
+  </desc>
+
+  <defs>
+    <linearGradient id="night-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b0618" />
+      <stop offset="0.58" stop-color="#2a1048" />
+      <stop offset="1" stop-color="#3b1f5e" />
+    </linearGradient>
+    <radialGradient id="moon-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fff6d8" stop-opacity="0.55" />
+      <stop offset="0.55" stop-color="#ffe14d" stop-opacity="0.18" />
+      <stop offset="1" stop-color="#ffe14d" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="ridge-far" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b1f5e" />
+      <stop offset="1" stop-color="#241242" />
+    </linearGradient>
+    <linearGradient id="ridge-mid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f6b5c" />
+      <stop offset="1" stop-color="#083b36" />
+    </linearGradient>
+    <linearGradient id="ridge-near" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#072f2b" />
+      <stop offset="1" stop-color="#041a18" />
+    </linearGradient>
+    <linearGradient id="trail-fill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffe14d" />
+      <stop offset="1" stop-color="#ff8a3d" />
+    </linearGradient>
+    <g id="pine">
+      <path d="M0 0 L-14 34 L-5 34 L-19 66 L-7 66 L-24 100 L24 100 L7 66 L19 66 L5 34 L14 34 Z" />
+    </g>
+  </defs>
+
+  <rect width="520" height="340" fill="url(#night-sky)" />
+
+  <g fill="#fff6d8">
+    <circle cx="42" cy="48" r="1.8" />
+    <circle cx="92" cy="92" r="1.2" />
+    <circle cx="138" cy="38" r="1.6" />
+    <circle cx="185" cy="78" r="1" />
+    <circle cx="235" cy="30" r="1.7" />
+    <circle cx="286" cy="64" r="1.2" />
+    <circle cx="330" cy="26" r="1" />
+    <circle cx="451" cy="44" r="1.4" />
+    <circle cx="492" cy="102" r="1.8" />
+    <circle cx="472" cy="160" r="1" />
+    <circle cx="118" cy="145" r="1.1" />
+    <circle cx="210" cy="132" r="1.5" />
+    <path d="M63 118 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3 z" opacity="0.8" />
+    <path d="M310 110 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 z" opacity="0.65" />
+  </g>
+
+  <circle cx="380" cy="86" r="92" fill="url(#moon-glow)" />
+  <circle cx="380" cy="86" r="42" fill="#fff6d8" stroke="#ffe14d" stroke-width="3" />
+  <g fill="#e9d9a8" opacity="0.75">
+    <circle cx="366" cy="74" r="7" />
+    <circle cx="394" cy="70" r="4" />
+    <circle cx="386" cy="98" r="6" />
+    <circle cx="360" cy="98" r="3" />
+    <circle cx="402" cy="96" r="2.5" />
+    <path d="M372 84 a6 6 0 0 1 12 0 a6 6 0 0 1 -12 0 z" opacity="0.45" />
+  </g>
+
+  <path
+    d="M0 214 L46 180 L84 200 L124 164 L166 194 L210 150 L252 184 L300 158 L344 196 L390 168 L436 198 L478 172 L520 196 L520 340 L0 340 Z"
+    fill="url(#ridge-far)"
+  />
+
+  <g fill="#140c2e" opacity="0.85">
+    <use href="#pine" transform="translate(74 154) scale(0.34)" />
+    <use href="#pine" transform="translate(110 168) scale(0.28)" />
+    <use href="#pine" transform="translate(228 146) scale(0.3)" />
+    <use href="#pine" transform="translate(270 158) scale(0.24)" />
+    <use href="#pine" transform="translate(414 160) scale(0.32)" />
+    <use href="#pine" transform="translate(448 174) scale(0.26)" />
+  </g>
+
+  <path
+    d="M0 252 L58 220 L108 240 L158 210 L214 244 L266 214 L318 246 L372 218 L424 246 L474 222 L520 244 L520 340 L0 340 Z"
+    fill="url(#ridge-mid)"
+  />
+
+  <g fill="#041a18">
+    <use href="#pine" transform="translate(36 214) scale(0.52)" />
+    <use href="#pine" transform="translate(83 226) scale(0.42)" />
+    <use href="#pine" transform="translate(132 214) scale(0.48)" />
+    <use href="#pine" transform="translate(182 230) scale(0.38)" />
+    <use href="#pine" transform="translate(246 222) scale(0.55)" />
+    <use href="#pine" transform="translate(300 236) scale(0.4)" />
+    <use href="#pine" transform="translate(354 224) scale(0.5)" />
+    <use href="#pine" transform="translate(408 238) scale(0.36)" />
+    <use href="#pine" transform="translate(462 226) scale(0.46)" />
+    <use href="#pine" transform="translate(502 240) scale(0.34)" />
+  </g>
+
+  <path
+    d="M0 298 C74 280 134 292 196 276 C262 258 322 286 384 270 C430 258 478 268 520 256 L520 340 L0 340 Z"
+    fill="url(#ridge-near)"
+  />
+
+  <path
+    d="M228 340 C244 316 262 302 248 286 C236 272 258 262 276 252 C296 240 286 226 306 216"
+    fill="none"
+    stroke="url(#trail-fill)"
+    stroke-width="7"
+    stroke-linecap="round"
+    stroke-dasharray="2 12"
+    opacity="0.9"
+  />
+
+  <g>
+    <path d="M274 262 L318 254" stroke="#6b3b1f" stroke-width="7" stroke-linecap="round" />
+    <path d="M278 258 L278 272 M288 256 L288 270 M298 255 L298 269 M308 253 L308 267 M316 252 L316 266" stroke="#6b3b1f" stroke-width="3" />
+    <path d="M268 274 C280 268 302 266 324 262" fill="none" stroke="#0b0618" stroke-width="3" opacity="0.7" />
+  </g>
+
+  <g transform="translate(246 236)">
+    <circle cx="0" cy="0" r="5" fill="#ffe14d" />
+    <path d="M0 6 L-4 22 L0 20 L3 22 L6 12 L10 20 L13 18 L6 4 Z" fill="#ff8a3d" />
+    <path d="M-5 8 L-11 16 L-8 18 L-3 11 Z" fill="#ff3ea5" />
+    <path d="M8 6 L18 10 L17 13 L7 10 Z" fill="#fff6d8" opacity="0.9" />
+    <circle cx="0" cy="0" r="8" fill="#ffe14d" opacity="0.18" />
+  </g>
+
+  <g transform="translate(456 214)">
+    <path d="M0 0 L0 34" stroke="#6b3b1f" stroke-width="4" />
+    <path d="M-18 4 L18 4 L14 24 L-14 24 Z" fill="#d9c9a8" stroke="#3b2415" stroke-width="2" />
+    <text
+      x="0"
+      y="19"
+      fill="#3b2415"
+      font-family="Trebuchet MS, Verdana, sans-serif"
+      font-size="9"
+      font-weight="bold"
+      text-anchor="middle"
+    >
+      COBB
+    </text>
+  </g>
+
+  <path d="M396 132 C414 124 430 126 446 136" fill="none" stroke="#fff6d8" stroke-width="2" stroke-linecap="round" opacity="0.7" />
+  <path d="M404 140 C418 134 430 135 440 142" fill="none" stroke="#fff6d8" stroke-width="1.5" stroke-linecap="round" opacity="0.45" />
+</svg>

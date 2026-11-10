@@ -1,0 +1,13 @@
+{
+  "name": "cobb-bridge-club",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Build tooling for the Cobb Bridge Club website.",
+  "type": "module",
+  "scripts": {
+    "generate:night-hikes": "node scripts/night-hikes/generate.mjs"
+  },
+  "devDependencies": {
+    "astronomy-engine": "^2.1.19"
+  }
+}
