@@ -892,17 +892,22 @@ main {
   display: grid;
   place-items: center;
   align-self: start;
-  width: 3rem;
+  justify-self: start;
+  min-width: 3rem;
   height: 3rem;
   margin: 0;
+  padding: 0 0.55rem;
   background: radial-gradient(circle at 34% 30%, #fff6d8, var(--yellow) 62%, #d9a800);
   border: 2px solid var(--ink);
-  border-radius: 50%;
+  border-radius: 999px;
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
   color: var(--ink);
-  font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: bold;
+  letter-spacing: 0.03em;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .night-hike__kicker {
@@ -951,6 +956,41 @@ main {
 
 .badge--rise {
   background: var(--cyan);
+}
+
+.badge--star {
+  background: #b7f7a8;
+}
+
+.badge--meteor {
+  background: var(--orange);
+}
+
+.badge--satellite {
+  background: #b9c7ff;
+}
+
+.badge--event {
+  background: var(--magenta);
+  color: #fff;
+}
+
+.badge--eclipse {
+  background: #ffd6f2;
+}
+
+.external-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.external-link::after {
+  content: '↗';
+  display: inline-block;
+  margin-left: 0.15em;
+  font-size: 0.8em;
+  text-decoration: none;
 }
 
 .badge--tonight {
@@ -1053,6 +1093,117 @@ main {
 
 .night-hikes__notes {
   margin-top: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Extra sky panels
+   -------------------------------------------------------------------------- */
+
+.sky-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.sky-card {
+  padding: 1rem;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 #c9b8a0;
+  color: var(--ink);
+}
+
+.sky-card--wide {
+  margin-top: 1rem;
+}
+
+.sky-card h3 {
+  margin: 0 0 0.35rem;
+  color: #2a1048;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sky-card h4 {
+  margin: 0.9rem 0 0.35rem;
+  color: #5b1b6b;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sky-card p {
+  margin: 0 0 0.5rem;
+}
+
+.sky-card p:last-child {
+  margin-bottom: 0;
+}
+
+.sky-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 0.65rem 0.8rem;
+  margin: 0.5rem 0 0;
+  padding: 0.65rem 0 0;
+  border-top: 2px dotted #b9a98a;
+}
+
+.sky-stats dt {
+  color: #5c4a72;
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sky-stats dd {
+  margin: 0.1rem 0 0;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.sky-list {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  font-size: 0.9rem;
+  list-style: none;
+}
+
+.sky-list li {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.sky-list li + li {
+  margin-top: 0.3rem;
+}
+
+.sky-list li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  color: var(--magenta);
+  font-weight: bold;
+}
+
+.sky-event {
+  margin-top: 0.6rem;
+}
+
+.sky-event__title {
+  margin: 0 0 0.15rem !important;
+  color: #2a1048;
+  font-weight: bold;
+}
+
+.sky-credit {
+  margin-top: 1rem !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -1467,9 +1618,32 @@ main {
   }
 
   .night-hike__rank {
-    width: 2.5rem;
+    min-width: 2.5rem;
     height: 2.5rem;
-    font-size: 0.95rem;
+    padding: 0 0.45rem;
+    font-size: 0.7rem;
+  }
+
+  .sky-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sky-card {
+    padding: 0.8rem;
+  }
+
+  .sky-stats {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .sky-stats > div {
+    display: grid;
+    grid-template-columns: minmax(5.5rem, 40%) minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: baseline;
+    padding-top: 0.3rem;
+    border-top: 1px dotted #d6c6a8;
   }
 
   .player-card:nth-child(even),
@@ -1530,6 +1704,11 @@ main {
   }
 
   .night-hike {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  .sky-card {
     box-shadow: none;
     break-inside: avoid;
   }

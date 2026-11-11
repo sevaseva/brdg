@@ -5,10 +5,11 @@ on:
     branches:
       - master
   schedule:
-    # Refresh the 90-day chart once a month so it never runs dry. 08:17 UTC is
-    # just after midnight in Cobb for most of the year, and even a late or
-    # skipped run leaves about two months of chart behind it.
-    - cron: '17 8 1 * *'
+    # Refresh the chart and the sky-steadiness forecast every three days. 08:17
+    # UTC is just after midnight in Cobb for most of the year. 7Timer covers
+    # 72 hours, so the third evening can be outside the forecast; the page says
+    # so rather than inventing one.
+    - cron: '17 8 */3 * *'
   workflow_dispatch:
 
 permissions:

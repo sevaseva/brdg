@@ -8,6 +8,7 @@
     "generate:night-hikes": "node scripts/night-hikes/generate.mjs"
   },
   "devDependencies": {
-    "astronomy-engine": "^2.1.19"
+    "astronomy-engine": "^2.1.19",
+    "satellite.js": "^7.1.0"
   }
 }

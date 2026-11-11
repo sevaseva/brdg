@@ -67,6 +67,20 @@ export function moonsetOn(date, timeZone, observer) {
 }
 
 /**
+ * Standard sunrise (top of the sun at the horizon) on a Cobb local date.
+ */
+export function sunriseOn(date, timeZone, observer) {
+  const midnight = zonedTimeToUtc(date, 0, 0, timeZone);
+  const event = SearchRiseSet(Body.Sun, observer, +1, midnight, 1.2);
+
+  if (event === null || localDateString(event.date, timeZone) !== date) {
+    return null;
+  }
+
+  return event.date;
+}
+
+/**
  * Apparent topocentric altitude of the moon's center, in degrees, including
  * standard atmospheric refraction.
  */

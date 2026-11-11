@@ -3,10 +3,11 @@ layout: default
 title: Night Hikes | Cobb Bridge Club
 description:
   The next good night hiking events in Cobb, California, according to the club's extremely
-  unofficial lunar almanac.
+  unofficial almanac.
 permalink: /night-hikes/
 scripts:
   - /assets/js/night-hikes.js
+  - /assets/js/night-hikes-conditions.js
 ---
 
 <section class="panel" id="almanac" aria-labelledby="almanac-title">
@@ -23,22 +24,40 @@ scripts:
           The mountain is open all night. The trail, however, is much friendlier with a moon.
         </p>
         <p>
-          Below <span data-night-hike-intro>are the next seven</span>
-          <strong><span data-night-hike-intro-noun>good night hiking events</span></strong> in Cobb,
-          according to the club's volunteer lunar almanac. A night makes the list if either:
+          Below are the good night hiking events in Cobb for the
+          <strong><span data-night-hike-window>next two weeks</span></strong>, according to the club's
+          volunteer almanac. A night makes the list if at least one of these is true:
         </p>
         <ul class="night-hikes__rules">
           <li>
-            <strong>A big moon</strong> is above the horizon at some point between sunset and the
-            club's evening cutoff. “Big” means within the club's full-moon window, which is
-            currently four days on either side of full.
+            <strong>A big moon</strong> is above the horizon in the evening, or
+            <strong>a moon more than half full rises</strong> after sunset. It does not have to be
+            full, but it has to be past half.
           </li>
           <li>
-            <strong>Moonrise</strong> happens between sunset and the evening cutoff. The moon may
-            be small; the timing is what counts.
+            <strong>The bright Milky Way core</strong> (the Sagittarius end) is well up in the evening
+            sky and the moon is down.
+          </li>
+          <li>
+            <strong>A major meteor shower</strong> is at its peak, with the meteors coming from high
+            enough in the sky and no overwhelming moon.
+          </li>
+          <li>
+            <strong>A bright satellite</strong> (the ISS or Tiangong) crosses high over Cobb in the
+            evening.
+          </li>
+          <li>
+            <strong>An eclipse</strong> is visible from Cobb. A solar eclipse is a daytime event, but
+            the club still counts it as a reason to plan the day around one.
+          </li>
+          <li>
+            <strong>Two planets</strong> pass close enough together to be worth a look.
           </li>
         </ul>
-        <p class="small">All times are Cobb local time (Pacific).</p>
+        <p class="small">
+          Planets, moon-washed meteors, and other interesting sights are noted on the cards even when
+          they are not the reason a night made the list. All times are Cobb local time (Pacific).
+        </p>
       </div>
 
       <figure class="figure night-hikes__figure">
@@ -58,15 +77,82 @@ scripts:
       data-src="{{ '/assets/data/night-hikes.json' | relative_url }}?v={{ site.time | date: '%s' }}"
       aria-busy="true"
     >
-      <p class="night-hikes__status" role="status">Consulting the lunar almanac…</p>
+      <p class="night-hikes__status" role="status">Consulting the almanac…</p>
     </div>
 
     <noscript>
       <p class="almanac-error">
-        The lunar almanac needs JavaScript to read the pre-generated chart. The moon itself works
+        The almanac needs JavaScript to read the pre-generated chart. The moon itself works
         without it, but the club's webmaster does not recommend hiking by HTML alone.
       </p>
     </noscript>
+  </div>
+</section>
+
+<section class="panel panel--alt" id="sky-tonight" aria-labelledby="sky-tonight-title">
+  <div class="panel__title">
+    <h2 id="sky-tonight-title">★ The Rest of the Sky</h2>
+    <span class="panel__buttons" aria-hidden="true"
+      ><span>_</span><span>□</span><span>×</span></span
+    >
+  </div>
+  <div class="panel__body">
+    <p class="lead">
+      The moon is only half the show. Here is what else is happening after sunset, and what the
+      air is doing.
+    </p>
+
+    <div class="sky-grid">
+      <div class="sky-card" data-night-tonight aria-live="polite">
+        <p class="small">Reading the sky…</p>
+      </div>
+      <div class="sky-card" data-night-targets>
+        <p class="small">Finding something to point at…</p>
+      </div>
+    </div>
+
+    <div
+      class="sky-card sky-card--wide"
+      data-night-conditions
+      data-lat="38.8252778"
+      data-lon="-122.7024722"
+      data-tz="America/Los_Angeles"
+      aria-live="polite"
+    >
+      <h3>Live conditions</h3>
+      <p class="small">Checking weather, air, and the aurora forecast…</p>
+    </div>
+
+    <p class="small sky-credit">
+      Live weather and air quality come from <a href="https://open-meteo.com/">Open-Meteo</a>;
+      the aurora forecast from <a href="https://www.swpc.noaa.gov/">NOAA SWPC</a>; sky steadiness from
+      <a href="https://www.7timer.info/">7Timer</a>. Sky positions are calculated for Cobb. Satellite
+      pass times are estimates, not live measurements.
+    </p>
+  </div>
+</section>
+
+<section class="panel" id="sky-ahead" aria-labelledby="sky-ahead-title">
+  <div class="panel__title">
+    <h2 id="sky-ahead-title">★ Looking Ahead</h2>
+    <span class="panel__buttons" aria-hidden="true"
+      ><span>_</span><span>□</span><span>×</span></span
+    >
+  </div>
+  <div class="panel__body">
+    <p class="lead">
+      Dates worth putting on the fridge, plus the satellites and curiosities that did not fit in a
+      moonlit card.
+    </p>
+
+    <div class="sky-grid">
+      <div class="sky-card" data-night-ahead aria-live="polite">
+        <p class="small">Checking the calendar…</p>
+      </div>
+      <div class="sky-card" data-night-curiosities>
+        <p class="small">Watching the sky for moving lights…</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -86,42 +172,61 @@ scripts:
       <dl class="glossary">
         <dt>Sunset</dt>
         <dd>
-          The moment the top of the sun drops below the horizon. The chart uses the standard
-          definition, including the usual atmospheric refraction.
+          The moment the top of the sun drops below the open horizon, allowing for the way the
+          atmosphere bends light.
+        </dd>
+
+        <dt>Sun behind the ridge</dt>
+        <dd>
+          The sun does not always reach the open horizon: from this spot it drops behind Cobb Mountain
+          first. This is the time it disappears behind the local ridge, worked out from a terrain
+          profile of the surrounding hills. Trees, weather, and the exact spot you stand can still
+          change it.
         </dd>
 
         <dt>Big moon</dt>
         <dd>
-          Any night whose Cobb local date falls inside the configured full-moon window. The default
-          is four days before through four days after the full moon, because that is when the moon
-          is still doing its best work.
+          Any night within four days either side of the full moon, because that is when the moon is
+          still doing its best work.
         </dd>
 
         <dt>Above the horizon</dt>
         <dd>
-          The moon's apparent center is at or above the configured altitude. The default is −0.25°,
-          which is roughly when the upper limb clears the horizon. Raise the number if you want the
-          moon safely clear of trees, ridges, or the neighbor's ambitious flagpole.
+          The middle of the moon is at or just above the horizon (−0.25°), which is about when the
+          top edge clears it. A little more height means the moon is safely clear of trees, ridges, or
+          the neighbor's ambitious flagpole.
         </dd>
 
         <dt>Moonrise</dt>
         <dd>
-          The moment the top of the moon appears above the horizon. If moonrise lands between sunset
-          and the evening cutoff, the night qualifies even if the moon is not especially big.
+          The moment the top of the moon appears above the horizon. If it rises after sunset and the
+          moon is more than half full, the night qualifies even if the moon is not especially big.
         </dd>
 
-        <dt>Evening cutoff</dt>
+        <dt>Milky Way core</dt>
         <dd>
-          The end of the useful moonlit window. It is currently 10:00 PM Cobb local time, which is
-          also the club's traditional time to remember that the trail back is uphill.
+          The Sagittarius end is the part most people mean by the Milky Way. The club calls the core
+          good while it is within 5° of its highest point of the evening, at least 10° above the
+          horizon, and the moon is down, for at least twenty minutes. From Cobb the core tops out
+          around 22°, so its height changes slowly near the top: half an hour either side costs well
+          under a degree, an hour about 1.5°, and two hours about 5°, which is roughly 15% dimmer from
+          the extra atmosphere — not something most eyes will notice in the dark.
+        </dd>
+
+        <dt>Other reasons</dt>
+        <dd>
+          Meteor showers count within one night of their peak when the meteors appear from at least 20°
+          above the horizon and the moon is set or below half. A bright satellite pass counts when the
+          ISS or Tiangong reaches 45° or more above the horizon in the evening. A visible lunar or solar
+          eclipse counts, and so does a pair of planets within 3° of each other. The bar is deliberately
+          high enough that the almanac still means something.
         </dd>
       </dl>
 
       <p class="small">
-        The chart is calculated for the village of Cobb (38.8222° N, 122.7231° W, about 802 m above
-        sea level). The astronomy comes from Astronomy Engine and is usually within a minute or two
-        of the U.S. Naval Observatory. Ridges, trees, weather, and the odd bear can still change
-        your actual view.
+        The chart is calculated for the club's viewpoint above Cobb (38.8253° N, 122.7025° W, about
+        987 m above sea level). Its open-sky times are usually within a minute or two of the U.S.
+        Naval Observatory. Ridges, trees, weather, and the odd bear can still change your actual view.
       </p>
     </div>
 

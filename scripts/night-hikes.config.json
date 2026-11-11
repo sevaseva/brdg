@@ -2,13 +2,13 @@
   "$comment": "Edit these values, then run: npm run generate:night-hikes",
   "location": {
     "name": "Cobb, California",
-    "latitude": 38.8222,
-    "longitude": -122.7231,
-    "elevationMeters": 802,
+    "latitude": 38.8252778,
+    "longitude": -122.7024722,
+    "elevationMeters": 987,
     "timezone": "America/Los_Angeles"
   },
   "forecastDays": 90,
-  "eventCount": 7,
+  "displayWindowDays": 14,
   "eveningEnd": "22:00",
   "fullMoonWindowDays": 4,
   "visibleAboveHorizon": {
