@@ -829,6 +829,20 @@ main {
   margin-top: 0.5rem;
 }
 
+/* Highlighted aside: the almanac is a joke, the data is not. */
+.night-hikes__notice {
+  margin: 0.9rem 0 1rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--shadow);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.92rem;
+  font-weight: bold;
+  line-height: 1.35;
+}
+
 .night-hikes__figure {
   max-width: 520px;
   margin: 0 auto;
