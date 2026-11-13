@@ -5,7 +5,8 @@
   "description": "Build tooling for the Cobb Bridge Club website.",
   "type": "module",
   "scripts": {
-    "generate:night-hikes": "node scripts/night-hikes/generate.mjs"
+    "generate:night-hikes": "node scripts/night-hikes/generate.mjs",
+    "moon-sun": "node scripts/moon-sun-cli/cli.mjs"
   },
   "devDependencies": {
     "astronomy-engine": "^2.1.19",

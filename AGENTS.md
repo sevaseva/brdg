@@ -53,7 +53,8 @@ panels, the live conditions, the Milky Way rules, and how the forecasts and esti
 | `assets/images/*.svg`         | Original artwork: hero scene, card fan, construction sign, badges, favicon, moon-hike scene.                                       |
 | `assets/images/robson.webp`   | Robson Level 1 course thumbnail used on the intro page.                                                                            |
 | `.github/workflows/pages.yml` | Regenerates the almanac, builds Jekyll, and deploys to GitHub Pages.                                                               |
-| `package.json`                | Build-tooling dependencies (`astronomy-engine`, `satellite.js`) and the generator script.                                          |
+| `package.json`                | Build-tooling dependencies (`astronomy-engine`, `satellite.js`) and the generator and moon-sun scripts.                            |
+| `scripts/moon-sun-cli/`       | Standalone terrain-aware and sea-level sun/moon rise/set CLI; not used by the website build.                                       |
 | `NIGHT.md`                    | The night-hike guide: almanac rules, sky panels, forecasts, estimates.                                                             |
 | `AGENTS.md`                   | This guide.                                                                                                                        |
 
@@ -101,7 +102,7 @@ Build, then validate the generated HTML and check formatting:
 ```bash
 jekyll build
 tidy -qe _site/index.html _site/404.html _site/intro/index.html _site/night-hikes/index.html
-prettier --check "assets/**/*.{css,js}" "scripts/**/*.mjs" "scripts/**/*.json" "package.json" "*.md" "_config.yml"
+prettier --check "assets/**/*.{css,js}" "scripts/**/*.mjs" "scripts/**/*.json" "scripts/**/*.md" "package.json" "*.md" "_config.yml"
 ```
 
 If you changed the night-hike generator or its config, run its checks first; they are in
