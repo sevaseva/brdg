@@ -41,25 +41,96 @@ panels, the live conditions, the Milky Way rules, and how the forecasts and esti
 
 ## Repository layout
 
-| Path                          | Purpose                                                                                                                            |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `_config.yml`                 | Jekyll configuration; excludes repo-only files from the published site.                                                            |
-| `_layouts/default.html`       | Shared page shell: banner, masthead, navigation, ticker, footer.                                                                   |
-| `index.html`                  | The homepage content.                                                                                                              |
-| `404.html`                    | GitHub Pages 404 page.                                                                                                             |
-| `intro.html`                  | Intro page with lazy-loaded YouTube embeds.                                                                                        |
-| `assets/css/style.css`        | All styling (plain CSS, no Sass).                                                                                                  |
-| `assets/js/retro.js`          | Small vanilla-JS enhancements: visitor counter, webring joke, click sparkles, and an autoplaying, toggleable chiptune "MIDI" tune. |
-| `assets/images/*.svg`         | Original artwork: hero scene, card fan, construction sign, badges, favicon, moon-hike scene.                                       |
-| `assets/images/robson.webp`   | Robson Level 1 course thumbnail used on the intro page.                                                                            |
-| `.github/workflows/pages.yml` | Regenerates the almanac, builds Jekyll, and deploys to GitHub Pages.                                                               |
-| `package.json`                | Build-tooling dependencies (`astronomy-engine`, `satellite.js`) and the generator and moon-sun scripts.                            |
-| `scripts/moon-sun-cli/`       | Standalone terrain-aware and sea-level sun/moon rise/set CLI; not used by the website build.                                       |
-| `NIGHT.md`                    | The night-hike guide: almanac rules, sky panels, forecasts, estimates.                                                             |
-| `AGENTS.md`                   | This guide.                                                                                                                        |
+| Path                            | Purpose                                                                                                                            |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `_config.yml`                   | Jekyll configuration; excludes repo-only files from the published site.                                                            |
+| `_layouts/default.html`         | Shared page shell: banner, masthead, navigation, ticker, footer.                                                                   |
+| `_layouts/session.html`         | Renders one session's notes from the `_sessions` collection.                                                                       |
+| `_sessions/`                    | Session notes as Markdown, one `YYYY-MM-DD.md` file per session.                                                                   |
+| `s/`                            | Thin page files that expose a session at both `/s/N/` and `/s/YYYY-MM-DD/`, plus the session index at `/s/`.                       |
+| `index.html`                    | The homepage content.                                                                                                              |
+| `404.html`                      | GitHub Pages 404 page.                                                                                                             |
+| `intro.html`                    | Intro page with lazy-loaded YouTube embeds.                                                                                        |
+| `assets/css/style.css`          | All styling (plain CSS, no Sass).                                                                                                  |
+| `assets/js/retro.js`            | Small vanilla-JS enhancements: visitor counter, webring joke, click sparkles, and an autoplaying, toggleable chiptune "MIDI" tune. |
+| `assets/js/session-comments.js` | Text-selection comments on session notes, backed by Firebase.                                                                      |
+| `assets/images/*.svg`           | Original artwork: hero scene, card fan, construction sign, badges, favicon, moon-hike scene.                                       |
+| `assets/images/robson.webp`     | Robson Level 1 course thumbnail used on the intro page.                                                                            |
+| `.github/workflows/pages.yml`   | Regenerates the almanac, builds Jekyll, and deploys to GitHub Pages.                                                               |
+| `package.json`                  | Build-tooling dependencies (`astronomy-engine`, `satellite.js`) and the generator and moon-sun scripts.                            |
+| `scripts/moon-sun-cli/`         | Standalone terrain-aware and sea-level sun/moon rise/set CLI; not used by the website build.                                       |
+| `NIGHT.md`                      | The night-hike guide: almanac rules, sky panels, forecasts, estimates.                                                             |
+| `AGENTS.md`                     | This guide.                                                                                                                        |
 
 The night-hike page and generator files (`night-hikes.html`, `assets/js/night-hikes*.js`,
 `assets/data/night-hikes.json`, `scripts/night-hikes*`) are listed in [NIGHT.md](NIGHT.md).
+
+## Session notes
+
+Session notes are Markdown files in `_sessions/`, named for the meeting date (`YYYY-MM-DD.md`). Each
+file starts with front matter:
+
+```yaml
+---
+session: 1
+date: 2026-11-12
+title: Session 1
+description: A one-line description for the page metadata.
+---
+```
+
+`session` is the short number used in `/s/N/`; `date` is the meeting date used in `/s/YYYY-MM-DD/`.
+The collection itself is not output. To publish a session, add two thin pages in `s/`:
+
+- `s/N.html` with `layout: session`, `session: N`, `body_class: session-page`, and
+  `permalink: /s/N/`
+- `s/YYYY-MM-DD.html` with the same values and `permalink: /s/YYYY-MM-DD/`
+
+Both pages render the same collection document, so do not put note text in them. The session layout
+exposes the session number and date as data attributes for features that need a stable page key.
+
+Every session page carries `<link rel="canonical">` pointing at `/s/N/`, so search engines fold the
+dated URL into the short one. The layout derives it from the page's `session` front matter (an
+explicit `canonical:` in front matter still wins), and builds the absolute URL with `site.url` from
+`_config.yml`, which must stay in step with the `CNAME` file.
+
+`s/index.html` (permanent URL `/s/`) is the public session index. It loops over `site.sessions`,
+newest first, and links both addresses of each session: the short `/s/N/` link and the dated
+`/s/YYYY-MM-DD/` link. It is a plain page, not a collection document, so it needs no per-session
+edit. The main navigation is Home, Intro, the latest `Session N`, All sessions, and Night hikes; it
+derives the latest session from the collection, so a new session updates the menu by itself.
+
+Session pages also load `assets/js/session-comments.js` through the `scripts:` front matter; no
+other page loads it.
+
+### Session comments
+
+Readers can select a passage of the notes and attach a public comment to it. Comments are stored in
+a Firebase Realtime Database at `https://brdg-lol-default-rtdb.firebaseio.com/`, under
+`/comments/<session>/<comment>/` and `/replies/<session>/<comment>/<reply>/`. They are public and
+immutable: the rules allow reads and create-only writes, so there is no edit or delete path from the
+browser. The rules live in the Firebase console; there is no copy in the repository, because they
+are not used at build time.
+
+- A comment stores the session number (from front matter), the name, the body, the quoted passage,
+  60 characters of context on each side, and zero-based offsets into a plain-text copy of the notes.
+  The quote is the real anchor; the offsets are a fast path. Re-resolution tries the exact quote at
+  the old offset, then the exact quote anywhere, then a whitespace-insensitive match, and otherwise
+  shows the thread in a "Comments that lost their place" section. There is no fuzzy matching.
+- The browser generates its own UUID key and issues `PUT` requests, because the rules grant write
+  permission per comment rather than per collection.
+- A hidden comment section makes no database requests at all. The toggle is the only thing that
+  runs, and the first "Show comments" click fetches and renders. Hiding and showing again reuses
+  everything that was already fetched and calculated; only a reload picks up new comments.
+- Clicking a highlighted passage briefly flashes the comment it belongs to, and clicking a comment
+  pulses the passage it was written on.
+- Preferences use `comments:<session>` in `localStorage` (`"hidden"` when hidden, absent when shown)
+  and `user:name` for the remembered display name.
+- Comments print inline after their passage, and only while they are shown. The toggle, forms, and
+  selection button are print-hidden.
+- The session layout wraps `♥` and `♦` in `<span class="suit suit--red">` so the red suits render
+  red; the Markdown keeps plain suit characters.
+- Because the rules forbid deletes, test comments can only be removed from the Firebase console.
 
 ## Local development
 

@@ -9,13 +9,20 @@
       content="{{ page.description | default: site.description | escape }}"
     />
     <meta name="theme-color" content="#140c2e" />
+    {% unless page.url == '/404.html' %}
+    {% assign canonical_url = page.canonical %}
+    {% if canonical_url == nil and page.session %}
+    {% assign canonical_url = '/s/' | append: page.session | append: '/' %}
+    {% endif %}
+    <link rel="canonical" href="{{ canonical_url | default: page.url | absolute_url }}" />
+    {% endunless %}
     <link rel="icon" href="{{ '/assets/images/favicon.svg' | relative_url }}" type="image/svg+xml" />
     <link
       rel="stylesheet"
       href="{{ '/assets/css/style.css' | relative_url }}?v={{ site.time | date: '%s' }}"
     />
   </head>
-  <body>
+  <body{% if page.body_class %} class="{{ page.body_class }}"{% endif %}>
     <a class="skip-link" href="{{ page.url | relative_url }}#main">Skip to content</a>
 
     <div class="topbar">
@@ -48,17 +55,20 @@
           <p class="masthead__tagline">Where the air is thin and the trump suit is thinner.</p>
         </div>
 
+        {% assign latest_session = site.sessions | sort: 'date' | last %}
         <nav class="nav" aria-label="Main">
           <ul>
             <li><a href="{{ '/' | relative_url }}">Home</a></li>
-            <li><a href="{{ '/' | relative_url }}#what-is-bridge">What Is Bridge?</a></li>
-            <li><a href="{{ '/' | relative_url }}#learn">Learn</a></li>
             <li><a href="{{ '/intro/' | relative_url }}">Intro</a></li>
-            <li><a href="{{ '/night-hikes/' | relative_url }}">Night Hikes</a></li>
-            <li><a href="{{ '/' | relative_url }}#meetings">Meetings</a></li>
-            <li><a href="{{ '/' | relative_url }}#news">News</a></li>
-            <li><a href="{{ '/' | relative_url }}#guestbook">Guestbook</a></li>
-            <li><a href="{{ '/' | relative_url }}#links">Links</a></li>
+            {% if latest_session %}
+            <li>
+              <a href="{{ '/s/' | append: latest_session.session | append: '/' | relative_url }}"
+                >Session {{ latest_session.session }}</a
+              >
+            </li>
+            {% endif %}
+            <li><a href="{{ '/s/' | relative_url }}">All sessions</a></li>
+            <li><a href="{{ '/night-hikes/' | relative_url }}">Night hikes</a></li>
           </ul>
         </nav>
 

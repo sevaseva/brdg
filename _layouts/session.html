@@ -1,0 +1,36 @@
+---
+layout: default
+---
+
+{% assign session = site.sessions | where: 'session', page.session | first %}
+{% if session %}
+{% assign session_body = session.content | markdownify %}
+{% assign session_body = session_body | replace: '♥', '<span class="suit suit--red">♥</span>' %}
+{% assign session_body = session_body | replace: '♦', '<span class="suit suit--red">♦</span>' %}
+<article
+  class="panel session"
+  data-session-id="{{ session.session }}"
+  data-session-date="{{ session.date | date: '%Y-%m-%d' }}"
+  data-comments="shown"
+>
+  <div class="session__toolbar">
+    <button
+      class="session__comments-toggle"
+      type="button"
+      data-comments-toggle
+      aria-pressed="true"
+      hidden
+    >
+      Show comments
+    </button>
+    <p class="session__comments-status" data-comments-status role="status"></p>
+  </div>
+  <div class="panel__body" data-session-body>{{ session_body }}</div>
+</article>
+{% else %}
+<article class="panel session">
+  <div class="panel__body">
+    <p class="lead">This session has not been written up yet. Check back after the next meeting.</p>
+  </div>
+</article>
+{% endif %}

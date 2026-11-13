@@ -3,6 +3,8 @@ _site/
 .sass-cache/
 _layouts/
 _includes/
+_sessions/
+s/
 index.html
 404.html
 intro.html

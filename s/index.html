@@ -1,0 +1,50 @@
+---
+layout: default
+title: Sessions | Cobb Bridge Club
+description: Every write-up from the Cobb Bridge Club sessions, newest first.
+permalink: /s/
+---
+
+<section class="panel" aria-labelledby="sessions-title">
+  <div class="panel__title">
+    <h2 id="sessions-title">★ Session Notes</h2>
+    <span class="panel__buttons" aria-hidden="true"
+      ><span>_</span><span>□</span><span>×</span></span
+    >
+  </div>
+  <div class="panel__body">
+    <p class="lead">
+      What we covered, what we bid, and what we should have bid. One write-up per meeting, newest
+      first.
+    </p>
+
+    {% assign sessions = site.sessions | sort: 'date' | reverse %} {% if sessions.size > 0 %}
+    <ol class="session-index">
+      {% for session in sessions %} {% assign session_date = session.date | date: '%Y-%m-%d' %}
+      <li class="session-index__item">
+        <div class="session-index__head">
+          <h3 class="session-index__title">Session {{ session.session }}</h3>
+          <p class="session-index__date">{{ session.date | date: '%B %-d, %Y' }}</p>
+        </div>
+        <p class="session-index__summary">{{ session.description }}</p>
+        <p class="session-index__links">
+          <a
+            class="button"
+            href="{{ '/s/' | append: session.session | append: '/' | relative_url }}"
+            >Read Session {{ session.session }} →</a
+          >
+        </p>
+        <p class="session-index__permalink">
+          Same notes, dated address:
+          <a href="{{ '/s/' | append: session_date | append: '/' | relative_url }}"
+            >/s/{{ session_date }}/</a
+          >
+        </p>
+      </li>
+      {% endfor %}
+    </ol>
+    {% else %}
+    <p>No sessions written up yet. Check back after the next meeting.</p>
+    {% endif %}
+  </div>
+</section>

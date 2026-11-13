@@ -8,6 +8,18 @@ markdown: kramdown
 # passed through Jekyll's relative_url filter, so they stay root-relative.
 baseurl: ''
 
+# Absolute origin, used only for <link rel="canonical">. Keep it in step with
+# the CNAME file; `relative_url` handles everything else, so links never depend
+# on this value.
+url: 'https://brdg.lol'
+
+# Session notes. Each file lives in _sessions/ as a normal Markdown document
+# with `session` and `date` front matter. The collection itself is not output;
+# the thin pages under s/ render the matching document at more than one URL.
+collections:
+  sessions:
+    output: false
+
 # The site is built by the custom GitHub Actions workflow in
 # .github/workflows/pages.yml, which regenerates the night-hike almanac before
 # Jekyll runs. The workflow pins the same Jekyll version used locally and

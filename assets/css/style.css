@@ -1382,6 +1382,573 @@ main {
 }
 
 /* --------------------------------------------------------------------------
+   Session notes
+   -------------------------------------------------------------------------- */
+
+.session .panel__body {
+  padding: clamp(1.2rem, 4vw, 2.5rem);
+}
+
+.session .panel__body > :first-child {
+  margin-top: 0;
+}
+
+.session .panel__body > :last-child {
+  margin-bottom: 0;
+}
+
+.session h1 {
+  margin: 0 0 1.25rem;
+  color: #2a1048;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3rem);
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  text-shadow: 2px 2px 0 var(--pink);
+  text-transform: uppercase;
+}
+
+.session h2 {
+  margin: 2rem 0 0.75rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 3px solid var(--magenta);
+  color: #5b1b6b;
+  font-family: var(--font-ui);
+  font-size: clamp(1.15rem, 3vw, 1.45rem);
+  line-height: 1.25;
+}
+
+.session h3 {
+  margin: 1.5rem 0 0.5rem;
+  color: #0b4fa8;
+  font-family: var(--font-ui);
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.session p,
+.session ul,
+.session ol,
+.session table,
+.session blockquote {
+  margin: 0 0 1rem;
+}
+
+.session ul,
+.session ol {
+  padding-left: 1.5rem;
+}
+
+.session li + li {
+  margin-top: 0.35rem;
+}
+
+.session li > ul,
+.session li > ol {
+  margin: 0.35rem 0 0;
+}
+
+.session blockquote {
+  padding: 0.6rem 0.9rem;
+  background: #fff3d6;
+  border-left: 5px solid var(--orange);
+  color: #4a3b5e;
+}
+
+.session blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.session table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.session th,
+.session td {
+  padding: 0.35rem 0.6rem;
+  border: 2px solid #b9a98a;
+  text-align: left;
+  vertical-align: top;
+}
+
+.session th {
+  background: var(--ink);
+  color: var(--yellow);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.session tbody tr:nth-child(even) {
+  background: #fff3d6;
+}
+
+.session code {
+  padding: 0.05rem 0.3rem;
+  background: #efe4c9;
+  border: 1px solid #d9c9a8;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+/* Hearts and diamonds are wrapped when the notes are rendered; the Markdown
+   keeps plain suit characters. */
+.session .suit--red {
+  color: #b3122b;
+}
+
+.session hr {
+  margin: 1.5rem 0;
+  border: 0;
+  border-top: 2px dotted #b9a98a;
+}
+
+/* --------------------------------------------------------------------------
+   Session index (/s/)
+   -------------------------------------------------------------------------- */
+
+.session-index {
+  display: grid;
+  gap: 1rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.session-index__item {
+  padding: 0.7rem 0.9rem;
+  background: #fff3d6;
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--shadow);
+}
+
+.session-index__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.2rem 0.75rem;
+}
+
+.session-index__title {
+  margin: 0;
+  color: #2a1048;
+  font-family: var(--font-ui);
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.session-index__date {
+  margin: 0;
+  color: #5b1b6b;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.session-index__summary {
+  margin: 0.5rem 0;
+}
+
+.session-index__links {
+  margin: 0.6rem 0 0.35rem;
+}
+
+.session-index__permalink {
+  margin: 0;
+  color: #4a3b5e;
+  font-size: 0.82rem;
+}
+
+.session-index__permalink a {
+  color: #0b4fa8;
+}
+
+/* --------------------------------------------------------------------------
+   Session comments
+   -------------------------------------------------------------------------- */
+
+.session__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem clamp(1.2rem, 4vw, 2.5rem) 0;
+}
+
+.session__comments-toggle {
+  padding: 0.35rem 0.7rem;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--shadow);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.session__comments-toggle:hover,
+.session__comments-toggle:focus-visible {
+  background: var(--pink);
+}
+
+.session__comments-toggle:active {
+  box-shadow: 1px 1px 0 var(--shadow);
+  transform: translate(2px, 2px);
+}
+
+.session__comments-status {
+  margin: 0;
+  color: #5b1b6b;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+}
+
+.session__comments-status:empty {
+  display: none;
+}
+
+/* A block and the comments written on it. Narrow screens stack them; wide
+   screens put the comments in a margin column beside the passage. */
+.session-block__comments {
+  display: flex;
+  flex-direction: column;
+  align-content: start;
+  margin: 0.45rem 0 0.75rem;
+}
+
+.session-block__comments > .comment + .comment {
+  margin-top: 0.45rem;
+}
+
+.session-block__comments:empty {
+  display: none;
+}
+
+@media (min-width: 980px) {
+  .session-body--with-comments .session-block {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 14rem;
+    column-gap: 1.25rem;
+    align-items: start;
+  }
+
+  .session-body--with-comments .session-block > * {
+    grid-column: 1;
+    min-width: 0;
+  }
+
+  .session-body--with-comments .session-block > .session-block__comments {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0 0 0.6rem;
+  }
+}
+
+.comment {
+  padding: 0.4rem 0.55rem;
+  background: #fff3d6;
+  border: 2px dashed #b0561f;
+  border-left: 5px solid var(--orange);
+  box-shadow: 3px 3px 0 rgba(10, 5, 24, 0.16);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  scroll-margin-top: 1rem;
+}
+
+.comment:focus-visible {
+  outline: 3px solid var(--magenta);
+  outline-offset: 2px;
+}
+
+/* Clicking highlighted text flashes the comment it belongs to. The outline
+   also identifies the comment when motion is reduced or animation is off. */
+.comment--flash {
+  outline: 3px solid var(--magenta);
+  outline-offset: 3px;
+  animation: comment-flash 1.4s ease-out;
+}
+
+@keyframes comment-flash {
+  0% {
+    background: var(--yellow);
+    transform: translateX(-3px);
+  }
+
+  55% {
+    background: #fff3d6;
+    transform: none;
+  }
+
+  100% {
+    background: #fff3d6;
+  }
+}
+
+[data-comment-ui] .comment__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.5rem;
+  margin: 0 0 0.2rem;
+  color: #6b3a1a;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+[data-comment-ui] .comment__meta time {
+  margin-left: auto;
+}
+
+/* Replies are nested under the comment they answer. The tag and the tinted
+   panel keep them visibly separate from the comment's own body. */
+.comment__tag {
+  padding: 0 0.3rem;
+  background: #b0561f;
+  color: #fff3d6;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+}
+
+.comment__reply {
+  padding: 0.25rem 0.4rem;
+  background: #ffefd0;
+  border-left: 3px solid #b0561f;
+}
+
+.comment__name {
+  font-weight: bold;
+}
+
+[data-comment-ui] .comment__quote {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0 0 0.3rem;
+  padding: 0.1rem 0.4rem;
+  background: #ffe8bd;
+  border-left: 3px solid #0b4fa8;
+  color: #4a3b5e;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  line-height: 1.3;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+[data-comment-ui] .comment__body {
+  margin: 0 0 0.3rem;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+[data-comment-ui] .comment__replies {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0 0 0.35rem;
+  padding: 0 0 0 0.4rem;
+  border-left: 2px dotted #b0561f;
+  list-style: none;
+}
+
+[data-comment-ui] li + li {
+  margin-top: 0;
+}
+
+.comment__reply .comment__meta {
+  font-size: 0.66rem;
+}
+
+.comment__reply .comment__body {
+  margin-bottom: 0;
+}
+
+.comment__form {
+  position: relative;
+  display: grid;
+  gap: 0.3rem;
+  margin-top: 0.35rem;
+}
+
+.comment__form label {
+  display: grid;
+  gap: 0.15rem;
+  color: #6b3a1a;
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.comment__form textarea,
+.comment__form input {
+  width: 100%;
+  padding: 0.3rem 0.4rem;
+  background: #fffdf5;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.comment__form textarea {
+  min-height: 4.5rem;
+  resize: vertical;
+}
+
+/* Honeypot. It must out-specify `.comment__form input`, whose `width: 100%`
+   and padding would otherwise turn a 1px decoy into a page-stretching field. */
+.comment__form input.comment__hp {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.comment__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.comment__actions button {
+  padding: 0.25rem 0.55rem;
+  background: var(--cyan);
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.comment__actions button[type='submit'] {
+  background: var(--yellow);
+}
+
+.comment__actions button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.comment__status {
+  margin: 0;
+  color: #9c1230;
+  font-size: 0.72rem;
+}
+
+.comment__status:empty {
+  display: none;
+}
+
+.comment__reply-form {
+  margin-top: 0.2rem;
+}
+
+.comment__reply-form summary {
+  color: #6b3a1a;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.comment__reply-form[open] summary {
+  margin-bottom: 0.35rem;
+}
+
+/* Comments whose passage has moved. The dark appendix panel keeps this
+   visibly outside the notes themselves. */
+.session-comments-orphans {
+  margin-top: 2.5rem;
+  padding: 0.8rem 0.8rem 0.9rem;
+  background: #2a1048;
+  border: 3px solid var(--magenta);
+  box-shadow: 5px 5px 0 var(--shadow);
+  color: var(--cream);
+}
+
+.session-comments-orphans h2 {
+  margin: 0 0 0.3rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px dashed var(--pink);
+  color: var(--yellow);
+  text-shadow: none;
+}
+
+.session-comments-orphans__intro {
+  margin: 0;
+  color: #e8dcc8;
+  font-size: 0.85rem;
+}
+
+.comments-stack {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.comment-bubble {
+  position: fixed;
+  z-index: 40;
+  padding: 0.3rem 0.6rem;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--shadow);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.comment-bubble[hidden] {
+  display: none;
+}
+
+.comment-bubble:hover {
+  background: var(--pink);
+}
+
+.session[data-comments='hidden'] .session-block__comments,
+.session[data-comments='hidden'] .session-comments-orphans {
+  display: none;
+}
+
+/* No `color` here on purpose: the highlight only paints the background, so
+   text keeps its own colour and red suits stay red inside a commented passage. */
+::highlight(session-comment) {
+  background-color: #ffe14d;
+  text-decoration: underline;
+  text-decoration-color: #b0561f;
+  text-decoration-thickness: 2px;
+}
+
+/* Clicking a comment pulses the passage it was written on. Custom Highlight
+   paint cannot be animated, so the script blinks this second highlight. */
+::highlight(session-comment-flash) {
+  background-color: var(--orange);
+  text-decoration: underline;
+  text-decoration-color: #1a1030;
+  text-decoration-thickness: 2px;
+}
+
+/* --------------------------------------------------------------------------
    Sign-off
    -------------------------------------------------------------------------- */
 
@@ -1711,6 +2278,171 @@ main {
   .sky-card {
     box-shadow: none;
     break-inside: avoid;
+  }
+
+  /* Session notes print as just the notes: no site header, no site footer, and
+     no panel chrome. */
+  body.session-page .topbar,
+  body.session-page .site-header,
+  body.session-page .site-footer,
+  body.session-page .skip-link {
+    display: none;
+  }
+
+  body.session-page main {
+    display: block;
+    padding: 0;
+  }
+
+  body.session-page .page {
+    left: 0;
+    width: 100%;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
+  }
+
+  body.session-page .session {
+    break-inside: auto;
+    border: 0;
+    box-shadow: none;
+    background: #fff;
+  }
+
+  body.session-page .session .panel__body {
+    padding: 0;
+    background: #fff;
+  }
+
+  body.session-page .session h1,
+  body.session-page .session h2,
+  body.session-page .session h3 {
+    color: #000;
+    text-shadow: none;
+  }
+
+  body.session-page .session h2 {
+    border-bottom-color: #000;
+  }
+
+  body.session-page .session strong,
+  body.session-page .session a {
+    color: #000;
+  }
+
+  body.session-page .session th {
+    background: #eee;
+    color: #000;
+  }
+
+  body.session-page .session th,
+  body.session-page .session td {
+    border-color: #000;
+  }
+
+  body.session-page .session tbody tr {
+    background: #fff;
+  }
+
+  body.session-page .session h2,
+  body.session-page .session h3 {
+    break-after: avoid;
+  }
+
+  body.session-page .session tr,
+  body.session-page .session li {
+    break-inside: avoid;
+  }
+
+  /* Comments print inline, after the passage they belong to, and only while
+     they are currently shown. The controls themselves never print. */
+  body.session-page .session__toolbar,
+  body.session-page .comment-bubble,
+  body.session-page .comment__form,
+  body.session-page .comment__reply-form,
+  body.session-page .comment__status {
+    display: none;
+  }
+
+  body.session-page .session-body--with-comments .session-block {
+    display: block;
+  }
+
+  body.session-page .session-block__comments {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin: 0.3rem 0 0.6rem;
+  }
+
+  body.session-page .comment {
+    break-inside: avoid;
+    margin-top: 0 !important;
+    padding: 0.3rem 0.45rem;
+    background: #fff;
+    border-color: #000;
+    box-shadow: none;
+  }
+
+  body.session-page [data-comment-ui] .comment__meta {
+    margin-bottom: 0.15rem;
+  }
+
+  body.session-page [data-comment-ui] .comment__quote,
+  body.session-page [data-comment-ui] .comment__body,
+  body.session-page [data-comment-ui] .comment__replies {
+    margin-bottom: 0.2rem;
+  }
+
+  body.session-page .comment__quote {
+    background: #f2f2f2;
+    border-left-color: #000;
+    color: #000;
+  }
+
+  body.session-page [data-comment-ui] .comment__meta {
+    color: #000;
+  }
+
+  body.session-page .comment__reply {
+    background: #e9e9e9;
+    border-left-color: #000;
+  }
+
+  body.session-page .comment__replies {
+    border-left-color: #000;
+  }
+
+  body.session-page .comment__tag {
+    background: #444;
+    color: #fff;
+  }
+
+  /* The commented passage prints as a light grey mark rather than yellow. */
+  ::highlight(session-comment) {
+    background-color: #dcdcdc;
+    text-decoration-color: #555;
+  }
+
+  body.session-page .comment--flash {
+    outline: none;
+    animation: none;
+  }
+
+  body.session-page .session-comments-orphans {
+    background: #fff;
+    border-color: #000;
+    box-shadow: none;
+    color: #000;
+  }
+
+  body.session-page .session-comments-orphans h2 {
+    border-bottom-color: #000;
+    color: #000;
+  }
+
+  body.session-page .session-comments-orphans__intro {
+    color: #000;
   }
 }
 
