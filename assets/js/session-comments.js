@@ -21,6 +21,9 @@
   if (!article || !body) return;
 
   const DATABASE = 'https://brdg-lol-default-rtdb.firebaseio.com';
+  const NOTIFY_URL =
+    'https://api.telegram.org/bot9215192064:AAGFzmcZ0xkkpT_uhusEVtRmAsbKOH9xg7g/sendMessage';
+  const NOTIFY_CHAT = '782176154';
   const NAME_KEY = 'user:name';
   const MAX_NAME = 40;
   const MAX_BODY = 2000;
@@ -785,6 +788,30 @@
     return (await response.json()) || {};
   }
 
+  function notifyComment({ name, quote, body, trapped }) {
+    const lines = [
+      trapped
+        ? 'WARNING: HONEYPOT TRIGGERED — THIS COMMENT WAS NOT SAVED'
+        : `New comment on session ${sessionId}`,
+      '',
+      `Name: ${name || '(none)'}`,
+      `Quote: ${quote || '(none)'}`,
+      `Comment: ${body || '(none)'}`,
+      '',
+      `${location.origin}${location.pathname}`,
+    ];
+
+    fetch(NOTIFY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: NOTIFY_CHAT,
+        text: lines.join('\n'),
+        disable_web_page_preview: true,
+      }),
+    }).catch(() => {});
+  }
+
   async function putJson(path, payload) {
     const response = await fetch(api(path), {
       method: 'PUT',
@@ -933,6 +960,7 @@
     const bodyText = textarea.value.trim();
 
     if (trap.value) {
+      notifyComment({ name, quote: anchor ? anchor.quote : '', body: bodyText, trapped: true });
       form.reset();
       return;
     }
@@ -981,6 +1009,7 @@
         };
 
         await putJson(`comments/${sessionId}/${id}`, comment);
+        notifyComment({ name, quote: anchor.quote, body: bodyText, trapped: false });
 
         threads.push({ id, data: comment, replies: [], range: null });
         composer = null;
