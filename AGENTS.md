@@ -218,7 +218,7 @@ The site deliberately mixes three kinds of content. Match the writing to the kin
   jokes. A joke must never change a rule, a number, or a fact. Call the real gatherings **sessions**
   on these pages.
 - **The fictional club** — `index.html` and the club fiction around it. The Cobb Bridge Club is a
-  character, not a factual record of a real organisation: the meeting time is a guarded secret, the
+  character, not a factual record of a real organization: the meeting time is a guarded secret, the
   regulars are invented, and the news is gossip. This copy can be as loose and silly as it likes,
   and it should not try to teach real bridge; the "Learn Bridge in Four Easy Bids" panel is a joke,
   and a small note points to the study hall for the real thing. The word **meeting** fits the
@@ -247,6 +247,8 @@ detail. When in doubt about a number or a rule, the study pages win.
   the human/operator before introducing them.
 - Keep the site accessible: meaningful `alt` text, semantic headings, visible focus styles,
   reduced-motion support, and readable contrast.
+- Write in American English, including in code comments and generated copy: _organize_, _color_,
+  _center_, _favorite_, _memorize_, _analyze_, and "card deck" rather than "card pack".
 - Preserve the retro aesthetic, but do not sacrifice readability on mobile.
 
 ## Git

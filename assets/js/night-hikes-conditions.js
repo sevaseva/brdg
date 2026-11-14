@@ -218,7 +218,7 @@
       'small',
       updated
         ? `Weather and air quality for ${updated.replace('T', ' ')} Cobb local. Sources: Open-Meteo and NOAA SWPC. These update when the page loads, so the numbers can differ from the almanac's sky.`
-        : 'Live weather and the aurora forecast could not be fetched. Check your favourite forecast before heading out.',
+        : 'Live weather and the aurora forecast could not be fetched. Check your favorite forecast before heading out.',
     );
     root.append(credit);
 

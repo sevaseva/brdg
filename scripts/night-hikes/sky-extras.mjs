@@ -2,7 +2,7 @@
  * Extra sky material for the night-hike almanac.
  *
  * Everything in here is either computed at build time (astronomy), fetched as a
- * short forecast, or labelled as an estimate. The goal is to keep the page
+ * short forecast, or labeled as an estimate. The goal is to keep the page
  * honest: a value that depends on weather, orbits, or a service should never
  * pretend to be more certain than it is.
  */
@@ -176,7 +176,7 @@ const DEEP_SKY = [
     ra: 18.06,
     dec: -24.383,
     type: 'nebula',
-    note: 'A summer favourite in Sagittarius, low from Cobb.',
+    note: 'A summer favorite in Sagittarius, low from Cobb.',
   },
   {
     name: 'Ring Nebula',
@@ -282,7 +282,7 @@ const CONSTELLATIONS = [
     name: 'Leo',
     ra: 10.5,
     dec: 15,
-    story: 'The lion, with a backwards question mark for a mane. A spring constellation.',
+    story: 'The lion, with a backward question mark for a mane. A spring constellation.',
   },
   {
     name: 'Scorpius',
@@ -294,7 +294,7 @@ const CONSTELLATIONS = [
     name: 'Sagittarius',
     ra: 19,
     dec: -25,
-    story: 'The teapot-shaped archer, pointing toward the centre of the Milky Way.',
+    story: 'The teapot-shaped archer, pointing toward the center of the Milky Way.',
   },
   {
     name: 'Ursa Major',

@@ -159,7 +159,7 @@ img {
   width: min(100% - 1.5rem, 1020px);
   margin: 1.5rem auto 2.5rem;
   /* The scrollbar only takes room on the right, so nudge the shell by half
-     the scrollbar width to keep it centred in the window, not the content area. */
+     the scrollbar width to keep it centered in the window, not the content area. */
   position: relative;
   left: calc(50vw - 50%);
   background: var(--navy-2);
@@ -2004,7 +2004,7 @@ main {
 }
 
 /* No `color` here on purpose: the highlight only paints the background, so
-   text keeps its own colour and red suits stay red inside a commented passage. */
+   text keeps its own color and red suits stay red inside a commented passage. */
 ::highlight(session-comment) {
   background-color: #ffe14d;
   text-decoration: underline;
@@ -2491,7 +2491,7 @@ main {
     color: #fff;
   }
 
-  /* The commented passage prints as a light grey mark rather than yellow. */
+  /* The commented passage prints as a light gray mark rather than yellow. */
   ::highlight(session-comment) {
     background-color: #dcdcdc;
     text-decoration-color: #555;
