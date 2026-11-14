@@ -788,11 +788,12 @@
     return (await response.json()) || {};
   }
 
-  function notifyComment({ name, quote, body, trapped }) {
+  function notifyComment({ name, quote, body, trapped, reply }) {
+    const what = reply ? 'reply' : 'comment';
     const lines = [
       trapped
-        ? 'WARNING: HONEYPOT TRIGGERED — THIS COMMENT WAS NOT SAVED'
-        : `New comment on session ${sessionId}`,
+        ? `WARNING: HONEYPOT TRIGGERED — THIS ${what.toUpperCase()} WAS NOT SAVED`
+        : `New ${what} on session ${sessionId}`,
       '',
       `Name: ${name || '(none)'}`,
       `Quote: ${quote || '(none)'}`,
@@ -960,7 +961,14 @@
     const bodyText = textarea.value.trim();
 
     if (trap.value) {
-      notifyComment({ name, quote: anchor ? anchor.quote : '', body: bodyText, trapped: true });
+      const parent = commentId ? threads.find((item) => item.id === commentId) : null;
+      notifyComment({
+        name,
+        quote: parent ? parent.data.quote : anchor ? anchor.quote : '',
+        body: bodyText,
+        trapped: true,
+        reply: Boolean(commentId),
+      });
       form.reset();
       return;
     }
@@ -989,6 +997,14 @@
         await putJson(`replies/${sessionId}/${commentId}/${id}`, reply);
 
         const thread = threads.find((item) => item.id === commentId);
+        notifyComment({
+          name,
+          quote: thread ? thread.data.quote : '',
+          body: bodyText,
+          trapped: false,
+          reply: true,
+        });
+
         if (thread) {
           thread.replies.push({ id, data: reply });
           thread.replies.sort((a, b) => createdAt(a.data) - createdAt(b.data));
