@@ -55,19 +55,10 @@
           <p class="masthead__tagline">Where the air is thin and the trump suit is thinner.</p>
         </div>
 
-        {% assign latest_session = site.sessions | sort: 'date' | last %}
         <nav class="nav" aria-label="Main">
           <ul>
             <li><a href="{{ '/' | relative_url }}">Home</a></li>
-            <li><a href="{{ '/intro/' | relative_url }}">Intro</a></li>
-            {% if latest_session %}
-            <li>
-              <a href="{{ '/s/' | append: latest_session.session | append: '/' | relative_url }}"
-                >Session {{ latest_session.session }}</a
-              >
-            </li>
-            {% endif %}
-            <li><a href="{{ '/s/' | relative_url }}">All sessions</a></li>
+            <li><a href="{{ '/s/' | relative_url }}">Study hall</a></li>
             <li><a href="{{ '/night-hikes/' | relative_url }}">Night hikes</a></li>
           </ul>
         </nav>

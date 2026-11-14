@@ -47,15 +47,16 @@ panels, the live conditions, the Milky Way rules, and how the forecasts and esti
 | `_layouts/default.html`         | Shared page shell: banner, masthead, navigation, ticker, footer.                                                                   |
 | `_layouts/session.html`         | Renders one session's notes from the `_sessions` collection.                                                                       |
 | `_sessions/`                    | Session notes as Markdown, one `YYYY-MM-DD.md` file per session.                                                                   |
-| `s/`                            | Thin page files that expose a session at both `/s/N/` and `/s/YYYY-MM-DD/`, plus the session index at `/s/`.                       |
+| `s/`                            | The study hall at `/s/`, prep at `/s/prep/`, and thin pages that expose a session at `/s/N/` and `/s/YYYY-MM-DD/`.                 |
+| `bidding/`                      | Bidding landing page at `/bidding/` and the SAYC reference page at `/bidding/sayc/`.                                               |
 | `index.html`                    | The homepage content.                                                                                                              |
 | `404.html`                      | GitHub Pages 404 page.                                                                                                             |
-| `intro.html`                    | Intro page with lazy-loaded YouTube embeds.                                                                                        |
+| `intro.html`                    | Redirect to `/s/prep/`, kept so the old `/intro/` URL keeps working.                                                               |
 | `assets/css/style.css`          | All styling (plain CSS, no Sass).                                                                                                  |
 | `assets/js/retro.js`            | Small vanilla-JS enhancements: visitor counter, webring joke, click sparkles, and an autoplaying, toggleable chiptune "MIDI" tune. |
 | `assets/js/session-comments.js` | Text-selection comments on session notes, backed by Firebase.                                                                      |
 | `assets/images/*.svg`           | Original artwork: hero scene, card fan, construction sign, badges, favicon, moon-hike scene.                                       |
-| `assets/images/robson.webp`     | Robson Level 1 course thumbnail used on the intro page.                                                                            |
+| `assets/images/robson.webp`     | Robson Level 1 course thumbnail used on the prep page.                                                                             |
 | `.github/workflows/pages.yml`   | Regenerates the almanac, builds Jekyll, and deploys to GitHub Pages.                                                               |
 | `package.json`                  | Build-tooling dependencies (`astronomy-engine`, `satellite.js`) and the generator and moon-sun scripts.                            |
 | `scripts/moon-sun-cli/`         | Standalone terrain-aware and sea-level sun/moon rise/set CLI; not used by the website build.                                       |
@@ -67,8 +68,8 @@ The night-hike page and generator files (`night-hikes.html`, `assets/js/night-hi
 
 ## Session notes
 
-Session notes are Markdown files in `_sessions/`, named for the meeting date (`YYYY-MM-DD.md`). Each
-file starts with front matter:
+Session notes are Markdown files in `_sessions/`, named for the date of the session
+(`YYYY-MM-DD.md`). Each file starts with front matter:
 
 ```yaml
 ---
@@ -79,8 +80,9 @@ description: A one-line description for the page metadata.
 ---
 ```
 
-`session` is the short number used in `/s/N/`; `date` is the meeting date used in `/s/YYYY-MM-DD/`.
-The collection itself is not output. To publish a session, add two thin pages in `s/`:
+`session` is the short number used in `/s/N/`; `date` is the date of that session, used in
+`/s/YYYY-MM-DD/`. The collection itself is not output. To publish a session, add two thin pages in
+`s/`:
 
 - `s/N.html` with `layout: session`, `session: N`, `body_class: session-page`, and
   `permalink: /s/N/`
@@ -94,11 +96,25 @@ dated URL into the short one. The layout derives it from the page's `session` fr
 explicit `canonical:` in front matter still wins), and builds the absolute URL with `site.url` from
 `_config.yml`, which must stay in step with the `CNAME` file.
 
-`s/index.html` (permanent URL `/s/`) is the public session index. It loops over `site.sessions`,
-newest first, and links both addresses of each session: the short `/s/N/` link and the dated
-`/s/YYYY-MM-DD/` link. It is a plain page, not a collection document, so it needs no per-session
-edit. The main navigation is Home, Intro, the latest `Session N`, All sessions, and Night hikes; it
-derives the latest session from the collection, so a new session updates the menu by itself.
+`s/index.html` (permanent URL `/s/`) is the study hall: one column of learning material, newest
+first. It loops over `site.sessions` sorted newest-first, so the latest session is at the top, and
+puts the prep page `s/prep.html` (`/s/prep/`) at the bottom. That ordering is deliberate: read down
+from the top for a refresher, or start at the bottom and work up to go through everything from the
+beginning. Each session links both its short `/s/N/` address and its dated `/s/YYYY-MM-DD/` address.
+The list is plain Liquid, not a collection document, so it needs no per-session edit.
+
+The bidding system is deliberately off that ladder. `bidding/sayc.html` (`/bidding/sayc/`) holds the
+two ACBL SAYC booklets — one laid out for Letter paper, one for printing as a booklet — and is where
+the club's own system notes can grow. `bidding/index.html` (`/bidding/`) is a deliberately short,
+jokey placeholder for bidding material in general, with a single link to SAYC and room for
+conventions and cheat sheets later. The study hall links straight to `/bidding/sayc/` from a
+separate "Reference Shelf" panel (`panel--alt`), visually apart from the sequence; for now the only
+link to `/bidding/` is the "← Bidding" crumb on the SAYC page.
+
+The main navigation is deliberately minimal: Home, Study hall, and Night hikes. The study hall
+itself routes to prep (its bottom card) and the latest session (its top card), so the menu never
+needs to list individual sessions. `/intro/` is a minimal redirect page with a canonical link to
+`/s/prep/`, so old links and search results still land in the right place.
 
 Session pages also load `assets/js/session-comments.js` through the `scripts:` front matter; no
 other page loads it.
@@ -172,7 +188,9 @@ Build, then validate the generated HTML and check formatting:
 
 ```bash
 jekyll build
-tidy -qe _site/index.html _site/404.html _site/intro/index.html _site/night-hikes/index.html
+tidy -qe _site/index.html _site/404.html _site/intro/index.html _site/night-hikes/index.html \
+  _site/s/index.html _site/s/prep/index.html _site/s/1/index.html _site/s/2026-11-12/index.html \
+  _site/bidding/index.html _site/bidding/sayc/index.html
 prettier --check "assets/**/*.{css,js}" "scripts/**/*.mjs" "scripts/**/*.json" "scripts/**/*.md" "package.json" "*.md" "_config.yml"
 ```
 
@@ -185,6 +203,31 @@ listed in `.prettierignore`; `tidy` covers the generated HTML. The generated
 `assets/data/night-hikes.json` is deliberately not on the prettier list because it is
 machine-written and large.
 
+## What is real and what is invented
+
+The site deliberately mixes three kinds of content. Match the writing to the kind:
+
+- **Study material** — the study hall (`/s/`), prep (`/s/prep/`), the session notes (`/s/N/` and
+  `/s/YYYY-MM-DD/`), and the bidding pages (`/bidding/`, `/bidding/sayc/`). This part is real: the
+  sessions happen, the notes describe what was actually covered, and SAYC is a real system. Keep it
+  factually correct, because a beginner will trust it, while keeping the playful voice and the
+  jokes. A joke must never change a rule, a number, or a fact. Call the real gatherings **sessions**
+  on these pages.
+- **The fictional club** — `index.html` and the club fiction around it. The Cobb Bridge Club is a
+  character, not a factual record of a real organisation: the meeting time is a guarded secret, the
+  regulars are invented, and the news is gossip. This copy can be as loose and silly as it likes,
+  and it should not try to teach real bridge; the "Learn Bridge in Four Easy Bids" panel is a joke,
+  and a small note points to the study hall for the real thing. The word **meeting** fits the
+  fiction better here; keep the homepage light.
+- **The night-hike almanac** — `/night-hikes/`. Unrelated to bridge and included purely for fun, but
+  the data on it is real: the almanac, sky panels, weather, air quality, and aurora forecasts are
+  computed from actual sources. Joke in the prose, never in the numbers. Details are in
+  [NIGHT.md](NIGHT.md).
+
+When a page crosses zones — a homepage joke that links into the study hall, or a session note that
+mentions the club — keep the fiction in the club's voice and let the study page carry the accurate
+detail. When in doubt about a number or a rule, the study pages win.
+
 ## Content and style rules
 
 - Keep the voice playful, warm, and a little corny. Avoid mean-spirited jokes and real personal
@@ -194,9 +237,10 @@ machine-written and large.
 - All images must be original files committed to the repo. Do not hotlink images or add copyrighted
   artwork.
 - There are currently no analytics, no trackers, no external fonts, no CDNs, and no third-party
-  embeds (exceptions: the `/intro` videos and the night-hike page's live weather/air/aurora fetches,
-  described in [NIGHT.md](NIGHT.md)). Those can be added/used but do check explicitly check with the
-  human/operator before introducing them.
+  embeds (exceptions: the `/s/prep/` videos, the night-hike page's live weather/air/aurora fetches
+  described in [NIGHT.md](NIGHT.md), and the SAYC page's links to the ACBL booklets, which are
+  ordinary outward links rather than embeds). Those can be added/used but do check explicitly with
+  the human/operator before introducing them.
 - Keep the site accessible: meaningful `alt` text, semantic headings, visible focus styles,
   reduced-motion support, and readable contrast.
 - Preserve the retro aesthetic, but do not sacrifice readability on mobile.

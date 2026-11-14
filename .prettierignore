@@ -2,6 +2,7 @@ _site/
 .jekyll-cache/
 .sass-cache/
 _layouts/
+bidding/
 _includes/
 _sessions/
 s/

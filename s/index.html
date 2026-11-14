@@ -1,50 +1,104 @@
 ---
 layout: default
-title: Sessions | Cobb Bridge Club
-description: Every write-up from the Cobb Bridge Club sessions, newest first.
+title: Study Hall | Cobb Bridge Club
+description: >-
+  The club's learning materials, newest first: prep videos, notes from every session, and the
+  bidding system we're learning.
 permalink: /s/
 ---
 
-<section class="panel" aria-labelledby="sessions-title">
+<section class="panel" aria-labelledby="study-title">
   <div class="panel__title">
-    <h2 id="sessions-title">★ Session Notes</h2>
+    <h2 id="study-title">★ The Study Hall</h2>
     <span class="panel__buttons" aria-hidden="true"
       ><span>_</span><span>□</span><span>×</span></span
     >
   </div>
   <div class="panel__body">
     <p class="lead">
-      What we covered, what we bid, and what we should have bid. One write-up per meeting, newest
-      first.
+      Everything we use to learn bridge: newest at the top, prep at the bottom.
     </p>
 
-    {% assign sessions = site.sessions | sort: 'date' | reverse %} {% if sessions.size > 0 %}
-    <ol class="session-index">
-      {% for session in sessions %} {% assign session_date = session.date | date: '%Y-%m-%d' %}
-      <li class="session-index__item">
-        <div class="session-index__head">
-          <h3 class="session-index__title">Session {{ session.session }}</h3>
-          <p class="session-index__date">{{ session.date | date: '%B %-d, %Y' }}</p>
-        </div>
-        <p class="session-index__summary">{{ session.description }}</p>
-        <p class="session-index__links">
+    <div class="study-paths">
+      <div class="study-path">
+        <span class="study-path__arrow" aria-hidden="true">↓</span>
+        <p class="study-path__kicker">Just back from a session?</p>
+        <h3 class="study-path__title">Start at the top</h3>
+        <p>The newest notes are always first.</p>
+      </div>
+      <div class="study-path study-path--start">
+        <span class="study-path__arrow" aria-hidden="true">↑</span>
+        <p class="study-path__kicker">Starting from scratch?</p>
+        <h3 class="study-path__title">Start at the bottom</h3>
+        <p>
+          Prep videos, then Session 1, then onward. The bidding never arrives before you know what
+          a trick is.
+        </p>
+        <p class="study-path__link">
+          <a class="button" href="#start">Jump to the beginning ↓</a>
+        </p>
+      </div>
+    </div>
+
+    <ol class="study-sequence">
+      {% assign sessions = site.sessions | sort: 'date' | reverse %} {% for session in sessions %}
+      {% assign session_date = session.date | date: '%Y-%m-%d' %}
+      <li class="study-step">
+        <p class="study-step__kicker">{{ session.date | date: '%B %-d, %Y' }}</p>
+        <h3 class="study-step__title">{{ session.title }}</h3>
+        <p>{{ session.description }}</p>
+        <p class="study-step__links">
           <a
             class="button"
             href="{{ '/s/' | append: session.session | append: '/' | relative_url }}"
-            >Read Session {{ session.session }} →</a
+            >Read the notes →</a
           >
         </p>
-        <p class="session-index__permalink">
-          Same notes, dated address:
-          <a href="{{ '/s/' | append: session_date | append: '/' | relative_url }}"
+        <p class="study-step__permalink">
+          Also at <a href="{{ '/s/' | append: session_date | append: '/' | relative_url }}"
             >/s/{{ session_date }}/</a
           >
         </p>
       </li>
       {% endfor %}
+
+      <li class="study-step" id="start">
+        <p class="study-step__kicker">Before your first session</p>
+        <h3 class="study-step__title">Start here: the prep videos</h3>
+        <p>
+          Three short videos on the mechanics of the game: who deals, who bids, and what a trick
+          actually is. No experience needed, no homework, no cards.
+        </p>
+        <p class="study-step__links">
+          <a class="button" href="{{ '/s/prep/' | relative_url }}">Watch the prep videos →</a>
+        </p>
+      </li>
     </ol>
-    {% else %}
-    <p>No sessions written up yet. Check back after the next meeting.</p>
-    {% endif %}
+  </div>
+</section>
+
+<section class="panel panel--alt" aria-labelledby="shelf-title">
+  <div class="panel__title">
+    <h2 id="shelf-title">★ The Reference Shelf</h2>
+    <span class="panel__buttons" aria-hidden="true"
+      ><span>_</span><span>□</span><span>×</span></span
+    >
+  </div>
+  <div class="panel__body">
+    <p class="lead">
+      The bidding system is not a rung on the ladder above. It is the book we keep open beside us
+      while we climb.
+    </p>
+    <p>
+      We are learning Standard American Yellow Card a piece at a time, and a session can point back
+      to it whenever a bid needs explaining. Since it grows in its own direction, it gets its own
+      page: the official ACBL booklets (both layouts) now, and the club's own notes as we write
+      them.
+    </p>
+    <p class="study-step__links">
+      <a class="button" href="{{ '/bidding/sayc/' | relative_url }}"
+        >Standard American Yellow Card →</a
+      >
+    </p>
   </div>
 </section>
