@@ -140,6 +140,10 @@ are not used at build time.
   everything that was already fetched and calculated; only a reload picks up new comments.
 - Clicking a highlighted passage briefly flashes the comment it belongs to, and clicking a comment
   pulses the passage it was written on.
+- Selecting text with a mouse offers the comment button on release. Touch browsers commit a
+  long-press selection after the gesture ends, so the button is also driven by `selectionchange`
+  (after a short settle) and follows the selection if the page scrolls. It activates on `touchstart`
+  as well as `click`, because iOS Safari clears the selection before dispatching `click`.
 - Preferences use `comments:<session>` in `localStorage` (`"hidden"` when hidden, absent when shown)
   and `user:name` for the remembered display name.
 - Comments print inline after their passage, and only while they are shown. The toggle, forms, and

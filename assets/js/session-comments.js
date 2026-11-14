@@ -86,7 +86,9 @@
   let threads = [];
   let textIndex = null;
   let pendingSelection = null;
+  let selectionTimer = 0;
   let bubble = null;
+  let bubbleTouched = false;
   let composer = null;
   let commentHighlight = null;
   let flashTimer = 0;
@@ -1139,7 +1141,28 @@
     // Keep the text selection alive while the button is pressed, otherwise the
     // browser would collapse it before the click arrives.
     bubble.addEventListener('pointerdown', (event) => event.preventDefault());
-    bubble.addEventListener('click', startComposer);
+    // iOS Safari drops the selection before it dispatches click, so touch has to
+    // act on touchstart. preventDefault also suppresses the compatibility click.
+    bubble.addEventListener(
+      'touchstart',
+      (event) => {
+        event.preventDefault();
+        bubbleTouched = true;
+        window.setTimeout(() => {
+          bubbleTouched = false;
+        }, 600);
+        startComposer();
+      },
+      { passive: false },
+    );
+    bubble.addEventListener('click', () => {
+      if (bubbleTouched) {
+        bubbleTouched = false;
+        return;
+      }
+
+      startComposer();
+    });
     document.body.append(bubble);
     return bubble;
   }
@@ -1149,6 +1172,8 @@
   }
 
   function discardSelection() {
+    window.clearTimeout(selectionTimer);
+    selectionTimer = 0;
     hideBubble();
     pendingSelection = null;
   }
@@ -1173,8 +1198,13 @@
     pendingSelection = range.cloneRange();
 
     const button = ensureBubble();
+    const height = button.offsetHeight || 30;
+    const viewportHeight = window.visualViewport
+      ? window.visualViewport.height
+      : window.innerHeight;
     const left = Math.min(Math.max(8, rect.left + rect.width / 2 - 40), window.innerWidth - 96);
-    const top = Math.min(Math.max(8, rect.bottom + 8), window.innerHeight - 44);
+    const below = rect.bottom + 8;
+    const top = below + height <= viewportHeight ? below : Math.max(8, rect.top - height - 8);
 
     button.style.left = `${left}px`;
     button.style.top = `${top}px`;
@@ -1256,10 +1286,39 @@
 
   document.addEventListener('selectionchange', () => {
     const selection = window.getSelection();
-    if (!selection || selection.isCollapsed) discardSelection();
+    if (!selection || selection.isCollapsed) {
+      discardSelection();
+      return;
+    }
+
+    if (!shown) return;
+
+    // Android Chrome commits a long-press selection after the gesture ends, so
+    // pointerup can arrive while the selection is still collapsed. Wait for the
+    // handles to settle, then offer the button from the live selection.
+    window.clearTimeout(selectionTimer);
+    selectionTimer = window.setTimeout(() => {
+      selectionTimer = 0;
+      captureSelection();
+    }, 250);
   });
 
-  window.addEventListener('scroll', discardSelection, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      const selection = window.getSelection();
+      if (!shown || !selection || selection.isCollapsed) {
+        discardSelection();
+        return;
+      }
+
+      // A selection is still live, so the page is probably scrolling to make
+      // room for the selection handles. Keep the button with the selection
+      // instead of dropping it; the pending capture will place it if needed.
+      if (bubble && !bubble.hidden) captureSelection();
+    },
+    { passive: true },
+  );
   window.addEventListener('resize', () => {
     discardSelection();
     scheduleAlign();
