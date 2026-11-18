@@ -42,3 +42,4 @@ exclude:
   - scripts
   - node_modules
   - vendor
+  - pbn

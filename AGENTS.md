@@ -63,6 +63,7 @@ panels, the live conditions, the Milky Way rules, and how the forecasts and esti
 | `scripts/moon-sun-cli/`         | Standalone terrain-aware and sea-level sun/moon rise/set CLI; not used by the website build.                                       |
 | `NIGHT.md`                      | The night-hike guide: almanac rules, sky panels, forecasts, estimates.                                                             |
 | `AGENTS.md`                     | This guide.                                                                                                                        |
+| `pbn/`                          | Local PBN tooling for checking deals; `pbn/README.md` explains it. The downloaded tools inside are git-ignored.                    |
 
 The night-hike page and generator files (`night-hikes.html`, `assets/js/night-hikes*.js`,
 `assets/data/night-hikes.json`, `scripts/night-hikes*`) are listed in [NIGHT.md](NIGHT.md).
@@ -126,6 +127,20 @@ replaces the block with a static four-hand diagram and auction, highlights the d
 eight-card fit and the opening leader, and leaves the PBN text as the source of truth and as the
 fallback when JavaScript is off. The renderer is deliberately non-interactive; it reads the standard
 `Deal`, `Auction`, `Dealer`, `Declarer`, and `Contract` tags.
+
+The block is PBN 2.1 in **import** form, so it needs no tags beyond those five and no `% PBN`
+directive. Write the ten as `T`, not `10`: the renderer accepts both and draws `10` either way, but
+other tools treat `10` as two cards. Before committing a deal, run it through the local checker:
+
+````bash
+sed -n '/^```pbn$/,/^```$/p' _sessions/2026-11-19.md \
+  | sed '1d;$d' | node pbn/check-pbn.mjs -
+````
+
+It verifies thirteen cards per hand, no duplicated cards, legal calls, and that the contract and
+declarer match the auction. The other tools under `pbn/` — `bridge-wrangler` for conversion and
+manipulation, the Node `pbn` parser for JSON inspection — are described in `pbn/README.md`. They are
+local and git-ignored; the site itself uses none of them.
 
 ### Session comments
 
