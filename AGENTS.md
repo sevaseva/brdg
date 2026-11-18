@@ -55,6 +55,7 @@ panels, the live conditions, the Milky Way rules, and how the forecasts and esti
 | `assets/css/style.css`          | All styling (plain CSS, no Sass).                                                                                                  |
 | `assets/js/retro.js`            | Small vanilla-JS enhancements: visitor counter, webring joke, click sparkles, and an autoplaying, toggleable chiptune "MIDI" tune. |
 | `assets/js/session-comments.js` | Text-selection comments on session notes, backed by Firebase.                                                                      |
+| `assets/js/pbn-deal.js`         | Draws static deal diagrams from `pbn` code blocks in session notes.                                                                |
 | `assets/images/*.svg`           | Original artwork: hero scene, card fan, construction sign, badges, favicon, moon-hike scene.                                       |
 | `assets/images/robson.webp`     | Robson Level 1 course thumbnail used on the prep page.                                                                             |
 | `.github/workflows/pages.yml`   | Regenerates the almanac, builds Jekyll, and deploys to GitHub Pages.                                                               |
@@ -117,7 +118,14 @@ needs to list individual sessions. `/intro/` is a minimal redirect page with a c
 `/s/prep/`, so old links and search results still land in the right place.
 
 Session pages also load `assets/js/session-comments.js` through the `scripts:` front matter; no
-other page loads it.
+other page loads it. A session that includes a deal also loads `assets/js/pbn-deal.js`, listed
+before the comments script so the diagram exists before comment anchors are measured.
+
+A deal is written as a fenced `pbn` code block in the session Markdown. On the page, `pbn-deal.js`
+replaces the block with a static four-hand diagram and auction, highlights the declaring side's
+eight-card fit and the opening leader, and leaves the PBN text as the source of truth and as the
+fallback when JavaScript is off. The renderer is deliberately non-interactive; it reads the standard
+`Deal`, `Auction`, `Dealer`, `Declarer`, and `Contract` tags.
 
 ### Session comments
 
