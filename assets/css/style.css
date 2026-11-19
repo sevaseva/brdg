@@ -2306,6 +2306,909 @@ main {
 }
 
 /* --------------------------------------------------------------------------
+   Movie nights
+   -------------------------------------------------------------------------- */
+
+.movie-night__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(270px, 0.8fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.movie-night__notice {
+  margin: 0.9rem 0 1rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--shadow);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.92rem;
+  font-weight: bold;
+  line-height: 1.35;
+}
+
+.movie-night__steps,
+.movie-night__rules {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+}
+
+.movie-night__steps li + li,
+.movie-night__rules li + li {
+  margin-top: 0.4rem;
+}
+
+.movie-night__figure {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* One name field for the whole page. It is a ticket stub because of course it
+   is. The hint and the error span the full width under the field. */
+.ballot-strip {
+  display: grid;
+  grid-template-columns: auto minmax(0, 320px);
+  gap: 0.35rem 1rem;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding: 0.85rem 1rem;
+  background: #fff3a8;
+  border: 3px dashed var(--ink);
+  box-shadow: 4px 4px 0 var(--shadow);
+}
+
+.ballot-strip__label {
+  color: #5b1b6b;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ballot-strip__input {
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  background: #fffdf5;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+}
+
+.ballot-strip__input:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.ballot-strip__input[aria-invalid='true'] {
+  border-color: var(--red);
+  box-shadow: 0 0 0 2px #ffd6d6;
+}
+
+.ballot-strip__hint,
+.ballot-strip__status {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.ballot-strip__hint {
+  color: #4a3b5e;
+  font-size: 0.8rem;
+}
+
+.ballot-strip__status {
+  color: #9c1230;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.ballot-strip__status:empty {
+  display: none;
+}
+
+/* The list and the proposal card sit side by side on wide screens. */
+.movie-board {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.8fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.movie-board__list {
+  min-width: 0;
+}
+
+.movie-board__hint {
+  margin: 0 0 0.6rem !important;
+  color: #4a3b5e;
+  font-size: 0.82rem;
+}
+
+.movie-board__status {
+  margin: 0 0 0.8rem !important;
+  color: #5c4a72;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.movie-board__status[hidden] {
+  display: none;
+}
+
+.movie-board__retry {
+  margin-left: 0.35rem;
+  padding: 0.2rem 0.5rem;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.movie-board__retry:hover,
+.movie-board__retry:focus-visible {
+  background: var(--cyan);
+  border-style: inset;
+}
+
+.movie-board__vote-status {
+  margin: 0 0 0.8rem !important;
+  color: #0f6b5c;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.movie-board__vote-status:empty {
+  display: none;
+}
+
+.movie-list,
+.date-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.movie-board__empty {
+  margin: 0 !important;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.55);
+  border: 2px dashed #8d7f68;
+  color: #4a3b5e;
+  font-size: 0.95rem;
+}
+
+/* Movie rows look like a rental tape sitting on a shelf. */
+.movie-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.85rem;
+  padding: 1rem;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 #c9b8a0;
+}
+
+.movie-card:nth-child(2) {
+  transform: rotate(0.25deg);
+}
+
+.movie-card:focus-visible,
+.date-card:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+.movie-card__rank {
+  display: grid;
+  place-items: center;
+  align-self: start;
+  justify-self: start;
+  min-width: 3rem;
+  height: 3rem;
+  padding: 0 0.45rem;
+  background: radial-gradient(circle at 34% 30%, #fff6d8, var(--yellow) 62%, #d9a800);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.movie-card__main {
+  min-width: 0;
+}
+
+.movie-card__title {
+  margin: 0.1rem 0 0.25rem;
+  color: #2a1048;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.6vw, 1.45rem);
+  letter-spacing: 0.03em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.movie-card__meta {
+  margin: 0 0 0.5rem !important;
+  color: #5c4a72;
+  font-size: 0.78rem;
+}
+
+.movie-card__pitch {
+  margin: 0 0 0.7rem !important;
+  color: #3b2415;
+  font-size: 0.92rem;
+  font-style: italic;
+}
+
+.movie-card__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding-top: 0.7rem;
+  border-top: 2px dotted #b9a98a;
+}
+
+.movie-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.trailer-button,
+.vote-button {
+  padding: 0.35rem 0.65rem;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.trailer-button {
+  background: var(--cyan);
+  border-style: outset;
+}
+
+.trailer-button:hover,
+.trailer-button:focus-visible {
+  background: var(--yellow);
+  border-style: inset;
+}
+
+.vote-button {
+  background: var(--yellow);
+  border-style: outset;
+}
+
+.vote-button:hover:not(:disabled),
+.vote-button:focus-visible:not(:disabled) {
+  background: var(--cyan);
+  border-style: inset;
+}
+
+.vote-button[aria-pressed='true'],
+.vote-button.is-voted {
+  background: #b7f7a8;
+  border-style: inset;
+  cursor: default;
+}
+
+.vote-button:disabled {
+  opacity: 1;
+}
+
+.vote-summary {
+  flex: 1 1 160px;
+  min-width: min(100%, 190px);
+}
+
+.vote-summary__count {
+  margin: 0 0 0.3rem !important;
+  color: #5b1b6b;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.vote-summary__count strong {
+  color: #2a1048;
+  font-size: 1.05rem;
+}
+
+/* Ten blocks, like a little equalizer. The number beside it is the real
+   information; the meter is the mood. */
+.vote-meter {
+  display: flex;
+  gap: 2px;
+  height: 14px;
+  padding: 2px;
+  background: #e8dfc9;
+  border: 2px solid var(--ink);
+}
+
+.vote-meter__block {
+  flex: 1;
+  background: #d8cbb0;
+  border: 1px solid #c4b598;
+}
+
+.vote-meter__block.is-on {
+  background: linear-gradient(180deg, var(--yellow), var(--orange));
+  border-color: #b36b22;
+}
+
+.vote-who {
+  margin-top: 0.35rem;
+  color: #5c4a72;
+  font-size: 0.74rem;
+}
+
+.vote-who summary {
+  color: #5b1b6b;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.vote-who p,
+.vote-who dd {
+  margin: 0.25rem 0 0;
+}
+
+.vote-who dl {
+  margin: 0.25rem 0 0;
+}
+
+.vote-who dt {
+  margin-top: 0.3rem;
+  color: #5b1b6b;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.vote-who dd {
+  margin-left: 0;
+}
+
+/* The proposal cards */
+.proposal-card {
+  padding: 1rem;
+  background: #fffdf5;
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 #b9a98a;
+}
+
+.proposal-card h3 {
+  margin: 0 0 0.6rem;
+  color: #2a1048;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.proposal-form {
+  position: relative;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.proposal-form[hidden] {
+  display: none;
+}
+
+.proposal-form label {
+  display: grid;
+  gap: 0.2rem;
+  color: #6b3a1a;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.proposal-form input,
+.proposal-form textarea {
+  width: 100%;
+  padding: 0.35rem 0.45rem;
+  background: #fffdf5;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.proposal-form textarea {
+  min-height: 3.5rem;
+  resize: vertical;
+}
+
+.proposal-form input:focus-visible,
+.proposal-form textarea:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.proposal-form__optional {
+  color: #5c4a72;
+  font-weight: normal;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.proposal-form__hint {
+  margin: 0 !important;
+  color: #4a3b5e;
+  font-size: 0.74rem;
+}
+
+.proposal-form__actions button {
+  padding: 0.4rem 0.7rem;
+  background: var(--yellow);
+  border: 3px outset #fff3a8;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.proposal-form__actions button:hover:not(:disabled),
+.proposal-form__actions button:focus-visible:not(:disabled) {
+  background: var(--cyan);
+  border-style: inset;
+}
+
+.proposal-form__actions button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.proposal-form__warning {
+  margin: 0 !important;
+  padding: 0.5rem 0.6rem;
+  background: #fff3a8;
+  border: 2px solid #d9c25c;
+  color: #3b2415;
+  font-size: 0.78rem;
+}
+
+.proposal-form__warning[hidden] {
+  display: none;
+}
+
+.proposal-form__status {
+  margin: 0 !important;
+  color: #9c1230;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+}
+
+.proposal-form__status:empty {
+  display: none;
+}
+
+/* Honeypot. Same idea as the comment form: out-specify the normal input rule
+   so a decoy never stretches the layout. */
+.proposal-form input.proposal-form__hp {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Date cards are ticket stubs. */
+.date-card {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.55fr) minmax(0, 1.45fr);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 #c9b8a0;
+}
+
+.date-card__date {
+  display: grid;
+  align-content: center;
+  gap: 0.1rem;
+  padding: 1rem 0.8rem;
+  background: linear-gradient(135deg, #fff3a8, var(--yellow));
+  border-right: 2px dashed var(--ink);
+  text-align: center;
+}
+
+.date-card__heading {
+  margin: 0;
+  font-family: var(--font-display);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.date-card__weekday {
+  display: block;
+  color: #5b1b6b;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+}
+
+.date-card__day {
+  display: block;
+  color: #2a1048;
+  font-size: clamp(1.15rem, 2.6vw, 1.45rem);
+  letter-spacing: 0.02em;
+}
+
+.date-card__year {
+  display: block;
+  color: #5c4a72;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+}
+
+.date-card__body {
+  min-width: 0;
+  padding: 1rem;
+}
+
+.date-card__meta {
+  margin: 0 0 0.45rem !important;
+  color: #5c4a72;
+  font-size: 0.78rem;
+}
+
+.date-card__badges {
+  margin: 0 0 0.45rem !important;
+}
+
+.badge--leading {
+  background: var(--yellow);
+}
+
+.date-card__tally {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.55rem;
+  margin: 0.4rem 0 0.1rem !important;
+  font-family: var(--font-ui);
+  font-size: 0.74rem;
+  font-weight: bold;
+}
+
+.date-tally__part--yes {
+  color: #0f6b5c;
+}
+
+.date-tally__part--maybe {
+  color: #8a6500;
+}
+
+.date-tally__part--no {
+  color: #9c1230;
+}
+
+.date-card__tally-empty {
+  margin: 0.4rem 0 0.1rem !important;
+  color: #5c4a72;
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+.date-meter {
+  display: flex;
+  height: 14px;
+  margin-top: 0.3rem;
+  padding: 2px;
+  background: #e8dfc9;
+  border: 2px solid var(--ink);
+}
+
+.date-meter__part {
+  display: block;
+  height: 100%;
+}
+
+.date-meter__part--yes {
+  background: #2f9e62;
+}
+
+.date-meter__part--maybe {
+  background: #e2b400;
+}
+
+.date-meter__part--no {
+  background: #cf5a5a;
+}
+
+.date-card__actions {
+  margin-top: 0.7rem;
+  padding-top: 0.65rem;
+  border-top: 2px dotted #b9a98a;
+}
+
+.date-card__prompt {
+  display: block;
+  margin: 0 0 0.35rem !important;
+  color: #5b1b6b;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.date-vote {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.date-vote__button {
+  padding: 0.3rem 0.7rem;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.date-vote__button[data-choice='yes'] {
+  background: #b7f7a8;
+}
+
+.date-vote__button[data-choice='maybe'] {
+  background: #ffe98a;
+}
+
+.date-vote__button[data-choice='no'] {
+  background: #ffc9c9;
+}
+
+.date-vote__button:hover:not(:disabled),
+.date-vote__button:focus-visible:not(:disabled) {
+  background: var(--cyan);
+  border-style: inset;
+}
+
+.date-vote__button.is-chosen {
+  border-style: inset;
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+.date-vote__button:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.date-vote__button:disabled:not(.is-chosen) {
+  opacity: 0.4;
+}
+
+.date-card__you {
+  margin: 0.4rem 0 0 !important;
+  color: #5b1b6b;
+  font-family: var(--font-ui);
+  font-size: 0.74rem;
+  font-weight: bold;
+}
+
+.date-card__you[hidden] {
+  display: none;
+}
+
+/* The trailer only touches YouTube after someone presses play. */
+.trailer-dialog {
+  width: min(92vw, 900px);
+  max-width: 900px;
+  padding: 0;
+  background: var(--navy);
+  color: var(--cream);
+  border: 3px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--shadow);
+}
+
+.trailer-dialog::backdrop {
+  background: rgba(10, 5, 24, 0.82);
+}
+
+.trailer-dialog__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0.75rem;
+  background: linear-gradient(90deg, var(--magenta), var(--orange));
+  color: #fff;
+  border-bottom: 3px solid var(--ink);
+}
+
+.trailer-dialog__head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.03em;
+  text-shadow: 1px 1px 0 var(--ink);
+  text-transform: uppercase;
+}
+
+.trailer-dialog__close {
+  padding: 0.25rem 0.55rem;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.trailer-dialog__close:hover,
+.trailer-dialog__close:focus-visible {
+  background: var(--cyan);
+}
+
+.trailer-dialog__frame {
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.trailer-dialog__frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.trailer-dialog__foot {
+  margin: 0;
+  padding: 0.55rem 0.75rem;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+}
+
+.trailer-dialog a {
+  color: var(--cyan);
+}
+
+@media (max-width: 760px) {
+  .movie-night__intro,
+  .movie-board {
+    grid-template-columns: 1fr;
+  }
+
+  .ballot-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .ballot-strip__hint,
+  .ballot-strip__status {
+    grid-column: auto;
+  }
+
+  .date-card {
+    grid-template-columns: 1fr;
+  }
+
+  .date-card__date {
+    border-right: 0;
+    border-bottom: 2px dashed var(--ink);
+    padding: 0.65rem 0.8rem;
+  }
+
+  .date-card__heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .date-card__heading time {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .date-card__weekday,
+  .date-card__day,
+  .date-card__year {
+    display: inline;
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-card {
+    grid-template-columns: 1fr;
+  }
+
+  .movie-card__rank {
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.45rem;
+    font-size: 0.7rem;
+  }
+
+  .date-vote__button {
+    flex: 1;
+  }
+}
+
+@media print {
+  .ballot-strip,
+  .proposal-card,
+  .trailer-button,
+  .vote-button,
+  .date-card__actions,
+  .vote-who,
+  .movie-board__hint,
+  .movie-board__status,
+  .movie-board__vote-status,
+  .trailer-dialog {
+    display: none !important;
+  }
+
+  .movie-board {
+    grid-template-columns: 1fr;
+  }
+
+  .movie-card,
+  .date-card {
+    box-shadow: none;
+    transform: none;
+    break-inside: avoid;
+  }
+
+  .vote-meter,
+  .date-meter {
+    border-color: #000;
+  }
+}
+
+/* --------------------------------------------------------------------------
    Session comments
    -------------------------------------------------------------------------- */
 

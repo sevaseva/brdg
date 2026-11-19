@@ -56,7 +56,9 @@ panels, the live conditions, the Milky Way rules, and how the forecasts and esti
 | `assets/js/retro.js`            | Small vanilla-JS enhancements: visitor counter, webring joke, click sparkles, and an autoplaying, toggleable chiptune "MIDI" tune. |
 | `assets/js/session-comments.js` | Text-selection comments on session notes, backed by Firebase.                                                                      |
 | `assets/js/pbn-deal.js`         | Draws static deal diagrams from `pbn` code blocks in session notes.                                                                |
-| `assets/images/*.svg`           | Original artwork: hero scene, card fan, construction sign, badges, favicon, moon-hike scene.                                       |
+| `movie-nights.html`             | The movie-night planning board at `/movie-nights/`: movie and date proposals, votes, trailers.                                     |
+| `assets/js/movie-nights.js`     | Movie-night proposals and votes, backed by the same Firebase database as the session comments.                                     |
+| `assets/images/*.svg`           | Original artwork: hero scene, card fan, construction sign, badges, favicon, moon-hike and movie-night scenes.                      |
 | `assets/images/robson.webp`     | Robson Level 1 course thumbnail used on the prep page.                                                                             |
 | `.github/workflows/pages.yml`   | Regenerates the almanac, builds Jekyll, and deploys to GitHub Pages.                                                               |
 | `package.json`                  | Build-tooling dependencies (`astronomy-engine`, `satellite.js`) and the generator and moon-sun scripts.                            |
@@ -123,10 +125,10 @@ conventions and cheat sheets later. The study hall links straight to `/bidding/s
 separate "Reference Shelf" panel (`panel--alt`), visually apart from the sequence; for now the only
 link to `/bidding/` is the "← Bidding" crumb on the SAYC page.
 
-The main navigation is deliberately minimal: Home, Study hall, and Night hikes. The study hall
-itself routes to prep (its bottom card) and the latest session (its top card), so the menu never
-needs to list individual sessions. `/intro/` is a minimal redirect page with a canonical link to
-`/s/prep/`, so old links and search results still land in the right place.
+The main navigation is deliberately minimal: Home, Study hall, Night hikes, and Movie nights. The
+study hall itself routes to prep (its bottom card) and the latest session (its top card), so the
+menu never needs to list individual sessions. `/intro/` is a minimal redirect page with a canonical
+link to `/s/prep/`, so old links and search results still land in the right place.
 
 Session pages also load `assets/js/session-comments.js` through the `scripts:` front matter; no
 other page loads it. A session that includes a deal also loads `assets/js/pbn-deal.js`, listed
@@ -223,6 +225,41 @@ are not used at build time.
   red; the Markdown keeps plain suit characters.
 - Because the rules forbid deletes, test comments can only be removed from the Firebase console.
 
+## Movie nights
+
+`/movie-nights/` (`movie-nights.html` + `assets/js/movie-nights.js`) is a completely unofficial
+planning board: propose movies with YouTube trailers, vote for them, propose dates, and mark
+availability. Like the night-hike almanac, it is unrelated to bridge and exists for fun. It uses the
+same public Firebase database as the session comments, under `/movie-nights/`.
+
+- `movies/<uuid>` stores `{ v, title, videoId, name, pitch?, createdAt }`. The 11-character YouTube
+  video ID is stored instead of the URL; the canonical watch and embed URLs are reconstructed. The
+  form accepts `watch?v=`, `youtu.be`, `/shorts/`, `/embed/`, `/live/`, `/v/`, and bare 11-character
+  IDs, with the `www.`, `m.`, `music.`, and `youtube-nocookie.com` hosts. Playlists, channels, and
+  non-YouTube hosts are rejected. Trailers open in a click-to-load `youtube-nocookie.com` dialog; no
+  YouTube request is made until the reader presses play.
+- `dates/<uuid>` stores `{ v, date, name, createdAt }`. There is deliberately no time: the board
+  picks the evening, and the club agrees on the hour separately. Past dates are hidden from the
+  board but are not deleted.
+- `votes/<movie>/<nameSlug>` stores `{ v, name, createdAt }`; `dateVotes/<date>/<nameSlug>` stores
+  `{ v, name, choice, createdAt }` with `choice` one of `yes`, `maybe`, `no`. Names are normalized
+  to a lowercase slug (diacritics stripped) so one name is one vote per item. Votes are immutable:
+  there is no change/unvote path, and the rules should allow create-only writes at each leaf.
+- Counts are derived from the vote records, never stored. This avoids read-modify-write races. The
+  movie list sorts by vote count, then earliest proposal; date votes are shown as a stacked meter
+  with yes/maybe/no counts, and the leading date gets a badge.
+- The proposal and vote keys are generated in the browser, and writes use `PUT`, as the comment
+  system does. The board loads once and does not poll; reload the page to pick up votes from other
+  browsers.
+- The shared name field uses `localStorage` key `user:name`, the same key as the session comment
+  form, and writes it back after a successful proposal or vote. Names are public; there are no
+  accounts.
+- Duplicate movie titles (normalized, punctuation-insensitive) and duplicate dates produce an inline
+  warning and require a second, explicit "Propose anyway" click.
+- The Firebase rules live in the console. The `movie-nights` subtree needs public reads and the
+  create-only validation described above. If the rules are missing or wrong, the page shows its
+  "projector jammed" error state.
+
 ## Local development
 
 Ruby and Jekyll come from the Manjaro/Arch repositories. Installing them is a **one-time
@@ -264,8 +301,8 @@ Build, then validate the generated HTML and check formatting:
 ```bash
 jekyll build
 tidy -qe _site/index.html _site/404.html _site/intro/index.html _site/night-hikes/index.html \
-  _site/s/index.html _site/s/prep/index.html _site/s/1/index.html _site/s/2026-11-12/index.html \
-  _site/bidding/index.html _site/bidding/sayc/index.html
+  _site/movie-nights/index.html _site/s/index.html _site/s/prep/index.html _site/s/1/index.html \
+  _site/s/2026-11-12/index.html _site/bidding/index.html _site/bidding/sayc/index.html
 prettier --check "assets/**/*.{css,js}" "scripts/**/*.mjs" "scripts/**/*.json" "scripts/**/*.md" "package.json" "*.md" "_config.yml"
 ```
 
@@ -312,10 +349,11 @@ detail. When in doubt about a number or a rule, the study pages win.
 - All images must be original files committed to the repo. Do not hotlink images or add copyrighted
   artwork.
 - There are currently no analytics, no trackers, no external fonts, no CDNs, and no third-party
-  embeds (exceptions: the `/s/prep/` videos, the night-hike page's live weather/air/aurora fetches
-  described in [NIGHT.md](NIGHT.md), and the SAYC page's links to the ACBL booklets, which are
-  ordinary outward links rather than embeds). Those can be added/used but do check explicitly with
-  the human/operator before introducing them.
+  embeds (exceptions: the `/s/prep/` videos, the movie-night trailer player, which only loads after
+  a click, the night-hike page's live weather/air/aurora fetches described in [NIGHT.md](NIGHT.md),
+  and the SAYC page's links to the ACBL booklets, which are ordinary outward links rather than
+  embeds). Those can be added/used but do check explicitly with the human/operator before
+  introducing them.
 - Keep the site accessible: meaningful `alt` text, semantic headings, visible focus styles,
   reduced-motion support, and readable contrast.
 - Write in American English, including in code comments and generated copy: _organize_, _color_,
