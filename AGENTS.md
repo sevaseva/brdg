@@ -130,9 +130,9 @@ tags.
 
 The diagram is interactive, and the same behavior applies to every deal on any page:
 
-- A toolbar hides the auction, both hands of a partnership, or any single hand. Hidden hands show a
-  **Show** button in their place, and the N–S and E–W toggles report `mixed` when only one of the
-  pair is hidden.
+- A toolbar labeled **Show/Hide** toggles the auction, both hands of a partnership, or any single
+  hand. Hidden hands show a **Show** button in their place, and the N–S and E–W toggles report
+  `mixed` when only one of the pair is hidden.
 - **Play deal** deals the cards back out in play order, starting with the player on declarer's left.
   Only cards legal at that moment are enabled: the hand on turn must follow suit when it can, and
   the other three hands are disabled. The center panel counts tricks as a quiet `Trick 2 of 13`
@@ -165,8 +165,10 @@ The play engine keeps trump from the contract, so a deal needs a `Contract` with
 a `Declarer` before the play buttons enable.
 
 The block is PBN 2.1 in **import** form, so it needs no tags beyond those five and no `% PBN`
-directive. Write the ten as `T`, not `10`: the renderer accepts both and draws `10` either way, but
-other tools treat `10` as two cards. Before committing a deal, run it through the local checker:
+directive. Write the ten as `T`, not `10`: the renderer accepts both and uses `T` throughout — in
+the diagram, in `data-card="ST"`, and in the card's rank — while accessible names still say "ten of
+spades". Other tools treat `10` as two cards. Before committing a deal, run it through the local
+checker:
 
 ````bash
 sed -n '/^```pbn$/,/^```$/p' _sessions/2026-11-19.md \

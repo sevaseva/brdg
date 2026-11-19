@@ -20,13 +20,15 @@
     C: { name: 'clubs', symbol: '♣', red: false },
   };
   const SUIT_ORDER = ['S', 'H', 'D', 'C'];
-  const RANK_ORDER = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
+  // A card's rank is a single character everywhere, so the ten is T: in the
+  // DOM (`data-card="ST"`), in this table, and in the names read out loud.
+  const RANK_ORDER = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'];
   const RANK_NAMES = {
     A: 'ace',
     K: 'king',
     Q: 'queen',
     J: 'jack',
-    10: 'ten',
+    T: 'ten',
     9: 'nine',
     8: 'eight',
     7: 'seven',
@@ -96,7 +98,7 @@
     const ranks = String(value)
       .toUpperCase()
       .match(/10|[AKQJT98765432]/g);
-    return ranks ? ranks.map((rank) => (rank === 'T' ? '10' : rank)) : [];
+    return ranks ? ranks.map((rank) => (rank === '10' ? 'T' : rank)) : [];
   };
 
   const parseDeal = (value) => {
@@ -439,7 +441,7 @@
 
     const showLabel = document.createElement('span');
     showLabel.className = 'deal-controls__label';
-    showLabel.textContent = 'Show';
+    showLabel.textContent = 'Show/Hide';
     showControls.append(showLabel);
 
     const shown = { auction: true, N: true, E: true, S: true, W: true };
@@ -645,10 +647,7 @@
 
     const trickDescription = (entry) =>
       `Trick ${entry.number}: ${entry.cards
-        .map(
-          (played) =>
-            `${SEAT_NAMES[played.seat]} ${SUITS[played.card.suit].symbol}${played.card.rank}`,
-        )
+        .map((played) => `${SEAT_NAMES[played.seat]} ${cardName(played.card)}`)
         .join(', ')}. Won by ${SEAT_NAMES[entry.winner]}.`;
 
     /* ---- rendering ----------------------------------------------------- */
