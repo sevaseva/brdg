@@ -93,6 +93,12 @@ description: A one-line description for the page metadata.
 Both pages render the same collection document, so do not put note text in them. The session layout
 exposes the session number and date as data attributes for features that need a stable page key.
 
+Neither thin page repeats the `description`. For a page with `session` front matter,
+`_layouts/default.html` looks up the collection document with the same `session` number and uses its
+`description` for `<meta name="description">`, so the study-hall card and the page metadata cannot
+drift apart. An explicit `description` on a page still wins over that lookup, which is how every
+non-session page supplies one.
+
 Every session page carries `<link rel="canonical">` pointing at `/s/N/`, so search engines fold the
 dated URL into the short one. The layout derives it from the page's `session` front matter (an
 explicit `canonical:` in front matter still wins), and builds the absolute URL with `site.url` from
