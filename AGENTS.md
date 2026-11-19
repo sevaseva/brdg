@@ -123,10 +123,46 @@ other page loads it. A session that includes a deal also loads `assets/js/pbn-de
 before the comments script so the diagram exists before comment anchors are measured.
 
 A deal is written as a fenced `pbn` code block in the session Markdown. On the page, `pbn-deal.js`
-replaces the block with a static four-hand diagram and auction, highlights the declaring side's
-eight-card fit and the opening leader, and leaves the PBN text as the source of truth and as the
-fallback when JavaScript is off. The renderer is deliberately non-interactive; it reads the standard
-`Deal`, `Auction`, `Dealer`, `Declarer`, and `Contract` tags.
+replaces the block with a four-hand diagram and auction, highlights the declaring side's eight-card
+fit and the opening leader, and leaves the PBN text as the source of truth and as the fallback when
+JavaScript is off. It reads the standard `Deal`, `Auction`, `Dealer`, `Declarer`, and `Contract`
+tags.
+
+The diagram is interactive, and the same behavior applies to every deal on any page:
+
+- A toolbar hides the auction, both hands of a partnership, or any single hand. Hidden hands show a
+  **Show** button in their place, and the N–S and E–W toggles report `mixed` when only one of the
+  pair is hidden.
+- **Play deal** deals the cards back out in play order, starting with the player on declarer's left.
+  Only cards legal at that moment are enabled: the hand on turn must follow suit when it can, and
+  the other three hands are disabled. The center panel counts tricks as a quiet `Trick 2 of 13`
+  label, and once a trick is complete that line becomes a yellow `<seat> won trick N` band on top of
+  the table, which stays there until it is collected.
+- The same center panel carries the turn indicator: a yellow badge with the seat letter, and an
+  arrow that points at the hand to play next, so the table itself says whose turn it is. It is shown
+  for the whole of the play, whether or not a trick is on the table, and the active hand's header is
+  outlined to match. The arrow is aimed by measuring where that hand actually sits on screen, so it
+  still points at the right hand when the narrow layouts stack the hands instead of placing them
+  around the table; when that hand is hidden and playing itself, it falls back to the compass
+  direction. The indicator is decorative (the status line already announces who plays), so it stays
+  out of the accessibility tree, and it disappears when the play ends.
+- Hidden hands play a random legal card for themselves after a short pause, so a lesson can hide
+  three hands and still play the deal through.
+- **Undo** takes back the last human card together with any automatic cards that followed it.
+  **Restart** puts every card back.
+- A finished trick is collected under the table by clicking it, or automatically when the next card
+  is led. Collected tricks run from left to right as face-down cards, each one overlapping the trick
+  to its left. A pile shows a single card back even though all four cards of the trick are in it,
+  and N–S tricks lie upright while E–W tricks lie on their side, so the two sides can be told apart.
+  The whole trick, including who won it, is in the pile's accessible label.
+
+The auction table always keeps the seats in the order W, N, E, S and reads the way the bidding
+happened: left to right, then the next row. A dealer other than West therefore starts the first row
+partway along, with the cells before the dealer blank, and the calls wrap onto a new row after
+South's cell. Never shift West's call to the front of the row to fill the gap.
+
+The play engine keeps trump from the contract, so a deal needs a `Contract` with a denomination and
+a `Declarer` before the play buttons enable.
 
 The block is PBN 2.1 in **import** form, so it needs no tags beyond those five and no `% PBN`
 directive. Write the ten as `T`, not `10`: the renderer accepts both and draws `10` either way, but

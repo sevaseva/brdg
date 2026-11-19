@@ -1553,13 +1553,16 @@ main {
 .pbn-deal {
   display: grid;
   grid-template-areas:
+    'toolbar toolbar toolbar'
+    'status status status'
     '. north .'
-    'west auction east'
-    '. south .';
+    'west center east'
+    '. south .'
+    'tricks tricks tricks';
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.5rem;
   align-items: center;
-  max-width: 44rem;
+  max-width: 46rem;
   margin: 1.2rem auto 1.6rem;
   padding: clamp(0.55rem, 2vw, 1rem);
   background:
@@ -1569,6 +1572,96 @@ main {
   box-shadow:
     4px 4px 0 var(--shadow),
     inset 0 0 0 2px rgba(255, 255, 255, 0.15);
+}
+
+/* Toolbar ---------------------------------------------------------------- */
+
+.pbn-deal__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  grid-area: toolbar;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 0.9rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px dotted rgba(255, 255, 255, 0.35);
+}
+
+.deal-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.deal-controls__label {
+  color: var(--cream);
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.deal-toggle,
+.deal-action,
+.deal-seat__reveal {
+  padding: 0.1rem 0.42rem;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: #dcdcdc;
+  box-shadow: 2px 2px 0 var(--shadow);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: bold;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.deal-toggle:hover,
+.deal-action:hover,
+.deal-seat__reveal:hover {
+  background: #fff;
+}
+
+.deal-toggle:active,
+.deal-action:active,
+.deal-seat__reveal:active {
+  box-shadow: none;
+  transform: translate(1px, 1px);
+}
+
+.deal-toggle[aria-pressed='true'] {
+  background: var(--yellow);
+}
+
+.deal-toggle[aria-pressed='false'] {
+  background: #a9a9a9;
+  color: #2b2b2b;
+}
+
+.deal-toggle[aria-pressed='mixed'] {
+  background: repeating-linear-gradient(135deg, var(--yellow) 0 6px, #dcdcdc 6px 12px);
+}
+
+.deal-action:disabled,
+.deal-toggle:disabled {
+  box-shadow: none;
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pbn-deal__status {
+  grid-area: status;
+  margin: 0;
+  color: var(--cream);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.pbn-deal__status:empty {
+  display: none;
 }
 
 .deal-seat {
@@ -1652,14 +1745,93 @@ main {
 }
 
 .deal-seat__cards {
-  letter-spacing: 0.07em;
+  letter-spacing: 0.03em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-.pbn-deal__auction {
-  grid-area: auction;
+.deal-seat__dash {
+  color: #8a8a8a;
+}
+
+.deal-seat__empty {
+  margin: 0;
+  padding: 0.45rem 0.1rem;
+  color: #6a6a6a;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.deal-card {
+  display: inline-block;
+  min-width: 1.05em;
+  padding: 0 0.05em;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-align: center;
+}
+
+.deal-card--red {
+  color: #b3122b;
+}
+
+.deal-card--button {
+  cursor: default;
+}
+
+.deal-card--button + .deal-card--button {
+  margin-left: 0.12em;
+}
+
+.deal-card--button.is-playable {
+  border-color: var(--ink);
+  background: var(--yellow);
+  box-shadow: 0 0 0 1px var(--yellow);
+  cursor: pointer;
+}
+
+.deal-card--button.is-playable:hover {
+  background: #fff3a8;
+}
+
+.deal-card--button:disabled {
+  opacity: 0.7;
+}
+
+.deal-seat--hidden {
+  background: repeating-linear-gradient(135deg, #efefef 0 8px, #e2e2e2 8px 16px);
+}
+
+.deal-seat__hidden {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.6rem;
+  min-height: 3.2rem;
+  margin: 0;
+  color: #4a4a4a;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+}
+
+.deal-seat__reveal {
+  font-size: 0.68rem;
+}
+
+.pbn-deal__center {
+  display: flex;
+  flex-direction: column;
+  grid-area: center;
   align-self: center;
+  min-width: 0;
+  gap: 0.4rem;
+}
+
+.pbn-deal__auction {
   min-width: 0;
   padding: 0.4rem;
   background: #dfeae7;
@@ -1667,6 +1839,10 @@ main {
   box-shadow: 3px 3px 0 rgba(8, 5, 24, 0.45);
   color: var(--ink);
   font-family: var(--font-ui);
+}
+
+.pbn-deal__auction[hidden] {
+  display: none;
 }
 
 .pbn-deal__auction-table {
@@ -1727,13 +1903,262 @@ main {
   color: #31564f;
 }
 
+/* Trick in progress ------------------------------------------------------ */
+
+.pbn-deal__trick {
+  padding: 0.35rem;
+  background: #dfeae7;
+  border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 rgba(8, 5, 24, 0.45);
+  color: var(--ink);
+  font-family: var(--font-ui);
+}
+
+.pbn-deal__trick[hidden] {
+  display: none;
+}
+
+.pbn-deal__trick--complete {
+  opacity: 0.95;
+}
+
+.pbn-deal__trick--collectable {
+  cursor: pointer;
+}
+
+.pbn-deal__trick--collectable:hover {
+  background: #f2f8f6;
+}
+
+.pbn-deal__trick--collectable:hover .pbn-deal__trick-title {
+  background: #fff3a8;
+}
+
+.pbn-deal__trick-title {
+  margin: 0 0 0.25rem;
+  color: #31564f;
+  font-size: 0.66rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* The winner is the one thing worth shouting about: the line becomes a yellow
+   ticket across the top of the table instead of a quiet label. */
+
+.pbn-deal__trick--complete .pbn-deal__trick-title {
+  margin-bottom: 0.3rem;
+  padding: 0.1rem 0.3rem;
+  background: var(--yellow);
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+
+.trick-table {
+  display: grid;
+  grid-template-areas:
+    '. north .'
+    'west center east'
+    '. south .';
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  width: min(100%, 15rem);
+  margin: 0 auto;
+  gap: 0.15rem;
+}
+
+.trick-slot {
+  display: grid;
+  min-height: 1.35rem;
+  padding: 0.05rem;
+  border: 1px dashed transparent;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  place-items: center;
+}
+
+.trick-slot--north {
+  grid-area: north;
+}
+
+.trick-slot--west {
+  grid-area: west;
+}
+
+.trick-slot--east {
+  grid-area: east;
+}
+
+.trick-slot--south {
+  grid-area: south;
+}
+
+.trick-slot--center {
+  grid-area: center;
+  min-height: 2.7rem;
+}
+
+.trick-slot--winner {
+  background: var(--yellow);
+  border-color: var(--ink);
+}
+
+/* Whose turn it is ------------------------------------------------------- */
+
+/* A compass in the middle of the trick table. The needle swings to the seat
+   that plays next and the letter names it, so the center of the table always
+   answers "whose turn is it?" — with or without cards in the trick. */
+
+.pbn-deal__turn {
+  position: relative;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  box-shadow: 0 2px 0 rgba(8, 5, 24, 0.45);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  font-weight: bold;
+  line-height: 1;
+  place-items: center;
+}
+
+.pbn-deal__turn[hidden] {
+  display: none;
+}
+
+.pbn-deal__turn-needle {
+  position: absolute;
+  inset: 0;
+  transform: rotate(var(--turn-angle, 0deg));
+  transition: transform 220ms ease-out;
+}
+
+.pbn-deal__turn-needle::before {
+  content: '';
+  position: absolute;
+  top: -0.82rem;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 0.34rem solid transparent;
+  border-bottom: 0.42rem solid var(--ink);
+  transform: translateX(-50%);
+}
+
+.pbn-deal__turn-needle::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 2px;
+  height: 0.42rem;
+  margin-left: -1px;
+  background: var(--ink);
+}
+
+/* The hand that has to play next is outlined in the same yellow, so the eye
+   can jump straight from the badge to the cards. */
+
+.deal-seat--turn {
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+.card-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.06em;
+  padding: 0 0.12em;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: bold;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.card-chip--red {
+  color: #b3122b;
+}
+
+.card-chip .suit {
+  font-size: 0.9em;
+}
+
+/* Collected tricks ------------------------------------------------------- */
+
+.pbn-deal .pbn-deal__tricks {
+  display: flex;
+  flex-wrap: wrap;
+  grid-area: tricks;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem 0;
+  margin: 0;
+  padding: 0.35rem 0 0.1rem;
+  list-style: none;
+}
+
+.pbn-deal .pbn-deal__tricks[hidden] {
+  display: none;
+}
+
+/* One face-down card per trick: the other three cards of the trick sit
+   directly beneath it, and each trick overlaps the one to its left. N–S
+   tricks lie upright, E–W tricks lie on their side, so the two sides can be
+   told apart and counted. */
+
+.pbn-deal .trick-pile {
+  position: relative;
+  flex: 0 0 auto;
+  width: 1.05rem;
+  height: 1.45rem;
+  margin: 0;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  box-shadow: 1px 1px 0 rgba(8, 5, 24, 0.45);
+}
+
+.pbn-deal .trick-pile--ew {
+  width: 1.45rem;
+  height: 1.05rem;
+}
+
+.pbn-deal .trick-pile + .trick-pile {
+  margin-left: -0.42rem;
+}
+
+.trick-pile::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.16) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.16) 0 1px, transparent 1px 3px),
+    linear-gradient(160deg, #5a3080, #351b55);
+  border: 1px solid #24103c;
+}
+
 @media (max-width: 680px) {
   .pbn-deal {
     grid-template-areas:
+      'toolbar toolbar'
+      'status status'
       'north north'
       'west east'
-      'auction auction'
-      'south south';
+      'center center'
+      'south south'
+      'tricks tricks';
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -1741,11 +2166,14 @@ main {
 @media (max-width: 440px) {
   .pbn-deal {
     grid-template-areas:
+      'toolbar'
+      'status'
       'north'
       'east'
+      'center'
       'south'
       'west'
-      'auction';
+      'tricks';
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -2644,6 +3072,20 @@ main {
     break-inside: avoid;
   }
 
+  .pbn-deal__toolbar,
+  .pbn-deal__status,
+  .pbn-deal__trick {
+    display: none !important;
+  }
+
+  .pbn-deal .trick-pile {
+    box-shadow: none;
+  }
+
+  .deal-toggle[aria-pressed='true'] {
+    background: #ffe14d;
+  }
+
   .deal-seat,
   .pbn-deal__auction {
     box-shadow: none;
@@ -2657,6 +3099,10 @@ main {
   .deal-seat__suit--fit,
   .deal-seat--leader .deal-seat__head {
     background: #ffe14d;
+  }
+
+  .deal-seat--turn {
+    outline: none;
   }
 
   body.session-page .session th,
