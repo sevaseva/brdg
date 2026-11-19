@@ -2281,22 +2281,28 @@ main {
   line-height: 1.25;
 }
 
+/* In the study sequence the title is the link to the notes, so it carries the
+   size and the underline that used to belong to a separate button. */
+.study-step .study-step__title {
+  font-size: 1.35rem;
+}
+
+.study-step__title a {
+  color: inherit;
+}
+
+.study-step__title a:hover,
+.study-step__title a:focus-visible {
+  color: #5b1b6b;
+  text-decoration-color: currentColor;
+}
+
 .study-step__links {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.6rem;
   margin: 0.9rem 0 0;
-}
-
-.study-step__permalink {
-  margin: 0.4rem 0 0;
-  color: #4a3b5e;
-  font-size: 0.82rem;
-}
-
-.study-step__permalink a {
-  color: #0b4fa8;
 }
 
 /* --------------------------------------------------------------------------

@@ -109,8 +109,11 @@ explicit `canonical:` in front matter still wins), and builds the absolute URL w
 first. It loops over `site.sessions` sorted newest-first, so the latest session is at the top, and
 puts the prep page `s/prep.html` (`/s/prep/`) at the bottom. That ordering is deliberate: read down
 from the top for a refresher, or start at the bottom and work up to go through everything from the
-beginning. Each session links both its short `/s/N/` address and its dated `/s/YYYY-MM-DD/` address.
-The list is plain Liquid, not a collection document, so it needs no per-session edit.
+beginning. Each card is a date, a title, and one line about the session; the title itself is the
+link, so there is one name and one tab stop per card. Sessions link their short `/s/N/` address
+only. The dated `/s/YYYY-MM-DD/` addresses are still published and canonicalized for old links and
+search, but the study hall does not list them. The list is plain Liquid, not a collection document,
+so it needs no per-session edit.
 
 The bidding system is deliberately off that ladder. `bidding/sayc.html` (`/bidding/sayc/`) holds the
 two ACBL SAYC booklets — one laid out for Letter paper, one for printing as a booklet — and is where

@@ -43,35 +43,25 @@ permalink: /s/
 
     <ol class="study-sequence">
       {% assign sessions = site.sessions | sort: 'date' | reverse %} {% for session in sessions %}
-      {% assign session_date = session.date | date: '%Y-%m-%d' %}
       <li class="study-step">
         <p class="study-step__kicker">{{ session.date | date: '%B %-d, %Y' }}</p>
-        <h3 class="study-step__title">{{ session.title }}</h3>
+        <h3 class="study-step__title">
+          <a href="{{ '/s/' | append: session.session | append: '/' | relative_url }}"
+            >{{ session.title }}</a
+          >
+        </h3>
         <p>{{ session.description }}</p>
-        <p class="study-step__links">
-          <a
-            class="button"
-            href="{{ '/s/' | append: session.session | append: '/' | relative_url }}"
-            >Read the notes →</a
-          >
-        </p>
-        <p class="study-step__permalink">
-          Also at <a href="{{ '/s/' | append: session_date | append: '/' | relative_url }}"
-            >/s/{{ session_date }}/</a
-          >
-        </p>
       </li>
       {% endfor %}
 
       <li class="study-step" id="start">
         <p class="study-step__kicker">Before your first session</p>
-        <h3 class="study-step__title">Start here: the prep videos</h3>
+        <h3 class="study-step__title">
+          <a href="{{ '/s/prep/' | relative_url }}">Start here: preparatory videos</a>
+        </h3>
         <p>
           Three short videos on the mechanics of the game: who deals, who bids, and what a trick
           actually is. No experience needed, no homework, no cards.
-        </p>
-        <p class="study-step__links">
-          <a class="button" href="{{ '/s/prep/' | relative_url }}">Watch the prep videos →</a>
         </p>
       </li>
     </ol>
