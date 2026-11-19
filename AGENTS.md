@@ -78,7 +78,7 @@ Session notes are Markdown files in `_sessions/`, named for the date of the sess
 session: 1
 date: 2026-11-12
 title: Session 1
-description: A one-line description for the page metadata.
+description: What the session covered, in one line.
 ---
 ```
 
@@ -97,7 +97,8 @@ Neither thin page repeats the `description`. For a page with `session` front mat
 `_layouts/default.html` looks up the collection document with the same `session` number and uses its
 `description` for `<meta name="description">`, so the study-hall card and the page metadata cannot
 drift apart. An explicit `description` on a page still wins over that lookup, which is how every
-non-session page supplies one.
+non-session page supplies one. The value is YAML, so keep it on one line and quote it if it contains
+a colon: an unquoted `: ` makes Jekyll fail to read the whole front matter.
 
 Every session page carries `<link rel="canonical">` pointing at `/s/N/`, so search engines fold the
 dated URL into the short one. The layout derives it from the page's `session` front matter (an
