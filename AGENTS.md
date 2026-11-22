@@ -347,11 +347,13 @@ detail. When in doubt about a number or a rule, the study pages win.
   mislead.
 - All images must be original files committed to the repo. Do not hotlink images or add copyrighted
   artwork.
-- There are currently no analytics, no trackers, no external fonts, no CDNs, and no third-party
-  embeds (exceptions: the `/s/prep/` videos, the movie-night trailer player, which only loads after
-  a click, the night-hike page's live weather/air fetches described in [NIGHT.md](NIGHT.md), and the
-  SAYC page's links to the ACBL booklets, which are ordinary outward links rather than embeds).
-  Those can be added/used but do check explicitly with the human/operator before introducing them.
+- The Google tag (container `GTM-THD9FN5N`) is loaded on every page through `_layouts/default.html`
+  and `intro.html`. Aside from that, there are no other analytics, trackers, external fonts, CDNs,
+  or third-party embeds (exceptions: the `/s/prep/` videos, the movie-night trailer player, which
+  only loads after a click, the night-hike page's live weather/air fetches described in
+  [NIGHT.md](NIGHT.md), and the SAYC page's links to the ACBL booklets, which are ordinary outward
+  links rather than embeds). New trackers or embeds need explicit approval from the human/operator
+  before they are added.
 - Keep the site accessible: meaningful `alt` text, semantic headings, visible focus styles,
   reduced-motion support, and readable contrast.
 - Write in American English, including in code comments and generated copy: _organize_, _color_,
