@@ -332,9 +332,8 @@ The site deliberately mixes three kinds of content. Match the writing to the kin
   and a small note points to the study hall for the real thing. The word **meeting** fits the
   fiction better here; keep the homepage light.
 - **The night-hike almanac** — `/night-hikes/`. Unrelated to bridge and included purely for fun, but
-  the data on it is real: the almanac, sky panels, weather, air quality, and aurora forecasts are
-  computed from actual sources. Joke in the prose, never in the numbers. Details are in
-  [NIGHT.md](NIGHT.md).
+  the data on it is real: the almanac, sky panels, weather, and air quality are computed from actual
+  sources. Joke in the prose, never in the numbers. Details are in [NIGHT.md](NIGHT.md).
 
 When a page crosses zones — a homepage joke that links into the study hall, or a session note that
 mentions the club — keep the fiction in the club's voice and let the study page carry the accurate
@@ -350,10 +349,9 @@ detail. When in doubt about a number or a rule, the study pages win.
   artwork.
 - There are currently no analytics, no trackers, no external fonts, no CDNs, and no third-party
   embeds (exceptions: the `/s/prep/` videos, the movie-night trailer player, which only loads after
-  a click, the night-hike page's live weather/air/aurora fetches described in [NIGHT.md](NIGHT.md),
-  and the SAYC page's links to the ACBL booklets, which are ordinary outward links rather than
-  embeds). Those can be added/used but do check explicitly with the human/operator before
-  introducing them.
+  a click, the night-hike page's live weather/air fetches described in [NIGHT.md](NIGHT.md), and the
+  SAYC page's links to the ACBL booklets, which are ordinary outward links rather than embeds).
+  Those can be added/used but do check explicitly with the human/operator before introducing them.
 - Keep the site accessible: meaningful `alt` text, semantic headings, visible focus styles,
   reduced-motion support, and readable contrast.
 - Write in American English, including in code comments and generated copy: _organize_, _color_,

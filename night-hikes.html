@@ -6,6 +6,7 @@ description:
   unofficial almanac.
 permalink: /night-hikes/
 scripts:
+  - /assets/js/night-hikes-weather.js
   - /assets/js/night-hikes.js
   - /assets/js/night-hikes-conditions.js
 ---
@@ -28,7 +29,8 @@ scripts:
           actually real and — let's hike at night!
         </p>
         <p>
-          Below are the good night hiking events in Cobb for the
+          Not every night is fun to hike, sometimes it's just dark. Below are the good night hiking
+          events in Cobb for the
           <strong><span data-night-hike-window>next two weeks</span></strong>, according to the club's
           volunteer almanac. A night makes the list if at least one of these is true:
         </p>
@@ -60,7 +62,10 @@ scripts:
         </ul>
         <p class="small">
           Planets, moon-washed meteors, and other interesting sights are noted on the cards even when
-          they are not the reason a night made the list. All times are Cobb local time (Pacific).
+          they are not the reason a night made the list. The weather data on each card is there to
+          help you pack, not to gate the list. Weather values are colored green (good), yellow
+          (fair), or red (poor) for a night out. Steadiness and clarity are 1–8 scales where lower is
+          better. All times are Cobb local time (Pacific).
         </p>
       </div>
 
@@ -124,14 +129,13 @@ scripts:
       aria-live="polite"
     >
       <h3>Live conditions</h3>
-      <p class="small">Checking weather, air, and the aurora forecast…</p>
+      <p class="small">Checking weather and air quality…</p>
     </div>
 
     <p class="small sky-credit">
-      Live weather and air quality come from <a href="https://open-meteo.com/">Open-Meteo</a>;
-      the aurora forecast from <a href="https://www.swpc.noaa.gov/">NOAA SWPC</a>; sky steadiness from
-      <a href="https://www.7timer.info/">7Timer</a>. Sky positions are calculated for Cobb. Satellite
-      pass times are estimates, not live measurements.
+      Live weather and air quality come from <a href="https://open-meteo.com/">Open-Meteo</a>; sky
+      steadiness from <a href="https://www.7timer.info/">7Timer</a>. Sky positions are calculated for
+      Cobb. Satellite pass times are estimates, not live measurements.
     </p>
   </div>
 </section>

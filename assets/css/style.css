@@ -1062,6 +1062,7 @@ main {
 }
 
 .night-hike__stats dt {
+  position: relative;
   color: #5c4a72;
   font-family: var(--font-ui);
   font-size: 0.62rem;
@@ -1074,6 +1075,133 @@ main {
   margin: 0.1rem 0 0;
   font-size: 0.92rem;
   font-weight: bold;
+}
+
+.night-hike__weather {
+  margin-top: 0.9rem;
+  padding: 0.7rem 0.8rem;
+  background: #eef4ff;
+  border: 2px solid #465b86;
+  box-shadow: 3px 3px 0 #c4d2ea;
+}
+
+.night-hike__weather h4 {
+  margin: 0 0 0.35rem;
+  color: #24365e;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.night-hike__weather-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+.night-hike__weather-table th,
+.night-hike__weather-table td {
+  padding: 0.22rem 0.3rem;
+  border-bottom: 1px dotted #b8c7e4;
+  text-align: left;
+  vertical-align: top;
+}
+
+.night-hike__weather-table thead th {
+  color: #3c4f78;
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.night-hike__weather-table tbody th {
+  position: relative;
+  color: #3c4f78;
+  font-family: var(--font-ui);
+  font-size: 0.66rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.night-hike__weather-table td {
+  font-weight: bold;
+}
+
+.weather-tone--good {
+  color: #0b6b3a;
+}
+
+.weather-tone--fair {
+  color: #8a5a00;
+}
+
+.weather-tone--bad {
+  color: #a11b1b;
+}
+
+.info-help {
+  display: inline-grid;
+  place-items: center;
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-left: 0.2rem;
+  padding: 0;
+  border: 1px solid #3c4f78;
+  border-radius: 50%;
+  background: #fff;
+  color: #24365e;
+  font: inherit;
+  font-size: 0.58rem;
+  font-weight: bold;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  vertical-align: middle;
+  cursor: help;
+}
+
+.info-help:focus-visible {
+  outline: 2px solid #24365e;
+  outline-offset: 1px;
+}
+
+.info-help__tip {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 0.3rem);
+  left: 0;
+  width: min(16rem, 78vw);
+  padding: 0.45rem 0.55rem;
+  background: #fffbe6;
+  border: 2px solid #3c4f78;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+  color: #24365e;
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-height: 1.35;
+  text-transform: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 120ms ease;
+  pointer-events: none;
+}
+
+.night-hike__stats .info-help__tip,
+.sky-stats .info-help__tip {
+  left: auto;
+  right: 0;
+}
+
+.info-help:hover + .info-help__tip,
+.info-help:focus-visible + .info-help__tip,
+.info-help[aria-expanded='true'] + .info-help__tip {
+  visibility: visible;
+  opacity: 1;
 }
 
 .night-hikes__more {
@@ -1180,6 +1308,7 @@ main {
 }
 
 .sky-stats dt {
+  position: relative;
   color: #5c4a72;
   font-family: var(--font-ui);
   font-size: 0.62rem;
@@ -3822,6 +3951,23 @@ main {
 
   .night-hike__stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .night-hike__weather-table {
+    font-size: 0.76rem;
+  }
+
+  .night-hike__weather-table th,
+  .night-hike__weather-table td {
+    padding: 0.2rem 0.15rem;
+  }
+
+  .night-hike__weather-table tbody th {
+    font-size: 0.62rem;
+  }
+
+  .info-help__tip {
+    width: min(14rem, 60vw);
   }
 
   .night-hike__rank {

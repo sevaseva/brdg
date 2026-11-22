@@ -11,6 +11,34 @@
   const source = root.getAttribute('data-src');
   const defaultTimeZone = 'America/Los_Angeles';
   const defaultWindowDays = 14;
+  const RIDGE_HELP =
+    'When the sun drops behind Cobb Mountain as seen from The Shed, often earlier than the open-sky sunset.';
+
+  function closeWeatherHelp() {
+    for (const button of root.querySelectorAll('.info-help[aria-expanded="true"]')) {
+      button.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  document.addEventListener('click', (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    const button = target ? target.closest('.info-help') : null;
+
+    if (!button) {
+      closeWeatherHelp();
+      return;
+    }
+
+    const expanded = button.getAttribute('aria-expanded') === 'true';
+    closeWeatherHelp();
+    button.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeWeatherHelp();
+    }
+  });
 
   function localDateString(date, timeZone) {
     const parts = new Intl.DateTimeFormat('en-US', {
@@ -147,16 +175,173 @@
     return item;
   }
 
-  function createStat(term, description) {
+  function createStat(term, description, help) {
     const wrapper = document.createElement('div');
     const dt = document.createElement('dt');
     const dd = document.createElement('dd');
 
     dt.textContent = term;
+
+    if (help) {
+      appendInfoHelp(dt, term, help.text, help.id);
+    }
+
     dd.textContent = description;
     wrapper.append(dt, dd);
 
     return wrapper;
+  }
+
+  const WEATHER_ROWS = [
+    ['temperature', 'Temperature'],
+    ['cloud', 'Cloud'],
+    ['wind', 'Wind'],
+    ['precipitation', 'Precipitation'],
+    ['visibility', 'Visibility'],
+  ];
+
+  const WEATHER_HELP = {
+    steadiness:
+      'Atmospheric steadiness: lower numbers mean calmer air and sharper stars, planets, and lunar detail.',
+    clarity:
+      'Atmospheric clarity: lower numbers mean less haze and better views of faint objects like the Milky Way.',
+  };
+
+  function appendInfoHelp(container, label, help, id) {
+    const button = el('button', 'info-help');
+    button.type = 'button';
+    button.setAttribute('aria-label', `About ${label.toLowerCase()}`);
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-describedby', id);
+
+    const mark = el('span', null, '?');
+    mark.setAttribute('aria-hidden', 'true');
+    button.append(mark);
+
+    const tip = el('span', 'info-help__tip', help);
+    tip.id = id;
+    tip.setAttribute('role', 'tooltip');
+
+    container.append(button, tip);
+  }
+
+  function createWeatherRowHeader(label, help, id) {
+    const th = document.createElement('th');
+    th.scope = 'row';
+    th.append(el('span', null, label));
+
+    if (help) {
+      appendInfoHelp(th, label, help, id);
+    }
+
+    return th;
+  }
+
+  function createWeatherCell(cell) {
+    const td = document.createElement('td');
+
+    if (!cell) {
+      td.textContent = '—';
+
+      return td;
+    }
+
+    if (cell.tone) {
+      td.className = `weather-tone--${cell.tone}`;
+      td.append(el('span', 'visually-hidden', `${cell.tone}: `));
+    }
+
+    td.append(document.createTextNode(cell.text));
+
+    return td;
+  }
+
+  function createWeather(event) {
+    const weather = event.weather || {};
+    const sky = event.skyQuality || {};
+    const air = event.air || {};
+    const columns = [
+      ['sunset', (weather.sunset && weather.sunset.label) || 'Sunset'],
+      ['ten', (weather.ten && weather.ten.label) || '10 PM'],
+    ];
+    const rows = [];
+
+    for (const [key, label] of WEATHER_ROWS) {
+      const values = columns.map(([time]) => (weather[time] ? weather[time][key] || null : null));
+
+      if (values.some(Boolean)) {
+        rows.push({ label, values });
+      }
+    }
+
+    if (event.skyQuality) {
+      for (const [key, label] of [
+        ['steadiness', 'Steadiness'],
+        ['clarity', 'Clarity'],
+      ]) {
+        const values = columns.map(([time]) => (sky[time] ? sky[time][key] || null : null));
+
+        if (values.some(Boolean)) {
+          rows.push({
+            label,
+            values,
+            help: WEATHER_HELP[key],
+            id: `night-hike-weather-${event.date}-${key}`,
+          });
+        }
+      }
+    }
+
+    if (event.air) {
+      const values = columns.map(([time]) => air[time] || null);
+
+      if (values.some(Boolean)) {
+        rows.push({ label: 'Smoke', values });
+      }
+    }
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    const block = el('div', 'night-hike__weather');
+
+    block.append(el('h4', null, 'Weather'));
+
+    const table = el('table', 'night-hike__weather-table');
+    const thead = document.createElement('thead');
+    const headRow = document.createElement('tr');
+    const condition = el('th');
+    condition.scope = 'col';
+    condition.append(el('span', 'visually-hidden', 'Condition'));
+    headRow.append(condition);
+
+    for (const [, label] of columns) {
+      const th = el('th', null, label);
+      th.scope = 'col';
+      headRow.append(th);
+    }
+
+    thead.append(headRow);
+
+    const tbody = document.createElement('tbody');
+
+    for (const row of rows) {
+      const tr = document.createElement('tr');
+      const th = createWeatherRowHeader(row.label, row.help, row.id);
+      tr.append(th);
+
+      for (const cell of row.values) {
+        tr.append(createWeatherCell(cell));
+      }
+
+      tbody.append(tr);
+    }
+
+    table.append(thead, tbody);
+    block.append(table);
+
+    return block;
   }
 
   function el(tag, className, text) {
@@ -173,8 +358,8 @@
     return node;
   }
 
-  function appendStat(list, term, value) {
-    list.append(createStat(term, value));
+  function appendStat(list, term, value, help) {
+    list.append(createStat(term, value, help));
   }
 
   function appendStrongLine(parent, strongText, rest) {
@@ -253,7 +438,10 @@
     const stats = el('dl', 'sky-stats');
     appendStat(stats, 'Sunset', formatTime(day.sunset, timeZone));
     if (day.sunsetRidge) {
-      appendStat(stats, 'Behind the ridge', formatTime(day.sunsetRidge, timeZone));
+      appendStat(stats, 'Behind Cobb Mt', formatTime(day.sunsetRidge, timeZone), {
+        text: RIDGE_HELP,
+        id: 'night-hike-tonight-ridge',
+      });
     }
     appendStat(
       stats,
@@ -546,7 +734,7 @@
     }
 
     const days = Array.isArray(sky.days) ? sky.days : [];
-    const day = days.find((entry) => entry.date === today) || days[0];
+    const day = days.find((entry) => entry.date === today) || null;
     const tonight = document.querySelector('[data-night-tonight]');
     const targets = document.querySelector('[data-night-targets]');
     const ahead = document.querySelector('[data-night-ahead]');
@@ -572,6 +760,7 @@
   function createCard(event, index, timeZone, today) {
     const article = document.createElement('article');
     article.className = 'night-hike';
+    article.dataset.date = event.date;
 
     const titleId = `night-hike-${index + 1}-title`;
     article.setAttribute('aria-labelledby', titleId);
@@ -646,7 +835,12 @@
     const statItems = [createStat('Sunset', formatTime(event.sunset, timeZone))];
 
     if (event.sunsetRidge) {
-      statItems.push(createStat('Behind the ridge', formatTime(event.sunsetRidge, timeZone)));
+      statItems.push(
+        createStat('Behind Cobb Mt', formatTime(event.sunsetRidge, timeZone), {
+          text: RIDGE_HELP,
+          id: `night-hike-${event.date}-ridge`,
+        }),
+      );
     }
 
     statItems.push(
@@ -662,9 +856,144 @@
     }
 
     body.append(stats);
+
+    const weather = createWeather(event);
+
+    if (weather) {
+      body.append(weather);
+    }
+
     article.append(rank, body);
 
     return article;
+  }
+
+  const WEATHER_REFRESH_MS = 24 * 60 * 60 * 1000;
+
+  function daysBetween(later, earlier) {
+    return Math.round(
+      (Date.parse(`${later}T00:00:00Z`) - Date.parse(`${earlier}T00:00:00Z`)) /
+        (24 * 60 * 60 * 1000),
+    );
+  }
+
+  async function fetchJson(url) {
+    const response = await fetch(url, { signal: AbortSignal.timeout(12000) });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  function refreshWeather(data, events, timeZone) {
+    const core = window.NightHikeWeather;
+
+    if (!core || events.length === 0 || !data.location) {
+      return;
+    }
+
+    const fetchedAt =
+      data.weather && data.weather.fetchedAt ? Date.parse(data.weather.fetchedAt) : NaN;
+    const stale = !Number.isFinite(fetchedAt) || Date.now() - fetchedAt > WEATHER_REFRESH_MS;
+    const today = localDateString(new Date(), timeZone);
+    const missing = events.some((event) => {
+      const days = daysBetween(event.date, today);
+
+      return !event.weather || (days >= 0 && days < 3 && !event.air);
+    });
+
+    if (!stale && !missing) {
+      return;
+    }
+
+    Promise.allSettled([
+      fetchJson(core.buildWeatherUrl(data.location)),
+      fetchJson(core.buildAirUrl(data.location)),
+    ]).then(([weatherResult, airResult]) => {
+      let weatherUpdated = false;
+      let airUpdated = false;
+
+      if (weatherResult.status === 'fulfilled') {
+        const hours = core.parseWeatherJson(weatherResult.value);
+
+        if (hours) {
+          for (const event of events) {
+            const weather = core.eveningWeather(hours, event, timeZone);
+
+            if (weather) {
+              event.weather = weather;
+              weatherUpdated = true;
+            }
+          }
+        }
+      }
+
+      if (airResult.status === 'fulfilled') {
+        const hours = core.parseAirJson(airResult.value);
+
+        if (hours) {
+          airUpdated = true;
+
+          for (const event of events) {
+            const days = daysBetween(event.date, today);
+
+            if (days >= 0 && days < 3) {
+              const air = core.airForEvening(hours, event);
+
+              if (air) {
+                event.air = air;
+              }
+            } else {
+              delete event.air;
+            }
+          }
+        }
+      }
+
+      for (const event of events) {
+        const article = root.querySelector(`article.night-hike[data-date="${event.date}"]`);
+
+        if (!article) {
+          continue;
+        }
+
+        const previous = article.querySelector('.night-hike__weather');
+        const fresh = createWeather(event);
+
+        if (fresh) {
+          if (previous) {
+            previous.replaceWith(fresh);
+          } else {
+            const body = article.querySelector('.night-hike__body');
+
+            if (body) {
+              body.append(fresh);
+            }
+          }
+        } else if (previous) {
+          previous.remove();
+        }
+      }
+
+      if (weatherUpdated || airUpdated) {
+        const note = root.querySelector('.night-hikes__weather-note');
+
+        if (note) {
+          if (weatherUpdated && airUpdated) {
+            note.textContent =
+              'Weather and smoke refreshed just now. Steadiness and clarity are from the chart build.';
+          } else if (weatherUpdated) {
+            note.textContent =
+              'Weather refreshed just now. Steadiness, clarity, and smoke are from the chart build.';
+          } else {
+            note.textContent =
+              'Smoke refreshed just now. Weather, steadiness, and clarity are from the chart build.';
+          }
+        }
+      }
+    });
   }
 
   function showError(title, message, details) {
@@ -782,6 +1111,24 @@
       }
 
       root.append(list);
+
+      const weatherNote = document.createElement('p');
+      weatherNote.className = 'night-hikes__more night-hikes__weather-note';
+
+      if (data.weather && data.weather.fetchedAt) {
+        weatherNote.textContent =
+          'Weather, steadiness, clarity, and smoke come from the chart build; the live conditions panel has the latest numbers.';
+      } else if (data.air && data.air.fetchedAt) {
+        weatherNote.textContent =
+          'Steadiness, clarity, and smoke come from the chart build; the live conditions panel has the latest numbers.';
+      } else {
+        weatherNote.textContent =
+          'No card forecast was available when this chart was built; the live conditions panel has the latest numbers.';
+      }
+
+      root.append(weatherNote);
+
+      refreshWeather(data, shown, timeZone);
     }
   }
 

@@ -2,9 +2,9 @@
  * Live conditions for the night-hike page.
  *
  * This is deliberately a browser-side fetch: the page is static, and weather
- * changes far faster than the almanac build. Open-Meteo and NOAA both
- * allow cross-origin reads and neither needs a key. If a request fails the
- * page says so instead of inventing a number.
+ * changes far faster than the almanac build. Open-Meteo allows cross-origin
+ * reads and needs no key. If a request fails the page says so instead of
+ * inventing a number.
  */
 (() => {
   'use strict';
@@ -99,18 +99,6 @@
     return 'very poor';
   }
 
-  function kpLabel(value) {
-    if (value >= 7) {
-      return 'possible at Cobb if the northern horizon is dark and clear';
-    }
-
-    if (value >= 5) {
-      return 'unlikely at Cobb, but worth a glance north';
-    }
-
-    return 'unlikely at Cobb';
-  }
-
   async function getWeather() {
     const url = new URL('https://api.open-meteo.com/v1/forecast');
     url.search = new URLSearchParams({
@@ -149,20 +137,7 @@
     return response.json();
   }
 
-  async function getAurora() {
-    const response = await fetch(
-      'https://services.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json',
-      { signal: AbortSignal.timeout(12000) },
-    );
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-
-    return response.json();
-  }
-
-  function render(weather, air, aurora) {
+  function render(weather, air) {
     root.replaceChildren();
     root.append(el('h3', null, 'Live conditions'));
 
@@ -195,30 +170,14 @@
       stat(list, 'Smoke', 'unavailable right now');
     }
 
-    if (aurora) {
-      const now = Date.now();
-      const upcoming = aurora
-        .filter((entry) => {
-          const time = Date.parse(`${entry.time_tag}Z`);
-
-          return time >= now - 60 * 60 * 1000 && time <= now + 12 * 60 * 60 * 1000;
-        })
-        .map((entry) => Number(entry.kp));
-      const maxKp = upcoming.length > 0 ? Math.max(...upcoming) : null;
-
-      stat(list, 'Aurora', maxKp === null ? 'no forecast available' : capitalized(kpLabel(maxKp)));
-    } else {
-      stat(list, 'Aurora', 'unavailable right now');
-    }
-
     root.append(list);
 
     const credit = el(
       'p',
       'small',
       updated
-        ? `Weather and air quality for ${updated.replace('T', ' ')} Cobb local. Sources: Open-Meteo and NOAA SWPC. These update when the page loads, so the numbers can differ from the almanac's sky.`
-        : 'Live weather and the aurora forecast could not be fetched. Check your favorite forecast before heading out.',
+        ? `Weather and air quality for ${updated.replace('T', ' ')} Cobb local. Source: Open-Meteo. These update when the page loads, so the numbers can differ from the almanac's sky.`
+        : 'Live weather and air quality could not be fetched. Check your favorite forecast before heading out.',
     );
     root.append(credit);
 
@@ -234,12 +193,11 @@
   }
 
   async function load() {
-    const results = await Promise.allSettled([getWeather(), getAirQuality(), getAurora()]);
+    const results = await Promise.allSettled([getWeather(), getAirQuality()]);
 
     render(
       results[0].status === 'fulfilled' ? results[0].value : null,
       results[1].status === 'fulfilled' ? results[1].value : null,
-      results[2].status === 'fulfilled' ? results[2].value : null,
     );
   }
 

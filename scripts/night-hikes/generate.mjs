@@ -36,6 +36,13 @@ import {
 } from './sky.mjs';
 import { buildSkyExtras } from './sky-extras.mjs';
 import { buildFeatures, buildReasons } from './conditions.mjs';
+import {
+  airForEvening,
+  eveningWeather,
+  fetchAirQualityForecast,
+  fetchWeatherForecast,
+  skyQualityFor,
+} from './weather.mjs';
 import { addDays, dayDifference, localDateString, parseClock, zonedTimeToUtc } from './time.mjs';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
@@ -362,6 +369,73 @@ async function main() {
     events.push({ ...record, reasons, features });
   }
 
+  const seeingSeries =
+    sky && sky.seeing && Array.isArray(sky.seeing.series) ? sky.seeing.series : [];
+
+  // Weather never decides whether a night qualifies; it only decorates the
+  // cards that do. A failed fetch leaves the chart intact.
+  let weatherMeta = null;
+  let airMeta = null;
+
+  const [weatherResult, airResult] = await Promise.allSettled([
+    fetchWeatherForecast(config.location, timezone),
+    fetchAirQualityForecast(config.location, timezone),
+  ]);
+
+  if (weatherResult.status === 'fulfilled') {
+    const forecast = weatherResult.value;
+
+    weatherMeta = {
+      source: forecast.source,
+      fetchedAt: forecast.fetchedAt,
+      forecastThrough: forecast.forecastThrough,
+    };
+
+    for (const event of events) {
+      const weather = eveningWeather(forecast, event, timezone);
+
+      if (weather !== null) {
+        event.weather = weather;
+      }
+    }
+  } else {
+    console.warn(`Evening weather forecast unavailable: ${weatherResult.reason.message}`);
+  }
+
+  if (airResult.status === 'fulfilled') {
+    const forecast = airResult.value;
+
+    airMeta = {
+      source: forecast.source,
+      fetchedAt: forecast.fetchedAt,
+      forecastThrough: forecast.forecastThrough,
+    };
+
+    for (const event of events) {
+      const daysFromStart = dayDifference(event.date, startDate);
+
+      if (daysFromStart < 0 || daysFromStart >= 3) {
+        continue;
+      }
+
+      const air = airForEvening(forecast, event);
+
+      if (air !== null) {
+        event.air = air;
+      }
+    }
+  } else {
+    console.warn(`Air quality forecast unavailable: ${airResult.reason.message}`);
+  }
+
+  for (const event of events) {
+    const skyQuality = skyQualityFor(seeingSeries, event);
+
+    if (skyQuality !== null) {
+      event.skyQuality = skyQuality;
+    }
+  }
+
   const output = {
     generatedAt: new Date().toISOString(),
     generator: 'scripts/night-hikes/generate.mjs',
@@ -375,6 +449,8 @@ async function main() {
     display: {
       windowDays: config.displayWindowDays,
     },
+    weather: weatherMeta,
+    air: airMeta,
     range: {
       start: startDate,
       end: endDate,
@@ -395,6 +471,16 @@ async function main() {
   }
 
   console.log(`Qualifying nights: ${events.length}`);
+  console.log(
+    weatherMeta === null
+      ? 'Evening weather: unavailable (cards will say so)'
+      : `Evening weather: Open-Meteo through ${weatherMeta.forecastThrough}`,
+  );
+  console.log(
+    airMeta === null
+      ? 'Smoke forecast: unavailable'
+      : `Smoke forecast: Open-Meteo through ${airMeta.forecastThrough}`,
+  );
 
   for (const event of events.slice(0, 5)) {
     const reasons = event.reasons.map((reason) => reason.id).join(' + ');

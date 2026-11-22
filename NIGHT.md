@@ -9,16 +9,16 @@ The page is at `/night-hikes/` and has three layers:
 1. **The moonlight hiking almanac** — every good night in the next 14 days, generated at build time.
    The client chooses the window relative to the visitor's day, so the card count can vary.
 2. **The Rest of the Sky** — tonight's dark and moon-free windows, planets, deep-sky targets, and
-   live weather/air/aurora.
+   live weather and air quality.
 3. **Looking Ahead** — meteor showers, eclipses, conjunctions, dark-of-moon dates, satellites, and
    the club's curiosities.
 
 ## Build and deployment
 
-- The GitHub Actions workflow regenerates the 90-day almanac and the sky-steadiness forecast before
-  Jekyll runs: every three days at 08:17 UTC, and on every push. 7Timer covers 72 hours, so the
-  third evening can fall outside the forecast and the page then says no forecast is available. The
-  workflow installs Node 26 and runs `npm ci` first.
+- The GitHub Actions workflow regenerates the 90-day almanac, the sky-steadiness forecast, and the
+  card weather and smoke data before Jekyll runs: every three days at 08:17 UTC, and on every push.
+  7Timer covers 72 hours, so the third evening can fall outside the forecast and the page then says
+  no forecast is available. The workflow installs Node 26 and runs `npm ci` first.
 - `assets/data/night-hikes.json` is committed as a preview so a plain local `jekyll serve` has data
   even before the generator runs. CI overwrites it with a fresh chart; the committed copy is a
   fallback, not the source of truth.
@@ -33,12 +33,14 @@ The page is at `/night-hikes/` and has three layers:
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | `night-hikes.html`                    | Page shell and static copy; placeholders for the rendered almanac and sky panels.                                                    |
 | `assets/js/night-hikes.js`            | Fetches the JSON, picks the next nights in Cobb local time, renders the almanac and the sky panels.                                  |
-| `assets/js/night-hikes-conditions.js` | Fetches live weather, air quality, and the aurora forecast; degrades to "unavailable" when a request fails.                          |
+| `assets/js/night-hikes-conditions.js` | Fetches live weather and air quality; degrades to "unavailable" when a request fails.                                                |
 | `assets/data/night-hikes.json`        | Generated 90-day almanac, including the per-night `sky` payload.                                                                     |
 | `scripts/night-hikes/generate.mjs`    | Build-time generator: assembles each night's data, evaluates the conditions, and writes the JSON.                                    |
 | `scripts/night-hikes/conditions.mjs`  | The condition registry (what makes a night good) and the per-night features (what is merely interesting).                            |
 | `scripts/night-hikes/sky.mjs`         | Wrapper around Astronomy Engine: sun/moon rise, set, altitude, and phase.                                                            |
 | `scripts/night-hikes/sky-extras.mjs`  | Build-time extras: dark windows, Milky Way, planets, deep-sky targets, showers, eclipses, conjunctions, satellites, 7Timer forecast. |
+| `assets/js/night-hikes-weather.js`    | Shared compact weather shaper used by the browser and the generator.                                                                 |
+| `scripts/night-hikes/weather.mjs`     | Build-time Open-Meteo weather and air-quality fetch for the almanac cards.                                                           |
 | `scripts/night-hikes/horizon.json`    | Cached local ridge profile (azimuth → elevation angle) used for the "sun behind the ridge" time.                                     |
 | `scripts/night-hikes/time.mjs`        | Timezone helpers for Cobb local dates and UTC instants.                                                                              |
 | `scripts/night-hikes.config.json`     | Location, forecast length, display window, evening cutoff, full-moon window, and horizon definition.                                 |
@@ -106,6 +108,10 @@ The page-level `sky` payload also carries new moons, full-moon names, meteor sho
 altitude, moon interference, and a verdict), the next visible lunar and solar eclipses, close planet
 pairs, the zodiacal-light season, and satellites grouped by local date in `sky.satellites.byDate`.
 
+The “Tonight in Cobb” and “Things to point at” panels use only the record whose local date is
+exactly today. If the chart has no record for today, they say it is unavailable rather than showing
+yesterday's sky under a “Tonight” heading.
+
 ## Sunset behind the ridge
 
 The club's viewpoint is above Cobb at 38.8253° N, 122.7025° W, about 987 m. Cobb Mountain sits 4–5
@@ -118,7 +124,8 @@ The ridge profile lives in `horizon.json`: geometric horizon angle for azimuths 
 steps, sampled at 0.5–25 km from a 30 m elevation model and committed so the build has no
 terrain-data dependency. `sky-extras.mjs` interpolates the profile at the sun's azimuth and bisects
 for the crossing, allowing for refraction and the sun's radius. If the configured location moves
-more than about 100 m, the profile is ignored and the page falls back to the open-sky sunset.
+more than about 100 m, the profile is ignored and the page falls back to the open-sky sunset. The
+“Behind Cobb Mt” stat carries the same `?` tooltip pattern as the weather indices.
 
 ## Milky Way rules
 
@@ -159,15 +166,56 @@ invented.
   night. The panel shows the first few passes per satellite.
 - Sky steadiness and clarity come from the free 7Timer astronomy forecast, fetched at build time and
   stored as a 72-hour series in `sky.seeing`. The page picks the entry nearest 9 PM local for the
-  current day. If the build is old enough that today is outside the series, it says no forecast is
-  available rather than inventing one.
+  current day, and the cards use the nearest block to sunset and 10 PM. If the build is old enough
+  that today is outside the series, the page says no forecast is available rather than inventing
+  one.
+
+## Card weather
+
+Each almanac card carries a compact weather table with exactly two columns: **Sunset** and **10
+PM**. It is decoration, not a filter: weather never changes whether a night joins the list, and a
+failed fetch leaves the chart untouched. The block is data, not prose, so the same shaping code can
+run at build time and in the browser.
+
+Rows are temperature, cloud cover, wind (with gusts), precipitation, visibility, atmospheric
+steadiness, clarity, and smoke when available. Precipitation gives the chance and the hourly amount
+in inches per hour (`in/h`), using `0 in/h` when nothing is expected. Visibility is shown in miles.
+There is no weather column for moonrise.
+
+- **Steadiness** and **Clarity** come from 7Timer's 72-hour ASTRO series already stored in
+  `sky.seeing`. The generator takes the nearest three-hour block to each of the two column times.
+  The rows are omitted when the forecast does not reach that night; a single missing column shows
+  `—`. Each label carries a small `?` button: hover, keyboard focus, or tap opens a one-sentence
+  explanation, and Escape or a tap elsewhere closes it.
+- **Smoke** is reported as **Low**, **Moderate**, **High**, or **Very high**, derived from PM2.5 at
+  each column time from Open-Meteo's air-quality API. It appears only on the first three days; later
+  cards say nothing about air quality. The air-quality forecast covers seven days, so a three-day
+  display is safely inside it.
+- Every value is colored **green** (good), **yellow** (fair), or **red** (poor) for a night out:
+  - Temperature: 40–75°F green; 30–40°F and 75–80°F yellow; outside that red.
+  - Cloud: 0–25% green; 25–70% yellow; above 70% red.
+  - Wind: under 10 mph and gusts under 15 green; 10–20 mph or gusts 15–30 yellow; above 20 mph or
+    gusts above 30 red.
+  - Precipitation: no precipitation green (yellow when the chance is at least 30%); light snow up to
+    0.4 in green, 0.4–1.2 in yellow, above 1.2 in red; any rain, mixed precipitation, or storms red.
+  - Visibility: 6.2 mi or more green; 1.2–6.2 mi yellow; under 1.2 mi red.
+  - Steadiness and clarity: 1–3 green; 4–6 yellow; 7–8 red.
+  - Smoke: Low up to 12 µg/m³ green; Moderate 13–35 yellow; High and Very high above 35 red.
+- Open-Meteo's weather forecast covers 16 days, a little beyond the 14-day display window. If the
+  chart is older than 24 hours, or a displayed card is missing data, `night-hikes.js` fetches fresh
+  weather and smoke and replaces only the weather blocks. The baked JSON remains the fallback.
+  Steadiness and clarity stay build-time, and the note under the list says what came from the chart
+  build.
 
 ## Live conditions
 
 `assets/js/night-hikes-conditions.js` asks Open-Meteo for cloud cover, temperature, wind, rain
-chance, and PM2.5, and NOAA SWPC for the planetary K index. All three are free, CORS-enabled, and
-need no key or backend. Requests are independent: if one fails, that row says "unavailable right
-now" and the others still render. Nothing is cached or stored.
+chance, and PM2.5. The endpoints are free, CORS-enabled, and need no key or backend. Requests are
+independent: if one fails, that row says "unavailable right now" and the other still renders.
+Nothing is cached or stored.
+
+`assets/js/night-hikes.js` also refreshes stale card weather and smoke from Open-Meteo on page load,
+using the same endpoints.
 
 These are the only third-party requests the site makes at runtime apart from the `/intro` videos.
 Sky steadiness is fetched from 7Timer at build time, not at runtime.
@@ -196,10 +244,12 @@ node scripts/night-hikes/generate.mjs --start=2027-06-15 --days=90
 
 ```bash
 npm run generate:night-hikes
+node --check assets/js/night-hikes-weather.js
 node --check assets/js/night-hikes.js
 node --check assets/js/night-hikes-conditions.js
 node --check scripts/night-hikes/conditions.mjs
 node --check scripts/night-hikes/sky-extras.mjs
+node --check scripts/night-hikes/weather.mjs
 prettier --check "assets/**/*.{css,js}" "scripts/**/*.mjs" "scripts/**/*.json" "package.json" "*.md" "_config.yml"
 ```
 
@@ -215,5 +265,5 @@ machine-written and large. The full site check (Jekyll build, `tidy`, Prettier) 
   per-satellite summary, or its daily list for the panel. Do not present them as certain.
 - The almanac uses the MIT-licensed `astronomy-engine` and `satellite.js` at build time only, so no
   third-party JavaScript reaches the browser.
-- Live weather/air/aurora are the runtime third-party fetches; sky steadiness is fetched at build
-  time. Keep the fallbacks honest instead of inventing numbers.
+- Live weather and air quality are the runtime third-party fetches; sky steadiness is fetched at
+  build time. Keep the fallbacks honest instead of inventing numbers.
