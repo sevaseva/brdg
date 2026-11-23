@@ -50,15 +50,6 @@ function formatTime(instant, timeZone) {
   }).format(rounded(new Date(instant)));
 }
 
-function formatDay(localDate, timeZone) {
-  return new Intl.DateTimeFormat('en-US', {
-    timeZone,
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-  }).format(new Date(`${localDate}T12:00:00Z`));
-}
-
 function percent(value) {
   return Math.round(value * 100);
 }
@@ -285,12 +276,11 @@ const CONDITIONS = [
 
       if (day.fullMoon) {
         const difference = day.fullMoon.daysFromFullMoon;
-        const date = formatDay(day.fullMoon.localDate, timezone);
 
         facts.push(
           difference === 0
-            ? `This is the night of the full moon (${date}).`
-            : `This night is ${Math.abs(difference)} day${Math.abs(difference) === 1 ? '' : 's'} ${difference < 0 ? 'before' : 'after'} the full moon (${date}).`,
+            ? 'This is the night of the full moon.'
+            : `This night is ${Math.abs(difference)} day${Math.abs(difference) === 1 ? '' : 's'} ${difference < 0 ? 'before' : 'after'} the full moon.`,
         );
       }
 
