@@ -217,8 +217,8 @@ Nothing is cached or stored.
 `assets/js/night-hikes.js` also refreshes stale card weather and smoke from Open-Meteo on page load,
 using the same endpoints.
 
-Apart from the Google tag and the `/intro` videos, these are the only third-party requests the site
-makes at runtime. Sky steadiness is fetched from 7Timer at build time, not at runtime.
+Apart from the Google tag and the `/study/prep/` videos, these are the only third-party requests the
+site makes at runtime. Sky steadiness is fetched from 7Timer at build time, not at runtime.
 
 ## Local development
 

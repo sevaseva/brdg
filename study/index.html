@@ -1,0 +1,95 @@
+---
+layout: default
+title: Study Hall | Cobb Bridge Club
+description: >-
+  The club's learning materials, newest first: prep videos, notes from every session, and the
+  bidding system we're learning.
+permalink: /study/
+---
+
+<section class="panel" aria-labelledby="study-title">
+  <div class="panel__title">
+    <h2 id="study-title">★ The Study Hall</h2>
+    <span class="panel__buttons" aria-hidden="true"
+      ><span>_</span><span>□</span><span>×</span></span
+    >
+  </div>
+  <div class="panel__body">
+    <p class="lead">
+      This page collects the notes from every session for review, along with the rest of our
+      learning material. The newest sessions are at the top.
+    </p>
+
+    <div class="study-paths">
+      <div class="study-path">
+        <span class="study-path__arrow" aria-hidden="true">↓</span>
+        <p class="study-path__kicker">Just back from a session?</p>
+        <h3 class="study-path__title">Start at the top</h3>
+        <p>The newest notes are always first.</p>
+      </div>
+      <div class="study-path study-path--start">
+        <span class="study-path__arrow" aria-hidden="true">↑</span>
+        <p class="study-path__kicker">Starting from scratch?</p>
+        <h3 class="study-path__title">Start at the bottom</h3>
+        <p>
+          Preparatory videos, then Session 1, then onward. The bidding never arrives before you know what
+          a trick is.
+        </p>
+        <p class="study-path__link">
+          <a class="button" href="#start">Jump to the beginning ↓</a>
+        </p>
+      </div>
+    </div>
+
+    <ol class="study-sequence">
+      {% assign sessions = site.sessions | sort: 'date' | reverse %} {% for session in sessions %}
+      <li class="study-step">
+        <p class="study-step__kicker">{{ session.date | date: '%B %-d, %Y' }}</p>
+        <h3 class="study-step__title">
+          <a href="{{ '/study/' | append: session.session | append: '/' | relative_url }}"
+            >{{ session.title }}</a
+          >
+        </h3>
+        <p>{{ session.description }}</p>
+      </li>
+      {% endfor %}
+
+      <li class="study-step" id="start">
+        <p class="study-step__kicker">Before your first session</p>
+        <h3 class="study-step__title">
+          <a href="{{ '/study/prep/' | relative_url }}">Start here: preparatory videos</a>
+        </h3>
+        <p>
+          Three short videos on the mechanics of the game: who deals, who bids, and what a trick
+          actually is. No experience needed, no homework, no cards.
+        </p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="panel panel--alt" aria-labelledby="shelf-title">
+  <div class="panel__title">
+    <h2 id="shelf-title">★ The Reference Shelf</h2>
+    <span class="panel__buttons" aria-hidden="true"
+      ><span>_</span><span>□</span><span>×</span></span
+    >
+  </div>
+  <div class="panel__body">
+    <p class="lead">
+      The bidding system is not a rung on the ladder above. It is the book we keep open beside us
+      while we climb.
+    </p>
+    <p>
+      We are learning Standard American Yellow Card a piece at a time, and a session can point back
+      to it whenever a bid needs explaining. Since it grows in its own direction, it gets its own
+      page: the official ACBL booklets (both layouts) now, and the club's own notes as we write
+      them.
+    </p>
+    <p class="study-step__links">
+      <a class="button" href="{{ '/bidding/sayc/' | relative_url }}"
+        >Standard American Yellow Card →</a
+      >
+    </p>
+  </div>
+</section>

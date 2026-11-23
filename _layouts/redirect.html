@@ -1,0 +1,28 @@
+---
+layout: null
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-THD9FN5N"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page.title | default: site.title }}</title>
+    <link rel="icon" href="{{ '/assets/images/favicon.svg' | relative_url }}" type="image/svg+xml" />
+    <link rel="canonical" href="{{ page.redirect_to | absolute_url }}" />
+    <meta http-equiv="refresh" content="0; url={{ page.redirect_to | relative_url }}" />
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <p>
+      This page has moved <a href="{{ page.redirect_to | relative_url }}">here</a>.
+    </p>
+  </body>
+</html>

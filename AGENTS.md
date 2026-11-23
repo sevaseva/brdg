@@ -46,12 +46,14 @@ panels, the live conditions, the Milky Way rules, and how the forecasts and esti
 | `_config.yml`                   | Jekyll configuration; excludes repo-only files from the published site.                                                            |
 | `_layouts/default.html`         | Shared page shell: banner, masthead, navigation, ticker, footer.                                                                   |
 | `_layouts/session.html`         | Renders one session's notes from the `_sessions` collection.                                                                       |
+| `_layouts/redirect.html`        | Minimal moved-page shell: canonical link, instant redirect, and a fallback link.                                                   |
 | `_sessions/`                    | Session notes as Markdown, one `YYYY-MM-DD.md` file per session.                                                                   |
-| `s/`                            | The study hall at `/s/`, prep at `/s/prep/`, and thin pages that expose a session at `/s/N/` and `/s/YYYY-MM-DD/`.                 |
+| `study/`                        | The study hall at `/study/`, prep at `/study/prep/`, and thin pages that expose a session at `/study/N/` and `/study/YYYY-MM-DD/`. |
+| `s/`                            | Redirect stubs that keep the old `/s/`, `/s/prep/`, `/s/N/`, and `/s/YYYY-MM-DD/` URLs working.                                    |
 | `bidding/`                      | Bidding landing page at `/bidding/` and the SAYC reference page at `/bidding/sayc/`.                                               |
 | `index.html`                    | The homepage content.                                                                                                              |
 | `404.html`                      | GitHub Pages 404 page.                                                                                                             |
-| `intro.html`                    | Redirect to `/s/prep/`, kept so the old `/intro/` URL keeps working.                                                               |
+| `intro.html`                    | Redirect to `/study/prep/`, kept so the old `/intro/` URL keeps working.                                                           |
 | `assets/css/style.css`          | All styling (plain CSS, no Sass).                                                                                                  |
 | `assets/js/retro.js`            | Small vanilla-JS enhancements: visitor counter, webring joke, click sparkles, and an autoplaying, toggleable chiptune "MIDI" tune. |
 | `assets/js/session-comments.js` | Text-selection comments on session notes, backed by Firebase.                                                                      |
@@ -84,16 +86,17 @@ description: What the session covered, in one line.
 ---
 ```
 
-`session` is the short number used in `/s/N/`; `date` is the date of that session, used in
-`/s/YYYY-MM-DD/`. The collection itself is not output. To publish a session, add two thin pages in
-`s/`:
+`session` is the short number used in `/study/N/`; `date` is the date of that session, used in
+`/study/YYYY-MM-DD/`. The collection itself is not output. To publish a session, add two thin pages
+in `study/`:
 
-- `s/N.html` with `layout: session`, `session: N`, `body_class: session-page`, and
-  `permalink: /s/N/`
-- `s/YYYY-MM-DD.html` with the same values and `permalink: /s/YYYY-MM-DD/`
+- `study/N.html` with `layout: session`, `session: N`, `body_class: session-page`, and
+  `permalink: /study/N/`
+- `study/YYYY-MM-DD.html` with the same values and `permalink: /study/YYYY-MM-DD/`
 
 Both pages render the same collection document, so do not put note text in them. The session layout
-exposes the session number and date as data attributes for features that need a stable page key.
+exposes the session number and date as data attributes for features that need a stable page key. Old
+`/s/N/` and `/s/YYYY-MM-DD/` addresses stay published as redirect stubs in `s/`.
 
 Neither thin page repeats the `description`. For a page with `session` front matter,
 `_layouts/default.html` looks up the collection document with the same `session` number and uses its
@@ -102,20 +105,20 @@ drift apart. An explicit `description` on a page still wins over that lookup, wh
 non-session page supplies one. The value is YAML, so keep it on one line and quote it if it contains
 a colon: an unquoted `: ` makes Jekyll fail to read the whole front matter.
 
-Every session page carries `<link rel="canonical">` pointing at `/s/N/`, so search engines fold the
-dated URL into the short one. The layout derives it from the page's `session` front matter (an
+Every session page carries `<link rel="canonical">` pointing at `/study/N/`, so search engines fold
+the dated URL into the short one. The layout derives it from the page's `session` front matter (an
 explicit `canonical:` in front matter still wins), and builds the absolute URL with `site.url` from
 `_config.yml`, which must stay in step with the `CNAME` file.
 
-`s/index.html` (permanent URL `/s/`) is the study hall: one column of learning material, newest
-first. It loops over `site.sessions` sorted newest-first, so the latest session is at the top, and
-puts the prep page `s/prep.html` (`/s/prep/`) at the bottom. That ordering is deliberate: read down
-from the top for a refresher, or start at the bottom and work up to go through everything from the
-beginning. Each card is a date, a title, and one line about the session; the title itself is the
-link, so there is one name and one tab stop per card. Sessions link their short `/s/N/` address
-only. The dated `/s/YYYY-MM-DD/` addresses are still published and canonicalized for old links and
-search, but the study hall does not list them. The list is plain Liquid, not a collection document,
-so it needs no per-session edit.
+`study/index.html` (permanent URL `/study/`) is the study hall: one column of learning material,
+newest first. It loops over `site.sessions` sorted newest-first, so the latest session is at the
+top, and puts the prep page `study/prep.html` (`/study/prep/`) at the bottom. That ordering is
+deliberate: read down from the top for a refresher, or start at the bottom and work up to go through
+everything from the beginning. Each card is a date, a title, and one line about the session; the
+title itself is the link, so there is one name and one tab stop per card. Sessions link their short
+`/study/N/` address only. The dated `/study/YYYY-MM-DD/` addresses are still published and
+canonicalized for old links and search, but the study hall does not list them. The list is plain
+Liquid, not a collection document, so it needs no per-session edit.
 
 The bidding system is deliberately off that ladder. `bidding/sayc.html` (`/bidding/sayc/`) holds the
 two ACBL SAYC booklets — one laid out for Letter paper, one for printing as a booklet — and is where
@@ -128,7 +131,7 @@ link to `/bidding/` is the "← Bidding" crumb on the SAYC page.
 The main navigation is deliberately minimal: Home, Study hall, Night hikes, and Movie nights. The
 study hall itself routes to prep (its bottom card) and the latest session (its top card), so the
 menu never needs to list individual sessions. `/intro/` is a minimal redirect page with a canonical
-link to `/s/prep/`, so old links and search results still land in the right place.
+link to `/study/prep/`, so old links and search results still land in the right place.
 
 Session pages also load `assets/js/session-comments.js` through the `scripts:` front matter; no
 other page loads it. A session that includes a deal also loads `assets/js/pbn-deal.js`, listed
@@ -306,8 +309,9 @@ Build, then validate the generated HTML and check formatting:
 ```bash
 jekyll build
 tidy -qe _site/index.html _site/404.html _site/intro/index.html _site/night-hikes/index.html \
-  _site/movie-nights/index.html _site/s/index.html _site/s/prep/index.html _site/s/1/index.html \
-  _site/s/2026-11-12/index.html _site/bidding/index.html _site/bidding/sayc/index.html
+  _site/movie-nights/index.html _site/study/index.html _site/study/prep/index.html \
+  _site/study/1/index.html _site/study/2026-11-12/index.html _site/s/index.html \
+  _site/s/prep/index.html _site/s/1/index.html _site/bidding/index.html _site/bidding/sayc/index.html
 prettier --check "assets/**/*.{css,js}" "scripts/**/*.mjs" "scripts/**/*.json" "scripts/**/*.md" "package.json" "*.md" "_config.yml"
 ```
 
@@ -324,12 +328,12 @@ machine-written and large.
 
 The site deliberately mixes three kinds of content. Match the writing to the kind:
 
-- **Study material** — the study hall (`/s/`), prep (`/s/prep/`), the session notes (`/s/N/` and
-  `/s/YYYY-MM-DD/`), and the bidding pages (`/bidding/`, `/bidding/sayc/`). This part is real: the
-  sessions happen, the notes describe what was actually covered, and SAYC is a real system. Keep it
-  factually correct, because a beginner will trust it, while keeping the playful voice and the
-  jokes. A joke must never change a rule, a number, or a fact. Call the real gatherings **sessions**
-  on these pages.
+- **Study material** — the study hall (`/study/`), prep (`/study/prep/`), the session notes
+  (`/study/N/` and `/study/YYYY-MM-DD/`), and the bidding pages (`/bidding/`, `/bidding/sayc/`).
+  This part is real: the sessions happen, the notes describe what was actually covered, and SAYC is
+  a real system. Keep it factually correct, because a beginner will trust it, while keeping the
+  playful voice and the jokes. A joke must never change a rule, a number, or a fact. Call the real
+  gatherings **sessions** on these pages.
 - **The fictional club** — `index.html` and the club fiction around it. The Cobb Bridge Club is a
   character, not a factual record of a real organization: the meeting time is a guarded secret, the
   regulars are invented, and the news is gossip. This copy can be as loose and silly as it likes,
@@ -353,12 +357,12 @@ detail. When in doubt about a number or a rule, the study pages win.
 - All images must be original files committed to the repo. Do not hotlink images or add copyrighted
   artwork.
 - The Google tag (container `GTM-THD9FN5N`) is loaded on every page through `_layouts/default.html`
-  and `intro.html`. Aside from that, there are no other analytics, trackers, external fonts, CDNs,
-  or third-party embeds (exceptions: the `/s/prep/` videos, the movie-night trailer player, which
-  only loads after a click, the night-hike page's live weather/air fetches described in
-  [NIGHT.md](NIGHT.md), and the SAYC page's links to the ACBL booklets, which are ordinary outward
-  links rather than embeds). New trackers or embeds need explicit approval from the human/operator
-  before they are added.
+  and `_layouts/redirect.html`. Aside from that, there are no other analytics, trackers, external
+  fonts, CDNs, or third-party embeds (exceptions: the `/study/prep/` videos, the movie-night trailer
+  player, which only loads after a click, the night-hike page's live weather/air fetches described
+  in [NIGHT.md](NIGHT.md), and the SAYC page's links to the ACBL booklets, which are ordinary
+  outward links rather than embeds). New trackers or embeds need explicit approval from the
+  human/operator before they are added.
 - Keep the site accessible: meaningful `alt` text, semantic headings, visible focus styles,
   reduced-motion support, and readable contrast.
 - Write in American English, including in code comments and generated copy: _organize_, _color_,

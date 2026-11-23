@@ -15,7 +15,7 @@ url: 'https://brdg.lol'
 
 # Session notes. Each file lives in _sessions/ as a normal Markdown document
 # with `session` and `date` front matter. The collection itself is not output;
-# the thin pages under s/ render the matching document at more than one URL.
+# the thin pages under study/ render the matching document at more than one URL.
 collections:
   sessions:
     output: false
