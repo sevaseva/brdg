@@ -232,12 +232,13 @@ planning board: propose movies with YouTube trailers, vote for them, propose dat
 availability. Like the night-hike almanac, it is unrelated to bridge and exists for fun. It uses the
 same public Firebase database as the session comments, under `/movie-nights/`.
 
-- `movies/<uuid>` stores `{ v, title, videoId, name, pitch?, createdAt }`. The 11-character YouTube
-  video ID is stored instead of the URL; the canonical watch and embed URLs are reconstructed. The
-  form accepts `watch?v=`, `youtu.be`, `/shorts/`, `/embed/`, `/live/`, `/v/`, and bare 11-character
-  IDs, with the `www.`, `m.`, `music.`, and `youtube-nocookie.com` hosts. Playlists, channels, and
-  non-YouTube hosts are rejected. Trailers open in a click-to-load `youtube-nocookie.com` dialog; no
-  YouTube request is made until the reader presses play.
+- `movies/<uuid>` stores `{ v, title, videoId, name, pitch?, createdAt }`. `pitch` is an optional
+  description of up to 2,000 characters; blank lines separate paragraphs on the board. The
+  11-character YouTube video ID is stored instead of the URL; the canonical watch and embed URLs are
+  reconstructed. The form accepts `watch?v=`, `youtu.be`, `/shorts/`, `/embed/`, `/live/`, `/v/`,
+  and bare 11-character IDs, with the `www.`, `m.`, `music.`, and `youtube-nocookie.com` hosts.
+  Playlists, channels, and non-YouTube hosts are rejected. Trailers open in a click-to-load
+  `youtube-nocookie.com` dialog; no YouTube request is made until the reader presses play.
 - `dates/<uuid>` stores `{ v, date, name, createdAt }`. There is deliberately no time: the board
   picks the evening, and the club agrees on the hour separately. Past dates are hidden from the
   board but are not deleted.
@@ -248,6 +249,10 @@ same public Firebase database as the session comments, under `/movie-nights/`.
 - Counts are derived from the vote records, never stored. This avoids read-modify-write races. The
   movie list sorts by vote count, then earliest proposal; date votes are shown as a stacked meter
   with yes/maybe/no counts, and the leading date gets a badge.
+- Movie cards can be linked by current rank (`#3`) or by a title slug (`#silent-friend`); date cards
+  use the date (`#2026-12-04`) or `#date-1`. The numeric rank follows the current sort order, so it
+  can move when votes change; the title slug and date are stable. Sections, the ballot, and both
+  proposal forms also have IDs.
 - The proposal and vote keys are generated in the browser, and writes use `PUT`, as the comment
   system does. The board loads once and does not poll; reload the page to pick up votes from other
   browsers.

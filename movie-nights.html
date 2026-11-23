@@ -29,7 +29,7 @@ scripts:
           night on the calendar, then tell us if you can make it.
         </p>
         <ol class="movie-night__steps">
-          <li><strong>Propose</strong> a movie: title, trailer link, and an optional one-liner.</li>
+          <li><strong>Propose</strong> a movie: title, trailer link, and an optional description.</li>
           <li><strong>Vote</strong> for the ones you would watch.</li>
           <li><strong>Pick a night</strong> with yes, maybe, or no.</li>
         </ol>
@@ -47,7 +47,7 @@ scripts:
       </figure>
     </div>
 
-    <div class="ballot-strip">
+    <div class="ballot-strip" id="ballot">
       <label class="ballot-strip__label" for="movie-voter-name">Admit one — voting as</label>
       <input
         class="ballot-strip__input"
@@ -82,7 +82,7 @@ scripts:
           Threading the projector…
         </p>
         <p class="movie-board__vote-status" data-movie-vote-status></p>
-        <div class="movie-list" data-movies></div>
+        <div class="movie-list" id="movie-list" data-movies></div>
         <noscript>
           <p class="movie-board__empty">
             The movie board needs JavaScript. The projector itself works without it, but the
@@ -91,7 +91,7 @@ scripts:
         </noscript>
       </div>
 
-      <aside class="proposal-card" aria-labelledby="propose-movie-title">
+      <aside class="proposal-card" id="propose-movie" aria-labelledby="propose-movie-title">
         <h3 id="propose-movie-title">Propose a movie</h3>
         <form class="proposal-form" data-movie-form hidden novalidate>
           <label>
@@ -113,9 +113,22 @@ scripts:
             Any YouTube video link works. One video, not a playlist.
           </p>
           <label>
-            One-line pitch <span class="proposal-form__optional">(optional)</span>
-            <textarea name="pitch" rows="2" maxlength="160"></textarea>
+            <span
+              >Movie description <span class="proposal-form__optional">(optional)</span></span
+            >
+            <textarea
+              id="movie-pitch"
+              name="pitch"
+              rows="6"
+              maxlength="2000"
+              aria-describedby="movie-pitch-help"
+              placeholder="What is it about? Why should the club watch it?"
+            ></textarea>
           </label>
+          <p class="proposal-form__hint" id="movie-pitch-help">
+            Up to 2,000 characters. Leave a blank line between paragraphs.
+            <span class="proposal-form__count" data-movie-pitch-count>0 / 2000</span>
+          </p>
           <div class="proposal-form__actions">
             <button type="submit" data-movie-submit>Propose movie</button>
           </div>
@@ -150,7 +163,7 @@ scripts:
         </p>
         <p class="movie-board__status" data-dates-status role="status">Checking the calendar…</p>
         <p class="movie-board__vote-status" data-date-vote-status></p>
-        <div class="date-list" data-dates></div>
+        <div class="date-list" id="date-list" data-dates></div>
         <noscript>
           <p class="movie-board__empty">
             The night board needs JavaScript. The calendar itself works without it, but it refuses
@@ -159,7 +172,7 @@ scripts:
         </noscript>
       </div>
 
-      <aside class="proposal-card" aria-labelledby="propose-night-title">
+      <aside class="proposal-card" id="propose-night" aria-labelledby="propose-night-title">
         <h3 id="propose-night-title">Propose a night</h3>
         <form class="proposal-form" data-date-form hidden novalidate>
           <label>
@@ -197,7 +210,7 @@ scripts:
     <p class="lead">
       The projector has opinions, the couch is real, and the popcorn is a shared responsibility.
     </p>
-    <ul class="movie-night__rules">
+    <ul class="movie-night__rules" id="movie-rules">
       <li><strong>Votes are final.</strong> Choose like you mean it.</li>
       <li><strong>The board picks the night.</strong> The clock is a separate negotiation.</li>
       <li><strong>No bridge.</strong> If someone mentions trump, hand them popcorn.</li>

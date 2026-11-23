@@ -2684,6 +2684,14 @@ main {
   font-style: italic;
 }
 
+.movie-card__pitch p {
+  margin: 0;
+}
+
+.movie-card__pitch p + p {
+  margin-top: 0.55rem;
+}
+
 .movie-card__bottom {
   display: flex;
   flex-wrap: wrap;
@@ -2901,6 +2909,14 @@ main {
   font-size: 0.74rem;
 }
 
+.proposal-form__count {
+  float: right;
+  color: #5c4a72;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
 .proposal-form__actions button {
   padding: 0.4rem 0.7rem;
   background: var(--yellow);
@@ -2970,6 +2986,27 @@ main {
   background: var(--paper);
   border: 3px solid var(--ink);
   box-shadow: 4px 4px 0 #c9b8a0;
+}
+
+.movie-card,
+.date-card {
+  position: relative;
+  scroll-margin-top: 1rem;
+}
+
+.anchor-target {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  scroll-margin-top: 1rem;
+}
+
+.movie-card.is-hash-target,
+.date-card.is-hash-target {
+  outline: 3px solid var(--cyan);
+  outline-offset: 2px;
 }
 
 .date-card__date {

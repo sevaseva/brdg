@@ -15,7 +15,7 @@
   const NAME_KEY = 'user:name';
   const MAX_NAME = 40;
   const MAX_TITLE = 80;
-  const MAX_PITCH = 160;
+  const MAX_PITCH = 2000;
   const MAX_URL = 300;
   const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
   const YOUTUBE_ID = /^[A-Za-z0-9_-]{11}$/;
@@ -46,6 +46,7 @@
   const movieSubmit = document.querySelector('[data-movie-submit]');
   const movieWarning = document.querySelector('[data-movie-warning]');
   const movieStatus = document.querySelector('[data-movie-status]');
+  const moviePitchCount = document.querySelector('[data-movie-pitch-count]');
 
   const dateForm = document.querySelector('[data-date-form]');
   const dateSubmit = document.querySelector('[data-date-submit]');
@@ -60,6 +61,28 @@
   const trailerClose = document.querySelector('[data-trailer-close]');
 
   if (!nameInput || !moviesList || !datesList || !movieForm || !dateForm) return;
+
+  const reservedAnchors = new Set(['top', 'main']);
+
+  for (const node of document.querySelectorAll('[id]')) {
+    reservedAnchors.add(node.id);
+  }
+
+  const pitchInput = movieForm.elements.namedItem('pitch');
+
+  function updatePitchCount() {
+    if (!moviePitchCount || !pitchInput) return;
+
+    moviePitchCount.textContent = `${pitchInput.value.length} / ${MAX_PITCH}`;
+  }
+
+  if (pitchInput) {
+    pitchInput.addEventListener('input', updatePitchCount);
+    movieForm.addEventListener('reset', () => {
+      window.setTimeout(updatePitchCount, 0);
+    });
+    updatePitchCount();
+  }
 
   const collator = new Intl.Collator('en', { sensitivity: 'base' });
   const longDate = new Intl.DateTimeFormat('en-US', {
@@ -79,6 +102,8 @@
 
   let movies = [];
   let dates = [];
+  let movieAnchors = new Map();
+  let dateAnchors = new Map();
   let movieVotes = {};
   let dateVotes = {};
   let loaded = false;
@@ -141,6 +166,51 @@
       .replace(/\s+/g, ' ');
 
     return normalized || value.toLowerCase().trim();
+  }
+
+  function assignAnchors(items, baseFor, used, allowDate, order) {
+    const anchors = new Map();
+
+    for (const item of [...items].sort(order)) {
+      const base = baseFor(item) || `item-${item.id.slice(0, 8)}`;
+      let anchor = base;
+      let suffix = 2;
+
+      while (
+        used.has(anchor) ||
+        /^\d+$/.test(anchor) ||
+        /^date-\d+$/.test(anchor) ||
+        (!allowDate && DATE_RE.test(anchor))
+      ) {
+        anchor = `${base}-${suffix}`;
+        suffix += 1;
+      }
+
+      used.add(anchor);
+      anchors.set(item.id, anchor);
+    }
+
+    return anchors;
+  }
+
+  function rebuildAnchors() {
+    const used = new Set(reservedAnchors);
+
+    movieAnchors = assignAnchors(
+      movies,
+      (movie) => slugify(movie.title),
+      used,
+      false,
+      (left, right) =>
+        left.createdAt - right.createdAt || collator.compare(left.title, right.title),
+    );
+    dateAnchors = assignAnchors(
+      dates,
+      (date) => date.date,
+      used,
+      true,
+      (left, right) => left.date.localeCompare(right.date) || left.createdAt - right.createdAt,
+    );
   }
 
   function todayString() {
@@ -415,6 +485,7 @@
       renderDates();
       updateVoteControls();
       loaded = true;
+      focusHashTarget();
     } catch {
       showLoadError();
     } finally {
@@ -485,6 +556,44 @@
     });
   }
 
+  function focusHashTarget() {
+    if (!window.location.hash || window.location.hash.length < 2) {
+      return;
+    }
+
+    let id;
+
+    try {
+      id = decodeURIComponent(window.location.hash.slice(1));
+    } catch {
+      return;
+    }
+
+    const target = document.getElementById(id);
+
+    if (!target) {
+      return;
+    }
+
+    target.scrollIntoView({
+      block: 'start',
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+    });
+
+    for (const node of document.querySelectorAll('.is-hash-target')) {
+      node.classList.remove('is-hash-target');
+    }
+
+    const card = target.closest('.movie-card, .date-card');
+
+    if (card) {
+      card.classList.add('is-hash-target');
+      card.focus({ preventScroll: true });
+    }
+  }
+
+  window.addEventListener('hashchange', focusHashTarget);
+
   // -------------------------------------------------------------------------
   // Rendering
   // -------------------------------------------------------------------------
@@ -538,10 +647,26 @@
     return meter;
   }
 
-  function movieCard(movie, rank, count, max) {
+  function pitchParagraphs(text) {
+    return text
+      .split(/\r?\n\s*\r?\n/)
+      .map((paragraph) => paragraph.replace(/\s*\r?\n\s*/g, ' ').trim())
+      .filter(Boolean);
+  }
+
+  function movieCard(movie, rank, count, max, anchor) {
     const card = el('article', 'movie-card');
     card.tabIndex = -1;
     card.dataset.movieId = movie.id;
+
+    if (anchor) {
+      card.id = anchor;
+    }
+
+    const rankAnchor = el('span', 'anchor-target');
+    rankAnchor.id = String(rank + 1);
+    rankAnchor.setAttribute('aria-hidden', 'true');
+    card.append(rankAnchor);
 
     const rankBadge = el('span', 'movie-card__rank', String(rank + 1).padStart(2, '0'));
     rankBadge.setAttribute('aria-hidden', 'true');
@@ -555,7 +680,15 @@
     if (proposed) meta.push(proposed);
     main.append(el('p', 'movie-card__meta', meta.join(' · ')));
 
-    if (movie.pitch) main.append(el('p', 'movie-card__pitch', movie.pitch));
+    if (movie.pitch) {
+      const pitch = el('div', 'movie-card__pitch');
+
+      for (const paragraph of pitchParagraphs(movie.pitch)) {
+        pitch.append(el('p', null, paragraph));
+      }
+
+      main.append(pitch);
+    }
 
     const bottom = el('div', 'movie-card__bottom');
     const actions = el('div', 'movie-card__actions');
@@ -602,6 +735,8 @@
   }
 
   function renderMovies(options = {}) {
+    rebuildAnchors();
+
     const counts = movieCounts();
     const max = Math.max(0, ...counts.values());
     const sorted = [...movies].sort((a, b) => {
@@ -618,7 +753,9 @@
       );
     } else {
       sorted.forEach((movie, index) => {
-        moviesList.append(movieCard(movie, index, counts.get(movie.id) || 0, max));
+        moviesList.append(
+          movieCard(movie, index, counts.get(movie.id) || 0, max, movieAnchors.get(movie.id)),
+        );
       });
     }
 
@@ -666,10 +803,19 @@
     return meter;
   }
 
-  function dateCard(date, tally, leading) {
+  function dateCard(date, tally, leading, rank, anchor) {
     const card = el('article', 'date-card');
     card.tabIndex = -1;
     card.dataset.dateId = date.id;
+
+    if (anchor) {
+      card.id = anchor;
+    }
+
+    const rankAnchor = el('span', 'anchor-target');
+    rankAnchor.id = `date-${rank + 1}`;
+    rankAnchor.setAttribute('aria-hidden', 'true');
+    card.append(rankAnchor);
 
     const stamp = el('div', 'date-card__date');
     stamp.append(dateHeading(date));
@@ -774,6 +920,8 @@
   }
 
   function renderDates(options = {}) {
+    rebuildAnchors();
+
     const today = todayString();
     const active = dates
       .filter((date) => parseDate(date.date) && date.date >= today)
@@ -792,10 +940,18 @@
         ),
       );
     } else {
-      for (const date of active) {
+      active.forEach((date, index) => {
         const tally = tallies.get(date.id);
-        datesList.append(dateCard(date, tally, maxYes > 0 && tally.yes.length === maxYes));
-      }
+        datesList.append(
+          dateCard(
+            date,
+            tally,
+            maxYes > 0 && tally.yes.length === maxYes,
+            index,
+            dateAnchors.get(date.id),
+          ),
+        );
+      });
     }
 
     if (options.focusDate) focusCard(dateCardFor(options.focusDate));
@@ -964,7 +1120,6 @@
 
     const titleInput = movieForm.elements.namedItem('title');
     const urlInput = movieForm.elements.namedItem('url');
-    const pitchInput = movieForm.elements.namedItem('pitch');
     const trap = movieForm.elements.namedItem('website');
 
     if (trap && trap.value) {
@@ -1013,7 +1168,7 @@
     }
 
     if (pitch.length > MAX_PITCH) {
-      movieStatus.textContent = 'That pitch is a little too long.';
+      movieStatus.textContent = 'That description is a little too long.';
       pitchInput.focus();
       return;
     }
