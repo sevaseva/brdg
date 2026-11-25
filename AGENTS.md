@@ -41,34 +41,35 @@ panels, the live conditions, the Milky Way rules, and how the forecasts and esti
 
 ## Repository layout
 
-| Path                            | Purpose                                                                                                                            |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `_config.yml`                   | Jekyll configuration; excludes repo-only files from the published site.                                                            |
-| `_layouts/default.html`         | Shared page shell: banner, masthead, navigation, ticker, footer.                                                                   |
-| `_layouts/session.html`         | Renders one session's notes from the `_sessions` collection.                                                                       |
-| `_layouts/redirect.html`        | Minimal moved-page shell: canonical link, instant redirect, and a fallback link.                                                   |
-| `_sessions/`                    | Session notes as Markdown, one `YYYY-MM-DD.md` file per session.                                                                   |
-| `study/`                        | The study hall at `/study/`, prep at `/study/prep/`, and thin pages that expose a session at `/study/N/` and `/study/YYYY-MM-DD/`. |
-| `s/`                            | Redirect stubs that keep the old `/s/`, `/s/prep/`, `/s/N/`, and `/s/YYYY-MM-DD/` URLs working.                                    |
-| `bidding/`                      | Bidding landing page at `/bidding/` and the SAYC reference page at `/bidding/sayc/`.                                               |
-| `index.html`                    | The homepage content.                                                                                                              |
-| `404.html`                      | GitHub Pages 404 page.                                                                                                             |
-| `intro.html`                    | Redirect to `/study/prep/`, kept so the old `/intro/` URL keeps working.                                                           |
-| `assets/css/style.css`          | All styling (plain CSS, no Sass).                                                                                                  |
-| `assets/js/retro.js`            | Small vanilla-JS enhancements: visitor counter, webring joke, click sparkles, and an autoplaying, toggleable chiptune "MIDI" tune. |
-| `assets/js/analytics.js`        | Shared GA4 helper (`window.clubTrack`), the YouTube `video_watch` listener, and the outbound-link listener.                        |
-| `assets/js/session-comments.js` | Text-selection comments on session notes, backed by Firebase.                                                                      |
-| `assets/js/pbn-deal.js`         | Draws static deal diagrams from `pbn` code blocks in session notes.                                                                |
-| `movie-nights.html`             | The movie-night planning board at `/movie-nights/`: movie and date proposals, votes, trailers.                                     |
-| `assets/js/movie-nights.js`     | Movie-night proposals and votes, backed by the same Firebase database as the session comments.                                     |
-| `assets/images/*.svg`           | Original artwork: hero scene, card fan, construction sign, badges, favicon, moon-hike and movie-night scenes.                      |
-| `assets/images/robson.webp`     | Robson Level 1 course thumbnail used on the prep page.                                                                             |
-| `.github/workflows/pages.yml`   | Regenerates the almanac, builds Jekyll, and deploys to GitHub Pages.                                                               |
-| `package.json`                  | Build-tooling dependencies (`astronomy-engine`, `satellite.js`) and the generator and moon-sun scripts.                            |
-| `scripts/moon-sun-cli/`         | Standalone terrain-aware and sea-level sun/moon rise/set CLI; not used by the website build.                                       |
-| `NIGHT.md`                      | The night-hike guide: almanac rules, sky panels, forecasts, estimates.                                                             |
-| `AGENTS.md`                     | This guide.                                                                                                                        |
-| `pbn/`                          | Local PBN tooling for checking deals; `pbn/README.md` explains it. The downloaded tools inside are git-ignored.                    |
+| Path                            | Purpose                                                                                                                                 |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `_config.yml`                   | Jekyll configuration; excludes repo-only files from the published site.                                                                 |
+| `_layouts/default.html`         | Shared page shell: banner, masthead, navigation, ticker, footer.                                                                        |
+| `_layouts/session.html`         | Renders one session's notes from the `_sessions` collection.                                                                            |
+| `_layouts/redirect.html`        | Minimal moved-page shell: canonical link, instant redirect, and a fallback link.                                                        |
+| `_sessions/`                    | Session notes as Markdown, one `YYYY-MM-DD.md` file per session.                                                                        |
+| `study/`                        | The study hall at `/study/`, prep at `/study/prep/`, and thin pages that expose a session at `/study/N/` and `/study/YYYY-MM-DD/`.      |
+| `s/`                            | Redirect stubs that keep the old `/s/`, `/s/prep/`, `/s/N/`, and `/s/YYYY-MM-DD/` URLs working.                                         |
+| `bidding/`                      | Bidding landing page at `/bidding/` and the SAYC reference page at `/bidding/sayc/`.                                                    |
+| `index.html`                    | The homepage content.                                                                                                                   |
+| `404.html`                      | GitHub Pages 404 page.                                                                                                                  |
+| `intro.html`                    | Redirect to `/study/prep/`, kept so the old `/intro/` URL keeps working.                                                                |
+| `assets/css/style.css`          | All styling (plain CSS, no Sass).                                                                                                       |
+| `assets/js/retro.js`            | Small vanilla-JS enhancements: visitor counter, webring joke, click sparkles, and an autoplaying, toggleable chiptune "MIDI" tune.      |
+| `assets/js/analytics.js`        | Shared GA4 helpers (`window.clubTrack`, `window.clubTrackFailure`), the YouTube `video_watch` listener, and the outbound-link listener. |
+| `assets/js/session-comments.js` | Text-selection comments on session notes, backed by Firebase.                                                                           |
+| `assets/js/pbn-deal.js`         | Draws static deal diagrams from `pbn` code blocks in session notes.                                                                     |
+| `movie-nights.html`             | The movie-night planning board at `/movie-nights/`: movie and date proposals, votes, trailers.                                          |
+| `assets/js/movie-nights.js`     | Movie-night proposals and votes, backed by the same Firebase database as the session comments.                                          |
+| `assets/images/*.svg`           | Original artwork: hero scene, card fan, construction sign, badges, favicon, moon-hike and movie-night scenes.                           |
+| `assets/images/robson.webp`     | Robson Level 1 course thumbnail used on the prep page.                                                                                  |
+| `.github/workflows/pages.yml`   | Regenerates the almanac, builds Jekyll, and deploys to GitHub Pages.                                                                    |
+| `package.json`                  | Build-tooling dependencies (`astronomy-engine`, `satellite.js`) and the generator and moon-sun scripts.                                 |
+| `scripts/moon-sun-cli/`         | Standalone terrain-aware and sea-level sun/moon rise/set CLI; not used by the website build.                                            |
+| `NIGHT.md`                      | The night-hike guide: almanac rules, sky panels, forecasts, estimates.                                                                  |
+| `ANALYTICS.md`                  | Catalog of every GA4 event: when it fires, its parameters, and the privacy rules.                                                       |
+| `AGENTS.md`                     | This guide.                                                                                                                             |
+| `pbn/`                          | Local PBN tooling for checking deals; `pbn/README.md` explains it. The downloaded tools inside are git-ignored.                         |
 
 The night-hike page and generator files (`night-hikes.html`, `assets/js/night-hikes*.js`,
 `assets/data/night-hikes.json`, `scripts/night-hikes*`) are listed in [NIGHT.md](NIGHT.md).
@@ -174,7 +175,8 @@ The diagram is interactive, and the same behavior applies to every deal on any p
 - Using the diagram sends GA4 events through `clubTrack`: `deal_play` (with `session`) when **Play
   deal** starts, and `deal_control` with `control` set to `show_hide`, `undo`, `restart`, or
   `collect_trick`. A show/hide event also carries `control_target` (`auction`, `ns`, `ew`, or a
-  seat). Automatic play, automatic trick collection, and the initial render send nothing.
+  seat). Automatic play, automatic trick collection, and the initial render send nothing. See
+  [ANALYTICS.md](ANALYTICS.md#events).
 
 The auction table always keeps the seats in the order W, N, E, S and reads the way the bidding
 happened: left to right, then the next row. A dealer other than West therefore starts the first row
@@ -230,7 +232,7 @@ are not used at build time.
 - A posted comment or reply sends a GA4 event with `session`: `comment_add` for a comment and
   `comments_reply` for a reply. It fires only after the write succeeds and never includes the name,
   body, or quoted passage. Hiding or showing the section sends `comments_toggle` with
-  `comments_state` (`shown` or `hidden`).
+  `comments_state` (`shown` or `hidden`). See [ANALYTICS.md](ANALYTICS.md#events).
 - Comments print inline after their passage, and only while they are shown. The toggle, forms, and
   selection button are print-hidden.
 - The session layout wraps `♥` and `♦` in `<span class="suit suit--red">` so the red suits render
@@ -268,7 +270,7 @@ same public Firebase database as the session comments, under `/movie-nights/`.
   nothing when analytics is unavailable. Opening a trailer is a separate `movie_trailer_open` event
   (`movie_id`, `movie_title`), sent when the dialog opens, so it counts curiosity even when nobody
   presses play. To see the parameters in GA4 reports, register them as custom event-scoped
-  dimensions; the events themselves appear without that.
+  dimensions; the events themselves appear without that. See [ANALYTICS.md](ANALYTICS.md#events).
 - Movie cards can be linked by current rank (`#3`) or by a title slug (`#silent-friend`); date cards
   use the date (`#2026-12-04`) or `#date-1`. The numeric rank follows the current sort order, so it
   can move when votes change; the title slug and date are stable. Sections, the ballot, and both
@@ -381,24 +383,12 @@ detail. When in doubt about a number or a rule, the study pages win.
   click, the night-hike page's live weather/air fetches described in [NIGHT.md](NIGHT.md), and the
   SAYC page's links to the ACBL booklets, which are ordinary outward links rather than embeds). New
   trackers or embeds need explicit approval from the human/operator before they are added.
-- GA4 events go through `window.clubTrack` from `assets/js/analytics.js`, which the layout loads
-  before the page scripts. It is a no-op when gtag is missing, so analytics can never break a
-  feature. The events are `movie_vote`, `movie_propose`, `movie_night_vote`, `movie_night_propose`,
-  `movie_trailer_open`, `comment_add`, `comments_reply`, `comments_toggle`, `video_watch`,
-  `midi_toggle`, `hint_show`, `deal_play`, `deal_control`, `outbound_link`, `webring_click`, and
-  `action_failed`. Parameters are low-cardinality or feature data only: never a visitor's name,
-  comment text, or quote. `action_failed` reports an action that did not happen, and its
-  `action_event` parameter names the success event it stood in for (`movie_vote`,
-  `movie_night_vote`, `movie_propose`, `movie_night_propose`, `comment_add`, `comments_reply`). Its
-  `failure_reason` says what went wrong: `write` for a rejected remote write, `validation` for a
-  missing or malformed field (with `field` naming it), or `honeypot` for the hidden bot trap. It
-  fires only on real failures, not on the duplicate-vote answers that surface as a normal catch
-  branch. `video_watch` counts real playback, not page views: YouTube embeds carry `enablejsapi=1`
-  and post their player state to the parent frame, so no YouTube IFrame API script is loaded for it.
-  `hint_show` is reported on the first show of each night-hike hint per page load, however it opened
-  (hover, focus, or tap). `outbound_link` is a delegated click listener in `analytics.js`, so every
-  link that leaves the site is counted without per-link markup; it sends the link's own text, host,
-  and href, never anything a visitor typed.
+- GA4 events go through `window.clubTrack` and `window.clubTrackFailure` from
+  `assets/js/analytics.js`, which the layout loads before the page scripts. Both are no-ops when
+  gtag is missing, so analytics can never break a feature. [ANALYTICS.md](ANALYTICS.md) is the
+  catalog of every event — when it fires, its parameters, the `action_failed` failure reasons, and
+  the privacy rules. When you add or change an event, update that page and the feature section that
+  describes the action.
 - Keep the site accessible: meaningful `alt` text, semantic headings, visible focus styles,
   reduced-motion support, and readable contrast.
 - Write in American English, including in code comments and generated copy: _organize_, _color_,

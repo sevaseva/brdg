@@ -145,11 +145,14 @@
     }, 30);
   }
 
-  // Analytics is a nice-to-have: analytics.js defines clubTrack, but a
-  // stripped-down build or a blocked gtag.js must never stop a vote from being
-  // saved.
-  function trackEvent(name, params) {
+  // Analytics is a nice-to-have: a missing or blocked analytics.js must never
+  // stop a vote or a proposal from being saved. ANALYTICS.md lists the events.
+  function track(name, params) {
     window.clubTrack?.(name, params);
+  }
+
+  function trackFailure(actionEvent, failureReason, params) {
+    window.clubTrackFailure?.(actionEvent, failureReason, params);
   }
 
   function slugify(value) {
@@ -271,11 +274,7 @@
         block: 'center',
         behavior: prefersReducedMotion() ? 'auto' : 'smooth',
       });
-      trackEvent('action_failed', {
-        action_event: actionEvent,
-        failure_reason: 'validation',
-        field: 'name',
-      });
+      trackFailure(actionEvent, 'validation', { field: 'name' });
       return null;
     }
 
@@ -367,7 +366,7 @@
     dialog.showModal();
     if (trailerClose) trailerClose.focus();
 
-    trackEvent('movie_trailer_open', { movie_id: movie.id, movie_title: movie.title });
+    track('movie_trailer_open', { movie_id: movie.id, movie_title: movie.title });
   }
 
   if (dialog) {
@@ -1024,7 +1023,7 @@
       if (!movieVotes[id]) movieVotes[id] = {};
       movieVotes[id][voter.slug] = { v: 1, name: voter.name, createdAt };
       rememberName(voter.name);
-      trackEvent('movie_vote', {
+      track('movie_vote', {
         movie_id: movie.id,
         movie_title: movie.title,
       });
@@ -1051,7 +1050,7 @@
           movieVoteStatus.textContent = 'Could not save that vote. Please try again.';
         }
         announce('Could not save that vote.');
-        trackEvent('action_failed', { action_event: 'movie_vote', failure_reason: 'write' });
+        trackFailure('movie_vote', 'write');
       }
     }
   }
@@ -1087,7 +1086,7 @@
       if (!dateVotes[id]) dateVotes[id] = {};
       dateVotes[id][voter.slug] = { v: 1, name: voter.name, choice, createdAt };
       rememberName(voter.name);
-      trackEvent('movie_night_vote', { movie_night_date: date.date, choice });
+      track('movie_night_vote', { movie_night_date: date.date, choice });
       savingDates.delete(id);
       renderDates({ focusDate: id });
       if (dateVoteStatus) {
@@ -1115,10 +1114,7 @@
           dateVoteStatus.textContent = 'Could not save that vote. Please try again.';
         }
         announce('Could not save that vote.');
-        trackEvent('action_failed', {
-          action_event: 'movie_night_vote',
-          failure_reason: 'write',
-        });
+        trackFailure('movie_night_vote', 'write');
       }
     }
   }
@@ -1150,10 +1146,7 @@
 
     if (trap && trap.value) {
       movieForm.reset();
-      trackEvent('action_failed', {
-        action_event: 'movie_propose',
-        failure_reason: 'honeypot',
-      });
+      trackFailure('movie_propose', 'honeypot');
       return;
     }
 
@@ -1168,44 +1161,28 @@
     if (!title) {
       movieStatus.textContent = 'Give the movie a title.';
       titleInput.focus();
-      trackEvent('action_failed', {
-        action_event: 'movie_propose',
-        failure_reason: 'validation',
-        field: 'title',
-      });
+      trackFailure('movie_propose', 'validation', { field: 'title' });
       return;
     }
 
     if (title.length > MAX_TITLE) {
       movieStatus.textContent = 'That title is a little too long.';
       titleInput.focus();
-      trackEvent('action_failed', {
-        action_event: 'movie_propose',
-        failure_reason: 'validation',
-        field: 'title',
-      });
+      trackFailure('movie_propose', 'validation', { field: 'title' });
       return;
     }
 
     if (!rawUrl) {
       movieStatus.textContent = 'Paste the YouTube trailer link.';
       urlInput.focus();
-      trackEvent('action_failed', {
-        action_event: 'movie_propose',
-        failure_reason: 'validation',
-        field: 'url',
-      });
+      trackFailure('movie_propose', 'validation', { field: 'url' });
       return;
     }
 
     if (rawUrl.length > MAX_URL) {
       movieStatus.textContent = 'That link is a little too long.';
       urlInput.focus();
-      trackEvent('action_failed', {
-        action_event: 'movie_propose',
-        failure_reason: 'validation',
-        field: 'url',
-      });
+      trackFailure('movie_propose', 'validation', { field: 'url' });
       return;
     }
 
@@ -1214,22 +1191,14 @@
       movieStatus.textContent =
         'That is not a single YouTube video link. Watch, youtu.be, Shorts, live, and embed links work; playlists, channels, and other sites do not.';
       urlInput.focus();
-      trackEvent('action_failed', {
-        action_event: 'movie_propose',
-        failure_reason: 'validation',
-        field: 'url',
-      });
+      trackFailure('movie_propose', 'validation', { field: 'url' });
       return;
     }
 
     if (pitch.length > MAX_PITCH) {
       movieStatus.textContent = 'That description is a little too long.';
       pitchInput.focus();
-      trackEvent('action_failed', {
-        action_event: 'movie_propose',
-        failure_reason: 'validation',
-        field: 'pitch',
-      });
+      trackFailure('movie_propose', 'validation', { field: 'pitch' });
       return;
     }
 
@@ -1263,7 +1232,7 @@
       saved = true;
       movies.push({ id, ...payload });
       rememberName(voter.name);
-      trackEvent('movie_propose', {
+      track('movie_propose', {
         movie_title: title,
         has_pitch: pitch ? 1 : 0,
       });
@@ -1274,10 +1243,7 @@
     } catch {
       movieStatus.textContent = 'Could not post that. Please try again.';
       if (!saved) {
-        trackEvent('action_failed', {
-          action_event: 'movie_propose',
-          failure_reason: 'write',
-        });
+        trackFailure('movie_propose', 'write');
       }
     } finally {
       movieSubmit.disabled = false;
@@ -1291,10 +1257,7 @@
     const trap = dateForm.elements.namedItem('website');
     if (trap && trap.value) {
       dateForm.reset();
-      trackEvent('action_failed', {
-        action_event: 'movie_night_propose',
-        failure_reason: 'honeypot',
-      });
+      trackFailure('movie_night_propose', 'honeypot');
       return;
     }
 
@@ -1307,33 +1270,21 @@
     if (!value) {
       dateStatus.textContent = 'Pick a night.';
       dateInput.focus();
-      trackEvent('action_failed', {
-        action_event: 'movie_night_propose',
-        failure_reason: 'validation',
-        field: 'date',
-      });
+      trackFailure('movie_night_propose', 'validation', { field: 'date' });
       return;
     }
 
     if (!parseDate(value)) {
       dateStatus.textContent = 'That date does not exist. Try again.';
       dateInput.focus();
-      trackEvent('action_failed', {
-        action_event: 'movie_night_propose',
-        failure_reason: 'validation',
-        field: 'date',
-      });
+      trackFailure('movie_night_propose', 'validation', { field: 'date' });
       return;
     }
 
     if (value < todayString()) {
       dateStatus.textContent = 'That night has already passed. Pick an upcoming night.';
       dateInput.focus();
-      trackEvent('action_failed', {
-        action_event: 'movie_night_propose',
-        failure_reason: 'validation',
-        field: 'date',
-      });
+      trackFailure('movie_night_propose', 'validation', { field: 'date' });
       return;
     }
 
@@ -1365,7 +1316,7 @@
       saved = true;
       dates.push({ id, ...payload });
       rememberName(voter.name);
-      trackEvent('movie_night_propose', { movie_night_date: value });
+      track('movie_night_propose', { movie_night_date: value });
       dateForm.reset();
       resetDateDuplicate();
       dateStatus.textContent = 'Proposed! It is on the board.';
@@ -1373,10 +1324,7 @@
     } catch {
       dateStatus.textContent = 'Could not post that. Please try again.';
       if (!saved) {
-        trackEvent('action_failed', {
-          action_event: 'movie_night_propose',
-          failure_reason: 'write',
-        });
+        trackFailure('movie_night_propose', 'write');
       }
     } finally {
       dateSubmit.disabled = false;

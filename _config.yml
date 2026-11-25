@@ -32,6 +32,7 @@ collections:
 exclude:
   - AGENTS.md
   - NIGHT.md
+  - ANALYTICS.md
   - .editorconfig
   - .gitignore
   - .prettierignore

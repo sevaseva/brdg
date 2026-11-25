@@ -127,7 +127,8 @@ for the crossing, allowing for refraction and the sun's radius. If the configure
 more than about 100 m, the profile is ignored and the page falls back to the open-sky sunset. The
 “Behind Cobb Mt” stat carries the same `?` tooltip pattern as the weather indices. The hints are
 CSS-only, so `night-hikes.js` listens for the pointer, focus, or tap that reveals one and sends a
-GA4 `hint_show` event with a `hint_label`, once per hint per page load.
+GA4 `hint_show` event with a `hint_label`, once per hint per page load. See
+[ANALYTICS.md](ANALYTICS.md#events).
 
 ## Milky Way rules
 

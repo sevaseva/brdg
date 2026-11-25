@@ -887,6 +887,7 @@
     const form = document.createElement('form');
     form.className = 'comment__form';
     form.dataset.commentUi = '';
+    const actionEvent = commentId ? 'comments_reply' : 'comment_add';
 
     if (quote) form.append(quoteBlock(quote));
 
@@ -956,9 +957,7 @@
         window.setTimeout(() => {
           invalidReported = false;
         }, 0);
-        window.clubTrack?.('action_failed', {
-          action_event: commentId ? 'comments_reply' : 'comment_add',
-          failure_reason: 'validation',
+        window.clubTrackFailure?.(actionEvent, 'validation', {
           field: event.target === nameInput ? 'name' : 'body',
         });
       },
@@ -967,7 +966,17 @@
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      void submitForm({ form, commentId, anchor, nameInput, textarea, trap, submit, formStatus });
+      void submitForm({
+        form,
+        commentId,
+        actionEvent,
+        anchor,
+        nameInput,
+        textarea,
+        trap,
+        submit,
+        formStatus,
+      });
     });
 
     return form;
@@ -976,6 +985,7 @@
   async function submitForm({
     form,
     commentId,
+    actionEvent,
     anchor,
     nameInput,
     textarea,
@@ -985,7 +995,9 @@
   }) {
     const name = nameInput.value.trim();
     const bodyText = textarea.value.trim();
-    const actionEvent = commentId ? 'comments_reply' : 'comment_add';
+    const reportFailure = (failureReason, field) => {
+      window.clubTrackFailure?.(actionEvent, failureReason, field ? { field } : undefined);
+    };
 
     if (trap.value) {
       const parent = commentId ? threads.find((item) => item.id === commentId) : null;
@@ -996,31 +1008,20 @@
         trapped: true,
         reply: Boolean(commentId),
       });
-      window.clubTrack?.('action_failed', {
-        action_event: actionEvent,
-        failure_reason: 'honeypot',
-      });
+      reportFailure('honeypot');
       form.reset();
       return;
     }
 
     if (!name || !bodyText) {
       formStatus.textContent = 'Please add your name and a comment.';
-      window.clubTrack?.('action_failed', {
-        action_event: actionEvent,
-        failure_reason: 'validation',
-        field: !name ? 'name' : 'body',
-      });
+      reportFailure('validation', !name ? 'name' : 'body');
       return;
     }
 
     if (name.length > MAX_NAME || bodyText.length > MAX_BODY) {
       formStatus.textContent = 'That is a little too long.';
-      window.clubTrack?.('action_failed', {
-        action_event: actionEvent,
-        failure_reason: 'validation',
-        field: name.length > MAX_NAME ? 'name' : 'body',
-      });
+      reportFailure('validation', name.length > MAX_NAME ? 'name' : 'body');
       return;
     }
 
@@ -1095,10 +1096,7 @@
       submit.disabled = false;
       submit.textContent = label;
       if (!saved) {
-        window.clubTrack?.('action_failed', {
-          action_event: actionEvent,
-          failure_reason: 'write',
-        });
+        reportFailure('write');
       }
     }
   }

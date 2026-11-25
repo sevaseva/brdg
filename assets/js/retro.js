@@ -32,10 +32,7 @@
         webringStatus.textContent = 'The webring is snowed in. Try again after the thaw.';
       }
 
-      const text = button.textContent.trim().toLowerCase();
-      const direction = text.includes('prev') ? 'prev' : text.includes('next') ? 'next' : 'random';
-
-      window.clubTrack?.('webring_click', { direction });
+      window.clubTrack?.('webring_click', { direction: button.dataset.webring });
     });
   });
 
