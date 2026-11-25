@@ -943,6 +943,28 @@
 
     form.append(bodyLabel, nameLabel, trap, actions, formStatus);
 
+    // The required fields stop the submit event before it reaches the handler,
+    // so a browser-side validation failure is caught here instead. One report
+    // per submission, naming the first field the browser rejected.
+    let invalidReported = false;
+    form.addEventListener(
+      'invalid',
+      (event) => {
+        if (invalidReported) return;
+
+        invalidReported = true;
+        window.setTimeout(() => {
+          invalidReported = false;
+        }, 0);
+        window.clubTrack?.('action_failed', {
+          action_event: commentId ? 'comments_reply' : 'comment_add',
+          failure_reason: 'validation',
+          field: event.target === nameInput ? 'name' : 'body',
+        });
+      },
+      true,
+    );
+
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       void submitForm({ form, commentId, anchor, nameInput, textarea, trap, submit, formStatus });
@@ -963,6 +985,7 @@
   }) {
     const name = nameInput.value.trim();
     const bodyText = textarea.value.trim();
+    const actionEvent = commentId ? 'comments_reply' : 'comment_add';
 
     if (trap.value) {
       const parent = commentId ? threads.find((item) => item.id === commentId) : null;
@@ -973,17 +996,31 @@
         trapped: true,
         reply: Boolean(commentId),
       });
+      window.clubTrack?.('action_failed', {
+        action_event: actionEvent,
+        failure_reason: 'honeypot',
+      });
       form.reset();
       return;
     }
 
     if (!name || !bodyText) {
       formStatus.textContent = 'Please add your name and a comment.';
+      window.clubTrack?.('action_failed', {
+        action_event: actionEvent,
+        failure_reason: 'validation',
+        field: !name ? 'name' : 'body',
+      });
       return;
     }
 
     if (name.length > MAX_NAME || bodyText.length > MAX_BODY) {
       formStatus.textContent = 'That is a little too long.';
+      window.clubTrack?.('action_failed', {
+        action_event: actionEvent,
+        failure_reason: 'validation',
+        field: name.length > MAX_NAME ? 'name' : 'body',
+      });
       return;
     }
 
@@ -1042,7 +1079,7 @@
         if (selection) selection.removeAllRanges();
       }
 
-      window.clubTrack?.(commentId ? 'comments_reply' : 'comment_add', {
+      window.clubTrack?.(actionEvent, {
         session: sessionId,
       });
 
@@ -1059,7 +1096,8 @@
       submit.textContent = label;
       if (!saved) {
         window.clubTrack?.('action_failed', {
-          action_event: commentId ? 'comments_reply' : 'comment_add',
+          action_event: actionEvent,
+          failure_reason: 'write',
         });
       }
     }

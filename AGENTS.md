@@ -171,11 +171,10 @@ The diagram is interactive, and the same behavior applies to every deal on any p
   to its left. A pile shows a single card back even though all four cards of the trick are in it,
   and N–S tricks lie upright while E–W tricks lie on their side, so the two sides can be told apart.
   The whole trick, including who won it, is in the pile's accessible label.
-- Using the diagram sends GA4 events through `clubTrack`: `deal_play` (with `session` and
-  `contract`) when **Play deal** starts, and `deal_control` with `control` set to `show_hide`,
-  `undo`, `restart`, or `collect_trick`. A show/hide event also carries `control_target` (`auction`,
-  `ns`, `ew`, or a seat). Automatic play, automatic trick collection, and the initial render send
-  nothing.
+- Using the diagram sends GA4 events through `clubTrack`: `deal_play` (with `session`) when **Play
+  deal** starts, and `deal_control` with `control` set to `show_hide`, `undo`, `restart`, or
+  `collect_trick`. A show/hide event also carries `control_target` (`auction`, `ns`, `ew`, or a
+  seat). Automatic play, automatic trick collection, and the initial render send nothing.
 
 The auction table always keeps the seats in the order W, N, E, S and reads the way the bidding
 happened: left to right, then the next row. A dealer other than West therefore starts the first row
@@ -266,7 +265,7 @@ same public Firebase database as the session comments, under `/movie-nights/`.
   `movie_title`), `movie_propose` (`movie_title`, `has_pitch`), `movie_night_vote`
   (`movie_night_date`, `choice`), and `movie_night_propose` (`movie_night_date`). They fire only
   after the Firebase write succeeds, never for a duplicate the board rejected, and silently do
-  nothing when analytics is unavailable. Opening a trailer is a separate `trailer_open` event
+  nothing when analytics is unavailable. Opening a trailer is a separate `movie_trailer_open` event
   (`movie_id`, `movie_title`), sent when the dialog opens, so it counts curiosity even when nobody
   presses play. To see the parameters in GA4 reports, register them as custom event-scoped
   dimensions; the events themselves appear without that.
@@ -385,19 +384,21 @@ detail. When in doubt about a number or a rule, the study pages win.
 - GA4 events go through `window.clubTrack` from `assets/js/analytics.js`, which the layout loads
   before the page scripts. It is a no-op when gtag is missing, so analytics can never break a
   feature. The events are `movie_vote`, `movie_propose`, `movie_night_vote`, `movie_night_propose`,
-  `trailer_open`, `comment_add`, `comments_reply`, `comments_toggle`, `video_watch`, `midi_toggle`,
-  `hint_show`, `deal_play`, `deal_control`, `outbound_link`, `webring_click`, and `action_failed`.
-  Parameters are low-cardinality or feature data only: never a visitor's name, comment text, or
-  quote. `action_failed` reports a failed remote write, and its `action_event` parameter names the
-  success event it stood in for (`movie_vote`, `movie_night_vote`, `movie_propose`,
-  `movie_night_propose`, `comment_add`, `comments_reply`). It fires only on real failures, not on
-  the duplicate-vote answers that surface as a normal catch branch. `video_watch` counts real
-  playback, not page views: YouTube embeds carry `enablejsapi=1` and post their player state to the
-  parent frame, so no YouTube IFrame API script is loaded for it. `hint_show` is reported on the
-  first show of each night-hike hint per page load, however it opened (hover, focus, or tap).
-  `outbound_link` is a delegated click listener in `analytics.js`, so every link that leaves the
-  site is counted without per-link markup; it sends the link's own text, host, and href, never
-  anything a visitor typed.
+  `movie_trailer_open`, `comment_add`, `comments_reply`, `comments_toggle`, `video_watch`,
+  `midi_toggle`, `hint_show`, `deal_play`, `deal_control`, `outbound_link`, `webring_click`, and
+  `action_failed`. Parameters are low-cardinality or feature data only: never a visitor's name,
+  comment text, or quote. `action_failed` reports an action that did not happen, and its
+  `action_event` parameter names the success event it stood in for (`movie_vote`,
+  `movie_night_vote`, `movie_propose`, `movie_night_propose`, `comment_add`, `comments_reply`). Its
+  `failure_reason` says what went wrong: `write` for a rejected remote write, `validation` for a
+  missing or malformed field (with `field` naming it), or `honeypot` for the hidden bot trap. It
+  fires only on real failures, not on the duplicate-vote answers that surface as a normal catch
+  branch. `video_watch` counts real playback, not page views: YouTube embeds carry `enablejsapi=1`
+  and post their player state to the parent frame, so no YouTube IFrame API script is loaded for it.
+  `hint_show` is reported on the first show of each night-hike hint per page load, however it opened
+  (hover, focus, or tap). `outbound_link` is a delegated click listener in `analytics.js`, so every
+  link that leaves the site is counted without per-link markup; it sends the link's own text, host,
+  and href, never anything a visitor typed.
 - Keep the site accessible: meaningful `alt` text, semantic headings, visible focus styles,
   reduced-motion support, and readable contrast.
 - Write in American English, including in code comments and generated copy: _organize_, _color_,

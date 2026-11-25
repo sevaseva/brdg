@@ -1045,7 +1045,7 @@
       state.started = true;
       history = [];
       shown.auction = false;
-      trackDeal('deal_play', { contract: contract || 'unknown' });
+      trackDeal('deal_play');
       refresh();
     };
 

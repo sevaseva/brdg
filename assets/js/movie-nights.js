@@ -259,7 +259,7 @@
     return '';
   }
 
-  function requireVoter() {
+  function requireVoter(actionEvent) {
     const name = nameInput.value.trim();
     const problem = nameProblem(name);
 
@@ -270,6 +270,11 @@
       nameInput.scrollIntoView({
         block: 'center',
         behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+      });
+      trackEvent('action_failed', {
+        action_event: actionEvent,
+        failure_reason: 'validation',
+        field: 'name',
       });
       return null;
     }
@@ -362,7 +367,7 @@
     dialog.showModal();
     if (trailerClose) trailerClose.focus();
 
-    trackEvent('trailer_open', { movie_id: movie.id, movie_title: movie.title });
+    trackEvent('movie_trailer_open', { movie_id: movie.id, movie_title: movie.title });
   }
 
   if (dialog) {
@@ -988,7 +993,7 @@
     const movie = movieById(id);
     if (!movie) return;
 
-    const voter = requireVoter();
+    const voter = requireVoter('movie_vote');
     if (!voter) return;
 
     if (movieVotes[id] && movieVotes[id][voter.slug]) {
@@ -1046,7 +1051,7 @@
           movieVoteStatus.textContent = 'Could not save that vote. Please try again.';
         }
         announce('Could not save that vote.');
-        trackEvent('action_failed', { action_event: 'movie_vote' });
+        trackEvent('action_failed', { action_event: 'movie_vote', failure_reason: 'write' });
       }
     }
   }
@@ -1055,7 +1060,7 @@
     const date = dateById(id);
     if (!date || !CHOICES.includes(choice)) return;
 
-    const voter = requireVoter();
+    const voter = requireVoter('movie_night_vote');
     if (!voter) return;
 
     if (dateVotes[id] && dateVotes[id][voter.slug]) {
@@ -1110,7 +1115,10 @@
           dateVoteStatus.textContent = 'Could not save that vote. Please try again.';
         }
         announce('Could not save that vote.');
-        trackEvent('action_failed', { action_event: 'movie_night_vote' });
+        trackEvent('action_failed', {
+          action_event: 'movie_night_vote',
+          failure_reason: 'write',
+        });
       }
     }
   }
@@ -1142,10 +1150,14 @@
 
     if (trap && trap.value) {
       movieForm.reset();
+      trackEvent('action_failed', {
+        action_event: 'movie_propose',
+        failure_reason: 'honeypot',
+      });
       return;
     }
 
-    const voter = requireVoter();
+    const voter = requireVoter('movie_propose');
     if (!voter) return;
 
     const title = titleInput.value.trim();
@@ -1156,24 +1168,44 @@
     if (!title) {
       movieStatus.textContent = 'Give the movie a title.';
       titleInput.focus();
+      trackEvent('action_failed', {
+        action_event: 'movie_propose',
+        failure_reason: 'validation',
+        field: 'title',
+      });
       return;
     }
 
     if (title.length > MAX_TITLE) {
       movieStatus.textContent = 'That title is a little too long.';
       titleInput.focus();
+      trackEvent('action_failed', {
+        action_event: 'movie_propose',
+        failure_reason: 'validation',
+        field: 'title',
+      });
       return;
     }
 
     if (!rawUrl) {
       movieStatus.textContent = 'Paste the YouTube trailer link.';
       urlInput.focus();
+      trackEvent('action_failed', {
+        action_event: 'movie_propose',
+        failure_reason: 'validation',
+        field: 'url',
+      });
       return;
     }
 
     if (rawUrl.length > MAX_URL) {
       movieStatus.textContent = 'That link is a little too long.';
       urlInput.focus();
+      trackEvent('action_failed', {
+        action_event: 'movie_propose',
+        failure_reason: 'validation',
+        field: 'url',
+      });
       return;
     }
 
@@ -1182,12 +1214,22 @@
       movieStatus.textContent =
         'That is not a single YouTube video link. Watch, youtu.be, Shorts, live, and embed links work; playlists, channels, and other sites do not.';
       urlInput.focus();
+      trackEvent('action_failed', {
+        action_event: 'movie_propose',
+        failure_reason: 'validation',
+        field: 'url',
+      });
       return;
     }
 
     if (pitch.length > MAX_PITCH) {
       movieStatus.textContent = 'That description is a little too long.';
       pitchInput.focus();
+      trackEvent('action_failed', {
+        action_event: 'movie_propose',
+        failure_reason: 'validation',
+        field: 'pitch',
+      });
       return;
     }
 
@@ -1231,7 +1273,12 @@
       renderMovies({ focusMovie: id });
     } catch {
       movieStatus.textContent = 'Could not post that. Please try again.';
-      if (!saved) trackEvent('action_failed', { action_event: 'movie_propose' });
+      if (!saved) {
+        trackEvent('action_failed', {
+          action_event: 'movie_propose',
+          failure_reason: 'write',
+        });
+      }
     } finally {
       movieSubmit.disabled = false;
       movieSubmit.textContent = movieArmed ? 'Propose anyway' : 'Propose movie';
@@ -1244,10 +1291,14 @@
     const trap = dateForm.elements.namedItem('website');
     if (trap && trap.value) {
       dateForm.reset();
+      trackEvent('action_failed', {
+        action_event: 'movie_night_propose',
+        failure_reason: 'honeypot',
+      });
       return;
     }
 
-    const voter = requireVoter();
+    const voter = requireVoter('movie_night_propose');
     if (!voter) return;
 
     const value = dateInput.value;
@@ -1256,18 +1307,33 @@
     if (!value) {
       dateStatus.textContent = 'Pick a night.';
       dateInput.focus();
+      trackEvent('action_failed', {
+        action_event: 'movie_night_propose',
+        failure_reason: 'validation',
+        field: 'date',
+      });
       return;
     }
 
     if (!parseDate(value)) {
       dateStatus.textContent = 'That date does not exist. Try again.';
       dateInput.focus();
+      trackEvent('action_failed', {
+        action_event: 'movie_night_propose',
+        failure_reason: 'validation',
+        field: 'date',
+      });
       return;
     }
 
     if (value < todayString()) {
       dateStatus.textContent = 'That night has already passed. Pick an upcoming night.';
       dateInput.focus();
+      trackEvent('action_failed', {
+        action_event: 'movie_night_propose',
+        failure_reason: 'validation',
+        field: 'date',
+      });
       return;
     }
 
@@ -1306,7 +1372,12 @@
       renderDates({ focusDate: id });
     } catch {
       dateStatus.textContent = 'Could not post that. Please try again.';
-      if (!saved) trackEvent('action_failed', { action_event: 'movie_night_propose' });
+      if (!saved) {
+        trackEvent('action_failed', {
+          action_event: 'movie_night_propose',
+          failure_reason: 'write',
+        });
+      }
     } finally {
       dateSubmit.disabled = false;
       dateSubmit.textContent = dateArmed ? 'Propose anyway' : 'Propose night';
