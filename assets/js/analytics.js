@@ -77,4 +77,36 @@
 
     window.clubTrack('video_watch', params);
   });
+
+  // A link that leaves the site is an explicit action: the SAYC booklets, the
+  // Robson course, the prep videos' YouTube links, and the reference links on
+  // the homepage. The label is the link's own text, never anything typed.
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return;
+
+    const link = event.target.closest('a[href]');
+    if (!link) return;
+
+    let url;
+
+    try {
+      url = new URL(link.href, window.location.href);
+    } catch {
+      return;
+    }
+
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
+    if (url.hostname === window.location.hostname) return;
+
+    const text = (link.getAttribute('aria-label') || link.textContent || '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 100);
+
+    window.clubTrack('outbound_link', {
+      link_domain: url.hostname.replace(/^www\./, ''),
+      link_text: text || 'link',
+      link_url: url.href.slice(0, 100),
+    });
+  });
 })();

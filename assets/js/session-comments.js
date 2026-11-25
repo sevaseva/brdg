@@ -752,6 +752,10 @@
     shown = !shown;
     writePreference(shown);
     article.dataset.comments = shown ? 'shown' : 'hidden';
+    window.clubTrack?.('comments_toggle', {
+      session: sessionId,
+      comments_state: shown ? 'shown' : 'hidden',
+    });
 
     if (!shown) {
       hideHighlights();
@@ -1038,8 +1042,7 @@
         if (selection) selection.removeAllRanges();
       }
 
-      window.clubTrack?.('comment_add', {
-        comment_kind: commentId ? 'reply' : 'comment',
+      window.clubTrack?.(commentId ? 'comments_reply' : 'comment_add', {
         session: sessionId,
       });
 
@@ -1055,7 +1058,9 @@
       submit.disabled = false;
       submit.textContent = label;
       if (!saved) {
-        window.clubTrack?.('action_failed', { action_event: 'comment_add' });
+        window.clubTrack?.('action_failed', {
+          action_event: commentId ? 'comments_reply' : 'comment_add',
+        });
       }
     }
   }

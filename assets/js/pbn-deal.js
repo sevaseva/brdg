@@ -52,6 +52,18 @@
 
   let diagramCount = 0;
 
+  // Session pages carry the session number on the article, so the deal events
+  // can say which session's diagram was used. A page without one (a preview,
+  // say) simply omits the parameter.
+  const sessionArticle = document.querySelector('[data-session-id]');
+  const sessionId = sessionArticle ? sessionArticle.dataset.sessionId : null;
+
+  const trackDeal = (name, params) => {
+    const data = { ...params };
+    if (sessionId) data.session = sessionId;
+    window.clubTrack?.(name, data);
+  };
+
   const escapeHtml = (value) =>
     String(value).replace(
       /[&<>"']/g,
@@ -459,6 +471,7 @@
     biddingToggle.setAttribute('aria-label', 'Show or hide the auction');
     biddingToggle.addEventListener('click', () => {
       shown.auction = !shown.auction;
+      trackDeal('deal_control', { control: 'show_hide', control_target: 'auction' });
       refresh();
     });
 
@@ -468,6 +481,7 @@
       const next = !(shown.N && shown.S);
       shown.N = next;
       shown.S = next;
+      trackDeal('deal_control', { control: 'show_hide', control_target: 'ns' });
       refresh();
     });
 
@@ -477,6 +491,7 @@
       const next = !(shown.E && shown.W);
       shown.E = next;
       shown.W = next;
+      trackDeal('deal_control', { control: 'show_hide', control_target: 'ew' });
       refresh();
     });
 
@@ -485,6 +500,7 @@
       button.setAttribute('aria-label', `Show or hide the ${SEAT_NAMES[seat]} hand`);
       button.addEventListener('click', () => {
         shown[seat] = !shown[seat];
+        trackDeal('deal_control', { control: 'show_hide', control_target: seat.toLowerCase() });
         refresh();
       });
     });
@@ -1029,6 +1045,7 @@
       state.started = true;
       history = [];
       shown.auction = false;
+      trackDeal('deal_play', { contract: contract || 'unknown' });
       refresh();
     };
 
@@ -1044,6 +1061,7 @@
       }
 
       if (target) restore(target);
+      trackDeal('deal_control', { control: 'undo' });
       refresh();
     };
 
@@ -1052,10 +1070,12 @@
       state = freshState();
       state.started = true;
       history = [];
+      trackDeal('deal_control', { control: 'restart' });
       refresh();
     };
 
     const collectAndContinue = () => {
+      trackDeal('deal_control', { control: 'collect_trick' });
       collect();
       refresh();
       // Keep keyboard and screen-reader focus on the hand that has to play

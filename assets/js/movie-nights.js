@@ -361,6 +361,8 @@
 
     dialog.showModal();
     if (trailerClose) trailerClose.focus();
+
+    trackEvent('trailer_open', { movie_id: movie.id, movie_title: movie.title });
   }
 
   if (dialog) {
