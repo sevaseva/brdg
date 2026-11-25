@@ -361,7 +361,7 @@ detail. When in doubt about a number or a rule, the study pages win.
 - All images must be original files committed to the repo. Do not hotlink images or add copyrighted
   artwork.
 - Google Analytics 4 is loaded directly with gtag.js (measurement ID `google_analytics` in
-  `_config.yml`, currently `G-T18SHJHVJF`) on every page through `_layouts/default.html` and
+  `_config.yml`, currently `G-Q5JZ38H0KW`) on every page through `_layouts/default.html` and
   `_layouts/redirect.html`. There is no Tag Manager container; events go straight to GA4. Aside from
   that, there are no other analytics, trackers, external fonts, CDNs, or third-party embeds
   (exceptions: the `/study/prep/` videos, the movie-night trailer player, which only loads after a

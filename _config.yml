@@ -16,7 +16,7 @@ url: 'https://brdg.lol'
 # GA4 web-stream measurement ID. The layouts load gtag.js directly from this
 # value and send page views and events straight to Google Analytics, with no
 # Tag Manager container in between. The ID is public by design, not a secret.
-google_analytics: 'G-T18SHJHVJF'
+google_analytics: 'G-Q5JZ38H0KW'
 
 # Session notes. Each file lives in _sessions/ as a normal Markdown document
 # with `session` and `date` front matter. The collection itself is not output;
