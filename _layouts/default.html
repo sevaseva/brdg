@@ -153,6 +153,10 @@
       </footer>
     </div>
 
+    <script
+      src="{{ '/assets/js/analytics.js' | relative_url }}?v={{ site.time | date: '%s' }}"
+      defer
+    ></script>
     {% for script in page.scripts %}
     <script src="{{ script | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
     {% endfor %}

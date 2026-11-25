@@ -20,6 +20,18 @@
     }
   }
 
+  // The tooltip itself is CSS-only, so the first show of each hint is counted
+  // here: hover on a mouse, focus from the keyboard, or the tap that toggles
+  // aria-expanded on a touch screen. One event per hint per page load.
+  const shownHints = new WeakSet();
+
+  function trackHint(button, label) {
+    if (shownHints.has(button)) return;
+
+    shownHints.add(button);
+    window.clubTrack?.('hint_show', { hint_label: label });
+  }
+
   document.addEventListener('click', (event) => {
     const target = event.target instanceof Element ? event.target : null;
     const button = target ? target.closest('.info-help') : null;
@@ -221,6 +233,14 @@
     const tip = el('span', 'info-help__tip', help);
     tip.id = id;
     tip.setAttribute('role', 'tooltip');
+
+    const hintName = label.toLowerCase();
+
+    button.addEventListener('pointerenter', (event) => {
+      if (event.pointerType === 'mouse') trackHint(button, hintName);
+    });
+    button.addEventListener('focus', () => trackHint(button, hintName));
+    button.addEventListener('click', () => trackHint(button, hintName));
 
     container.append(button, tip);
   }

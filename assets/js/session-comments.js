@@ -990,11 +990,14 @@
 
     const id = newId();
     const created = Date.now();
+    // Only a failed write is a failed action; anything after it is local.
+    let saved = false;
 
     try {
       if (commentId) {
         const reply = { v: 1, name, body: bodyText, createdAt: created };
         await putJson(`replies/${sessionId}/${commentId}/${id}`, reply);
+        saved = true;
 
         const thread = threads.find((item) => item.id === commentId);
         notifyComment({
@@ -1025,6 +1028,7 @@
         };
 
         await putJson(`comments/${sessionId}/${id}`, comment);
+        saved = true;
         notifyComment({ name, quote: anchor.quote, body: bodyText, trapped: false });
 
         threads.push({ id, data: comment, replies: [], range: null });
@@ -1033,6 +1037,11 @@
         const selection = window.getSelection();
         if (selection) selection.removeAllRanges();
       }
+
+      window.clubTrack?.('comment_add', {
+        comment_kind: commentId ? 'reply' : 'comment',
+        session: sessionId,
+      });
 
       loaded = true;
       writeName(name);
@@ -1045,6 +1054,9 @@
       formStatus.textContent = 'Could not post that. Please try again.';
       submit.disabled = false;
       submit.textContent = label;
+      if (!saved) {
+        window.clubTrack?.('action_failed', { action_event: 'comment_add' });
+      }
     }
   }
 

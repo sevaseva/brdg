@@ -56,6 +56,7 @@ panels, the live conditions, the Milky Way rules, and how the forecasts and esti
 | `intro.html`                    | Redirect to `/study/prep/`, kept so the old `/intro/` URL keeps working.                                                           |
 | `assets/css/style.css`          | All styling (plain CSS, no Sass).                                                                                                  |
 | `assets/js/retro.js`            | Small vanilla-JS enhancements: visitor counter, webring joke, click sparkles, and an autoplaying, toggleable chiptune "MIDI" tune. |
+| `assets/js/analytics.js`        | Shared GA4 helper (`window.clubTrack`) and the YouTube `video_watch` listener.                                                     |
 | `assets/js/session-comments.js` | Text-selection comments on session notes, backed by Firebase.                                                                      |
 | `assets/js/pbn-deal.js`         | Draws static deal diagrams from `pbn` code blocks in session notes.                                                                |
 | `movie-nights.html`             | The movie-night planning board at `/movie-nights/`: movie and date proposals, votes, trailers.                                     |
@@ -222,6 +223,9 @@ are not used at build time.
   as well as `click`, because iOS Safari clears the selection before dispatching `click`.
 - Preferences use `comments:<session>` in `localStorage` (`"hidden"` when hidden, absent when shown)
   and `user:name` for the remembered display name.
+- A posted comment or reply sends a GA4 `comment_add` event with `comment_kind` (`comment` or
+  `reply`) and `session`. It fires only after the write succeeds and never includes the name, body,
+  or quoted passage.
 - Comments print inline after their passage, and only while they are shown. The toggle, forms, and
   selection button are print-hidden.
 - The session layout wraps `♥` and `♦` in `<span class="suit suit--red">` so the red suits render
@@ -252,10 +256,12 @@ same public Firebase database as the session comments, under `/movie-nights/`.
 - Counts are derived from the vote records, never stored. This avoids read-modify-write races. The
   movie list sorts by vote count, then earliest proposal; date votes are shown as a stacked meter
   with yes/maybe/no counts, and the leading date gets a badge.
-- A saved movie vote also sends a GA4 custom event `movie_vote` with `movie_id` and `movie_title`
-  parameters. It fires only after the write succeeds, never for a vote the voter already had, and
-  silently does nothing when gtag is unavailable. Date votes are not tracked. To see the parameters
-  in GA4 reports, register `movie_id` and `movie_title` as custom event-scoped dimensions.
+- A successful write on the board also sends a GA4 custom event: `movie_vote` (`movie_id`,
+  `movie_title`), `movie_propose` (`movie_title`, `has_pitch`), `movie_night_vote`
+  (`movie_night_date`, `choice`), and `movie_night_propose` (`movie_night_date`). They fire only
+  after the Firebase write succeeds, never for a duplicate the board rejected, and silently do
+  nothing when analytics is unavailable. To see the parameters in GA4 reports, register them as
+  custom event-scoped dimensions; the events themselves appear without that.
 - Movie cards can be linked by current rank (`#3`) or by a title slug (`#silent-friend`); date cards
   use the date (`#2026-12-04`) or `#date-1`. The numeric rank follows the current sort order, so it
   can move when votes change; the title slug and date are stable. Sections, the ballot, and both
@@ -368,6 +374,18 @@ detail. When in doubt about a number or a rule, the study pages win.
   click, the night-hike page's live weather/air fetches described in [NIGHT.md](NIGHT.md), and the
   SAYC page's links to the ACBL booklets, which are ordinary outward links rather than embeds). New
   trackers or embeds need explicit approval from the human/operator before they are added.
+- GA4 events go through `window.clubTrack` from `assets/js/analytics.js`, which the layout loads
+  before the page scripts. It is a no-op when gtag is missing, so analytics can never break a
+  feature. The events are `movie_vote`, `movie_propose`, `movie_night_vote`, `movie_night_propose`,
+  `comment_add`, `video_watch`, `midi_toggle`, `hint_show`, and `action_failed`. Parameters are
+  low-cardinality or feature data only: never a visitor's name, comment text, or quote.
+  `action_failed` reports a failed remote write, and its `action_event` parameter names the success
+  event it stood in for (`movie_vote`, `movie_night_vote`, `movie_propose`, `movie_night_propose`,
+  `comment_add`). It fires only on real failures, not on the duplicate-vote answers that surface as
+  a normal catch branch. `video_watch` counts real playback, not page views: YouTube embeds carry
+  `enablejsapi=1` and post their player state to the parent frame, so no YouTube IFrame API script
+  is loaded for it. `hint_show` is reported on the first show of each night-hike hint per page load,
+  however it opened (hover, focus, or tap).
 - Keep the site accessible: meaningful `alt` text, semantic headings, visible focus styles,
   reduced-motion support, and readable contrast.
 - Write in American English, including in code comments and generated copy: _organize_, _color_,
