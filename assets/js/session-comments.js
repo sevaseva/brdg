@@ -752,6 +752,10 @@
     shown = !shown;
     writePreference(shown);
     article.dataset.comments = shown ? 'shown' : 'hidden';
+    window.clubTrack?.('comments_toggle', {
+      session: sessionId,
+      comments_state: shown ? 'shown' : 'hidden',
+    });
 
     if (!shown) {
       hideHighlights();
@@ -883,6 +887,7 @@
     const form = document.createElement('form');
     form.className = 'comment__form';
     form.dataset.commentUi = '';
+    const actionEvent = commentId ? 'comments_reply' : 'comment_add';
 
     if (quote) form.append(quoteBlock(quote));
 
@@ -939,9 +944,39 @@
 
     form.append(bodyLabel, nameLabel, trap, actions, formStatus);
 
+    // The required fields stop the submit event before it reaches the handler,
+    // so a browser-side validation failure is caught here instead. One report
+    // per submission, naming the first field the browser rejected.
+    let invalidReported = false;
+    form.addEventListener(
+      'invalid',
+      (event) => {
+        if (invalidReported) return;
+
+        invalidReported = true;
+        window.setTimeout(() => {
+          invalidReported = false;
+        }, 0);
+        window.clubTrackFailure?.(actionEvent, 'validation', {
+          field: event.target === nameInput ? 'name' : 'body',
+        });
+      },
+      true,
+    );
+
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      void submitForm({ form, commentId, anchor, nameInput, textarea, trap, submit, formStatus });
+      void submitForm({
+        form,
+        commentId,
+        actionEvent,
+        anchor,
+        nameInput,
+        textarea,
+        trap,
+        submit,
+        formStatus,
+      });
     });
 
     return form;
@@ -950,6 +985,7 @@
   async function submitForm({
     form,
     commentId,
+    actionEvent,
     anchor,
     nameInput,
     textarea,
@@ -959,6 +995,9 @@
   }) {
     const name = nameInput.value.trim();
     const bodyText = textarea.value.trim();
+    const reportFailure = (failureReason, field) => {
+      window.clubTrackFailure?.(actionEvent, failureReason, field ? { field } : undefined);
+    };
 
     if (trap.value) {
       const parent = commentId ? threads.find((item) => item.id === commentId) : null;
@@ -969,17 +1008,20 @@
         trapped: true,
         reply: Boolean(commentId),
       });
+      reportFailure('honeypot');
       form.reset();
       return;
     }
 
     if (!name || !bodyText) {
       formStatus.textContent = 'Please add your name and a comment.';
+      reportFailure('validation', !name ? 'name' : 'body');
       return;
     }
 
     if (name.length > MAX_NAME || bodyText.length > MAX_BODY) {
       formStatus.textContent = 'That is a little too long.';
+      reportFailure('validation', name.length > MAX_NAME ? 'name' : 'body');
       return;
     }
 
@@ -990,11 +1032,14 @@
 
     const id = newId();
     const created = Date.now();
+    // Only a failed write is a failed action; anything after it is local.
+    let saved = false;
 
     try {
       if (commentId) {
         const reply = { v: 1, name, body: bodyText, createdAt: created };
         await putJson(`replies/${sessionId}/${commentId}/${id}`, reply);
+        saved = true;
 
         const thread = threads.find((item) => item.id === commentId);
         notifyComment({
@@ -1025,6 +1070,7 @@
         };
 
         await putJson(`comments/${sessionId}/${id}`, comment);
+        saved = true;
         notifyComment({ name, quote: anchor.quote, body: bodyText, trapped: false });
 
         threads.push({ id, data: comment, replies: [], range: null });
@@ -1033,6 +1079,10 @@
         const selection = window.getSelection();
         if (selection) selection.removeAllRanges();
       }
+
+      window.clubTrack?.(actionEvent, {
+        session: sessionId,
+      });
 
       loaded = true;
       writeName(name);
@@ -1045,6 +1095,9 @@
       formStatus.textContent = 'Could not post that. Please try again.';
       submit.disabled = false;
       submit.textContent = label;
+      if (!saved) {
+        reportFailure('write');
+      }
     }
   }
 

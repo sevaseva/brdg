@@ -31,6 +31,8 @@
       if (webringStatus) {
         webringStatus.textContent = 'The webring is snowed in. Try again after the thaw.';
       }
+
+      window.clubTrack?.('webring_click', { direction: button.dataset.webring });
     });
   });
 
@@ -227,17 +229,20 @@
           midiStatus.hidden = false;
           midiStatus.textContent = 'Your browser cannot play MIDI. Try Netscape Navigator 4.0.';
         }
+        window.clubTrack?.('midi_toggle', { midi_state: 'unsupported' });
         return;
       }
 
       if (midiPlaying) {
         midiWanted = false;
         stopMidi();
+        window.clubTrack?.('midi_toggle', { midi_state: 'off' });
         return;
       }
 
       midiWanted = true;
       startMidi('loop');
+      window.clubTrack?.('midi_toggle', { midi_state: 'on' });
     });
 
     armUnlock();

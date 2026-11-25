@@ -145,12 +145,14 @@
     }, 30);
   }
 
-  // Analytics is a nice-to-have: gtag is defined by the layout's GA4 snippet,
-  // but it may be absent in a stripped-down build and a blocked gtag.js must
-  // never stop a vote from being saved.
-  function trackEvent(name, params) {
-    if (typeof window.gtag !== 'function') return;
-    window.gtag('event', name, params);
+  // Analytics is a nice-to-have: a missing or blocked analytics.js must never
+  // stop a vote or a proposal from being saved. ANALYTICS.md lists the events.
+  function track(name, params) {
+    window.clubTrack?.(name, params);
+  }
+
+  function trackFailure(actionEvent, failureReason, params) {
+    window.clubTrackFailure?.(actionEvent, failureReason, params);
   }
 
   function slugify(value) {
@@ -260,7 +262,7 @@
     return '';
   }
 
-  function requireVoter() {
+  function requireVoter(actionEvent) {
     const name = nameInput.value.trim();
     const problem = nameProblem(name);
 
@@ -272,6 +274,7 @@
         block: 'center',
         behavior: prefersReducedMotion() ? 'auto' : 'smooth',
       });
+      trackFailure(actionEvent, 'validation', { field: 'name' });
       return null;
     }
 
@@ -350,8 +353,10 @@
     trailerFrame.replaceChildren();
 
     const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube-nocookie.com/embed/${movie.videoId}?autoplay=1&rel=0`;
+    iframe.src = `https://www.youtube-nocookie.com/embed/${movie.videoId}?autoplay=1&rel=0&enablejsapi=1`;
     iframe.title = `Trailer for ${movie.title}`;
+    iframe.dataset.videoId = movie.videoId;
+    iframe.dataset.videoTitle = movie.title;
     iframe.allow =
       'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
     iframe.allowFullscreen = true;
@@ -360,6 +365,8 @@
 
     dialog.showModal();
     if (trailerClose) trailerClose.focus();
+
+    track('movie_trailer_open', { movie_id: movie.id, movie_title: movie.title });
   }
 
   if (dialog) {
@@ -985,7 +992,7 @@
     const movie = movieById(id);
     if (!movie) return;
 
-    const voter = requireVoter();
+    const voter = requireVoter('movie_vote');
     if (!voter) return;
 
     if (movieVotes[id] && movieVotes[id][voter.slug]) {
@@ -1016,7 +1023,7 @@
       if (!movieVotes[id]) movieVotes[id] = {};
       movieVotes[id][voter.slug] = { v: 1, name: voter.name, createdAt };
       rememberName(voter.name);
-      trackEvent('movie_vote', {
+      track('movie_vote', {
         movie_id: movie.id,
         movie_title: movie.title,
       });
@@ -1043,6 +1050,7 @@
           movieVoteStatus.textContent = 'Could not save that vote. Please try again.';
         }
         announce('Could not save that vote.');
+        trackFailure('movie_vote', 'write');
       }
     }
   }
@@ -1051,7 +1059,7 @@
     const date = dateById(id);
     if (!date || !CHOICES.includes(choice)) return;
 
-    const voter = requireVoter();
+    const voter = requireVoter('movie_night_vote');
     if (!voter) return;
 
     if (dateVotes[id] && dateVotes[id][voter.slug]) {
@@ -1078,6 +1086,7 @@
       if (!dateVotes[id]) dateVotes[id] = {};
       dateVotes[id][voter.slug] = { v: 1, name: voter.name, choice, createdAt };
       rememberName(voter.name);
+      track('movie_night_vote', { movie_night_date: date.date, choice });
       savingDates.delete(id);
       renderDates({ focusDate: id });
       if (dateVoteStatus) {
@@ -1105,6 +1114,7 @@
           dateVoteStatus.textContent = 'Could not save that vote. Please try again.';
         }
         announce('Could not save that vote.');
+        trackFailure('movie_night_vote', 'write');
       }
     }
   }
@@ -1136,10 +1146,11 @@
 
     if (trap && trap.value) {
       movieForm.reset();
+      trackFailure('movie_propose', 'honeypot');
       return;
     }
 
-    const voter = requireVoter();
+    const voter = requireVoter('movie_propose');
     if (!voter) return;
 
     const title = titleInput.value.trim();
@@ -1150,24 +1161,28 @@
     if (!title) {
       movieStatus.textContent = 'Give the movie a title.';
       titleInput.focus();
+      trackFailure('movie_propose', 'validation', { field: 'title' });
       return;
     }
 
     if (title.length > MAX_TITLE) {
       movieStatus.textContent = 'That title is a little too long.';
       titleInput.focus();
+      trackFailure('movie_propose', 'validation', { field: 'title' });
       return;
     }
 
     if (!rawUrl) {
       movieStatus.textContent = 'Paste the YouTube trailer link.';
       urlInput.focus();
+      trackFailure('movie_propose', 'validation', { field: 'url' });
       return;
     }
 
     if (rawUrl.length > MAX_URL) {
       movieStatus.textContent = 'That link is a little too long.';
       urlInput.focus();
+      trackFailure('movie_propose', 'validation', { field: 'url' });
       return;
     }
 
@@ -1176,12 +1191,14 @@
       movieStatus.textContent =
         'That is not a single YouTube video link. Watch, youtu.be, Shorts, live, and embed links work; playlists, channels, and other sites do not.';
       urlInput.focus();
+      trackFailure('movie_propose', 'validation', { field: 'url' });
       return;
     }
 
     if (pitch.length > MAX_PITCH) {
       movieStatus.textContent = 'That description is a little too long.';
       pitchInput.focus();
+      trackFailure('movie_propose', 'validation', { field: 'pitch' });
       return;
     }
 
@@ -1207,16 +1224,27 @@
     };
     if (pitch) payload.pitch = pitch;
 
+    // Only a failed write is a failed action; anything after it is local.
+    let saved = false;
+
     try {
       await putJson(`movies/${encodeURIComponent(id)}`, payload);
+      saved = true;
       movies.push({ id, ...payload });
       rememberName(voter.name);
+      track('movie_propose', {
+        movie_title: title,
+        has_pitch: pitch ? 1 : 0,
+      });
       movieForm.reset();
       resetMovieDuplicate();
       movieStatus.textContent = 'Proposed! It is on the board.';
       renderMovies({ focusMovie: id });
     } catch {
       movieStatus.textContent = 'Could not post that. Please try again.';
+      if (!saved) {
+        trackFailure('movie_propose', 'write');
+      }
     } finally {
       movieSubmit.disabled = false;
       movieSubmit.textContent = movieArmed ? 'Propose anyway' : 'Propose movie';
@@ -1229,10 +1257,11 @@
     const trap = dateForm.elements.namedItem('website');
     if (trap && trap.value) {
       dateForm.reset();
+      trackFailure('movie_night_propose', 'honeypot');
       return;
     }
 
-    const voter = requireVoter();
+    const voter = requireVoter('movie_night_propose');
     if (!voter) return;
 
     const value = dateInput.value;
@@ -1241,18 +1270,21 @@
     if (!value) {
       dateStatus.textContent = 'Pick a night.';
       dateInput.focus();
+      trackFailure('movie_night_propose', 'validation', { field: 'date' });
       return;
     }
 
     if (!parseDate(value)) {
       dateStatus.textContent = 'That date does not exist. Try again.';
       dateInput.focus();
+      trackFailure('movie_night_propose', 'validation', { field: 'date' });
       return;
     }
 
     if (value < todayString()) {
       dateStatus.textContent = 'That night has already passed. Pick an upcoming night.';
       dateInput.focus();
+      trackFailure('movie_night_propose', 'validation', { field: 'date' });
       return;
     }
 
@@ -1276,16 +1308,24 @@
       createdAt: Date.now(),
     };
 
+    // Only a failed write is a failed action; anything after it is local.
+    let saved = false;
+
     try {
       await putJson(`dates/${encodeURIComponent(id)}`, payload);
+      saved = true;
       dates.push({ id, ...payload });
       rememberName(voter.name);
+      track('movie_night_propose', { movie_night_date: value });
       dateForm.reset();
       resetDateDuplicate();
       dateStatus.textContent = 'Proposed! It is on the board.';
       renderDates({ focusDate: id });
     } catch {
       dateStatus.textContent = 'Could not post that. Please try again.';
+      if (!saved) {
+        trackFailure('movie_night_propose', 'write');
+      }
     } finally {
       dateSubmit.disabled = false;
       dateSubmit.textContent = dateArmed ? 'Propose anyway' : 'Propose night';
