@@ -252,6 +252,10 @@ same public Firebase database as the session comments, under `/movie-nights/`.
 - Counts are derived from the vote records, never stored. This avoids read-modify-write races. The
   movie list sorts by vote count, then earliest proposal; date votes are shown as a stacked meter
   with yes/maybe/no counts, and the leading date gets a badge.
+- A saved movie vote also sends a GA4 custom event `movie_vote` with `movie_id` and `movie_title`
+  parameters. It fires only after the write succeeds, never for a vote the voter already had, and
+  silently does nothing when gtag is unavailable. Date votes are not tracked. To see the parameters
+  in GA4 reports, register `movie_id` and `movie_title` as custom event-scoped dimensions.
 - Movie cards can be linked by current rank (`#3`) or by a title slug (`#silent-friend`); date cards
   use the date (`#2026-12-04`) or `#date-1`. The numeric rank follows the current sort order, so it
   can move when votes change; the title slug and date are stable. Sections, the ballot, and both
@@ -356,13 +360,14 @@ detail. When in doubt about a number or a rule, the study pages win.
   mislead.
 - All images must be original files committed to the repo. Do not hotlink images or add copyrighted
   artwork.
-- The Google tag (container `GTM-THD9FN5N`) is loaded on every page through `_layouts/default.html`
-  and `_layouts/redirect.html`. Aside from that, there are no other analytics, trackers, external
-  fonts, CDNs, or third-party embeds (exceptions: the `/study/prep/` videos, the movie-night trailer
-  player, which only loads after a click, the night-hike page's live weather/air fetches described
-  in [NIGHT.md](NIGHT.md), and the SAYC page's links to the ACBL booklets, which are ordinary
-  outward links rather than embeds). New trackers or embeds need explicit approval from the
-  human/operator before they are added.
+- Google Analytics 4 is loaded directly with gtag.js (measurement ID `google_analytics` in
+  `_config.yml`, currently `G-T18SHJHVJF`) on every page through `_layouts/default.html` and
+  `_layouts/redirect.html`. There is no Tag Manager container; events go straight to GA4. Aside from
+  that, there are no other analytics, trackers, external fonts, CDNs, or third-party embeds
+  (exceptions: the `/study/prep/` videos, the movie-night trailer player, which only loads after a
+  click, the night-hike page's live weather/air fetches described in [NIGHT.md](NIGHT.md), and the
+  SAYC page's links to the ACBL booklets, which are ordinary outward links rather than embeds). New
+  trackers or embeds need explicit approval from the human/operator before they are added.
 - Keep the site accessible: meaningful `alt` text, semantic headings, visible focus styles,
   reduced-motion support, and readable contrast.
 - Write in American English, including in code comments and generated copy: _organize_, _color_,

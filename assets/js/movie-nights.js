@@ -145,6 +145,14 @@
     }, 30);
   }
 
+  // Analytics is a nice-to-have: gtag is defined by the layout's GA4 snippet,
+  // but it may be absent in a stripped-down build and a blocked gtag.js must
+  // never stop a vote from being saved.
+  function trackEvent(name, params) {
+    if (typeof window.gtag !== 'function') return;
+    window.gtag('event', name, params);
+  }
+
   function slugify(value) {
     return value
       .normalize('NFKD')
@@ -1008,6 +1016,10 @@
       if (!movieVotes[id]) movieVotes[id] = {};
       movieVotes[id][voter.slug] = { v: 1, name: voter.name, createdAt };
       rememberName(voter.name);
+      trackEvent('movie_vote', {
+        movie_id: movie.id,
+        movie_title: movie.title,
+      });
       savingMovies.delete(id);
       renderMovies({ focusMovie: id });
       if (movieVoteStatus) movieVoteStatus.textContent = 'Vote saved.';
